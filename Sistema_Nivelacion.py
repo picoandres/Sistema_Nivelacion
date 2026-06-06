@@ -1,4 +1,3 @@
-#Práctica 2 - Clases y Objetos
 class CursoNivelacion:
     atributoClase = "Público"
     __atributoClase = "Privado"
