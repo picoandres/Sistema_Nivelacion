@@ -1,21 +1,54 @@
 from Usuario import Usuario
+from Materia import Materia
 
 class Estudiante(Usuario):
-    def __init__(self, cedulaEstudiante, nombre, correo, contrasena, carrera, paralelo):
-        super().__init__(cedulaEstudiante, nombre, correo, contrasena)
+    def __init__(self, CedulaEstudiante, nombre, correo, contrasena, carrera, paralelo, promedio):
+        super().__init__(CedulaEstudiante, nombre, correo, contrasena, rol = "Estudiante")
         self.carrera = carrera
         self.paralelo = paralelo
         self.notas = []
+        self.DocumentosSubidos= []
 
     def verPerfil(self):
         super().verPerfil()
+        print(f"Nombre: {self.nombre}")
+        print(f"correo: {self.correo}")
         print(f"Carrera: {self.carrera}")
         print(f"Paralelo: {self.paralelo}")
+        print(f"Total de materias con nota: {len(self.notas)}")
 
-    def agregarNota(self, nota):
-        self.notas.append(nota)
+    def verNotas(self):
+        if not self.notas:
+            print("Aun no tienes notas registradas.")
+            return
+
+        for Materia, nota in self.notas.items():
+            print(f"{Materia}: {nota}")
+        print(f"promedio actual: {self.calcular_promedio():.2f}")
+        print("=" * 30)
     
-    def promedio(self):
-        if len(self.notas) == 0:
-            return 0
-        return sum(self.notas) / len(self.notas)
+    def calcular_promedio(self):
+        if not self.notas:
+            return 0.0
+        return sum(self.notas.values()) / len(self.notas)
+
+    def verAsistencia(self):
+        pass
+
+    def subirDocumentos(self, nombre_documento, tipo):
+        documento = {
+            "nombre": nombre_documento,
+            "tipo": tipo,
+            "fecha": "2025-04-03",
+            "estado": "Pendiente"
+        }
+        self.documentos_subidos.append(documento)
+        print(f"Documento {nombre_documento} ha sido subido exitosamente.")
+        return documento
+    
+    def verDocumentosSubidos(self):
+        if not self.DocumentosSubidos:
+            print("No has subido documentos todavia.")
+            return
+        for doc in self.DocumentosSubidos:
+            print(f"{doc['nombre']} ({doc['tipo']}) | {doc['estado']}")
