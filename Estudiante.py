@@ -26,7 +26,7 @@ class Estudiante(Usuario):
             print(f"{Materia}: {nota}")
         print(f"promedio actual: {self.calcular_promedio():.2f}")
         print("=" * 30)
-    
+    #el sistema calcula el promedio del estudiante
     def calcular_promedio(self):
         if not self.notas:
             return 0.0
@@ -34,7 +34,7 @@ class Estudiante(Usuario):
 
     def verAsistencia(self):
         pass
-
+    #Metodo de subir documentos beta
     def subirDocumentos(self, nombre_documento, tipo):
         documento = {
             "nombre": nombre_documento,
@@ -42,10 +42,10 @@ class Estudiante(Usuario):
             "fecha": "2025-04-03",
             "estado": "Pendiente"
         }
-        self.documentos_subidos.append(documento)
+        self.DocumentosSubidos.append(documento)
         print(f"Documento {nombre_documento} ha sido subido exitosamente.")
         return documento
-    
+    #El estudiante podra ver sus documentos subidos
     def verDocumentosSubidos(self):
         if not self.DocumentosSubidos:
             print("No has subido documentos todavia.")
