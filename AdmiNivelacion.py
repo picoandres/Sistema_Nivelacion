@@ -152,7 +152,7 @@ class Administrador(Usuario):
             self.__registrarAccion(
                 f"Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'"
             )
-            print(f"✔ Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'.")
+            print(f" Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'.")
         except Exception as e:
             print(f" Error al asignar docente: {e}")
 
