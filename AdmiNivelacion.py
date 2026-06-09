@@ -47,7 +47,6 @@ class Administrador(Usuario):
         print(f"Teléfono      : {self.telefono}")
 
     def registrarDocente(self, docente):
-        """Agrega un Docente al sistema, validando que sea instancia correcta."""
         if not isinstance(docente, Docente):
             raise TypeError("Solo se pueden registrar objetos de tipo Docente.")
 
@@ -61,7 +60,6 @@ class Administrador(Usuario):
         print(f" Docente '{docente.nombre}' registrado exitosamente.")
 
     def eliminarDocente(self, cedula):
-        """Elimina un docente por cédula."""
         for docente in self.docentes:
             if docente.cedula == cedula:
                 self.docentes.remove(docente)
@@ -86,7 +84,6 @@ class Administrador(Usuario):
         print()
 
     def registrarEstudiante(self, estudiante):
-        """Agrega un Estudiante al sistema."""
         if not isinstance(estudiante, Estudiante):
             raise TypeError("Solo se pueden registrar objetos de tipo Estudiante.")
 
@@ -106,7 +103,7 @@ class Administrador(Usuario):
                 self.__registrarAccion(f"Estudiante eliminado: {estudiante.nombre} (C.I: {cedula})")
                 print(f" Estudiante con cédula {cedula} eliminado.")
                 return
-        print(f" No se encontró un estudiante con cédula {cedula}.")
+        print(f"No se encontró un estudiante con cédula {cedula}.")
 
     def buscarEstudiante(self, cedula):
         for estudiante in self.estudiantes:
@@ -138,12 +135,12 @@ class Administrador(Usuario):
         """Busca el curso y el docente, y realiza la asignación."""
         curso = self.__buscarCurso(idCurso)
         if curso is None:
-            print(f" No se encontró el curso con ID '{idCurso}'.")
+            print(f"No se encontró el curso con ID '{idCurso}'.")
             return
 
         docente = self.buscarDocente(cedula_docente)
         if docente is None:
-            print(f" No se encontró un docente con cédula {cedula_docente}.")
+            print(f"No se encontró un docente con cédula {cedula_docente}.")
             return
 
         try:
@@ -152,9 +149,9 @@ class Administrador(Usuario):
             self.__registrarAccion(
                 f"Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'"
             )
-            print(f" Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'.")
+            print(f"Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'.")
         except Exception as e:
-            print(f" Error al asignar docente: {e}")
+            print(f"Error al asignar docente: {e}")
 
     def listarCursos(self):
         if not self.cursos:
