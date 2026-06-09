@@ -1,19 +1,52 @@
 from Usuario import Usuario
-
+from Materia import Materia
+from Estudiante import Estudiante
 class Docente(Usuario):
-    def __init__(self, cedulaDocente, nombre, correo, contrasena, titulo, especialidad):
-        super().__init__(cedulaDocente, nombre, correo, contrasena)
+    def __init__(self, Cedula, nombre, correo, contrasena, titulo, especialidad, anosExperiencia):
+        super().__init__(Cedula, nombre, correo, contrasena)
         self.titulo = titulo
         self.especialidad = especialidad
+        self.anosExperiencia = anosExperiencia
         self.cursos = []
+        self.evaluaciones_creadas = []
 
+    #Polimorfismo con sobreescritura de verperfil
     def verPerfil(self):
-        super().verPerfil()
-        print(f"Título: {self.titulo}")
+        super().verPerfil()  
+        print(f"Título Académico: {self.titulo}")
         print(f"Especialidad: {self.especialidad}")
+        print(f"Años de Experiencia: {self.anosExperiencia}")
+        print(f"Cursos Asignados: {len(self.cursos)}")
 
-    def asignarCurso(self, curso):
-        self.cursos.append(curso)
+    def calificar(self, estudiante, nota, materia):
+        if not (0 <= nota <= 10):
+            print("Error: la calificacion debe estar entre 0 y 10.")
+            return
+        
+        if 0 <= nota <= 10:
+            estudiante.agregarNota(materia, nota)
+            print(f"Se calificó a {estudiante.nombre} con {nota} en la materia '{materia.nombre}'.")
+        else:
+            print("Error: La calificación debe estar entre 0 y 10.")
+        
+    def crearEvaluacion(self, tituloEvaluacion, descripcion):
+        evaluacion = {
+            "titulo": tituloEvaluacion,
+            "descripcion": descripcion,
+            "docente": self.nombre
+        }
+        self.evaluaciones_creadas.append(evaluacion)
+        print(f"Evaluacion {tituloEvaluacion} creada exitosamente")
+        return evaluacion
 
-    def calificar(self, estudiante, nota):
-        estudiante.agregarNota(nota)
+    def verCronogramaTrabajo(self):
+        pass
+    
+    def verEstudiantesCurso(self, curso):
+        if curso in self.cursos:
+            print(f"Estudiantes en {curso.nombre}")
+            print()
+        else:
+            print("Este curso no existe.")
+    
+    
