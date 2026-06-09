@@ -17,7 +17,7 @@ class Docente(Usuario):
         print(f"Especialidad: {self.especialidad}")
         print(f"Años de Experiencia: {self.anosExperiencia}")
         print(f"Cursos Asignados: {len(self.cursos)}")
-
+#califica a un estudiante en una materia
     def calificar(self, estudiante, nota, materia):
         if not (0 <= nota <= 10):
             print("Error: la calificacion debe estar entre 0 y 10.")
@@ -28,7 +28,7 @@ class Docente(Usuario):
             print(f"Se calificó a {estudiante.nombre} con {nota} en la materia '{materia.nombre}'.")
         else:
             print("Error: La calificación debe estar entre 0 y 10.")
-        
+#Ahora el docente puede crear una evaluacion        
     def crearEvaluacion(self, tituloEvaluacion, descripcion):
         evaluacion = {
             "titulo": tituloEvaluacion,
