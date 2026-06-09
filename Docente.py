@@ -22,12 +22,10 @@ class Docente(Usuario):
         if not (0 <= nota <= 10):
             print("Error: la calificacion debe estar entre 0 y 10.")
             return
-        
-        if 0 <= nota <= 10:
+        else:
             estudiante.agregarNota(materia, nota)
             print(f"Se calificó a {estudiante.nombre} con {nota} en la materia '{materia.nombre}'.")
-        else:
-            print("Error: La calificación debe estar entre 0 y 10.")
+            
 #Ahora el docente puede crear una evaluacion        
     def crearEvaluacion(self, tituloEvaluacion, descripcion):
         evaluacion = {
