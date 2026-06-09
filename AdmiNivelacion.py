@@ -53,7 +53,7 @@ class Administrador(Usuario):
 
         for d in self.docentes:
             if d.cedula == docente.cedula:
-                print(f"⚠ El docente con cédula {docente.cedula} ya está registrado.")
+                print(f" El docente con cédula {docente.cedula} ya está registrado.")
                 return
 
         self.docentes.append(docente)
