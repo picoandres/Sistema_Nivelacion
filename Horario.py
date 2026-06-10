@@ -7,14 +7,11 @@ class Horario(ABC):
         self.horaInicio = horaInicio
         self.horaFin = horaFin
         self.aula = aula
-        self.estado = "Pendiente"  # Pendiente, Aprobado, Cancelado
         self.asignador = asignador
 
-
+    @abstractmethod
     def verificarHorario(self, otro_horario):
-        if self.dia != otro_horario.dia or self.aula != otro_horario.aula:
-            return False
-        return not (self.horaFin <= otro_horario.horaInicio or self.horaInicio >= otro_horario.horaFin)
+        pass
 
     @abstractmethod
     def definir_horario(self):
@@ -48,6 +45,12 @@ class HorarioEstudiante(Horario):
 
     def verificarAula(self, gestor_aulas):
         return gestor_aulas.aula_disponible(self.aula, self.dia, self.horaInicio, self.horaFin)
+
+class HorarioSistema(Horario):
+     def verificarHorario(self, otro_horario):
+        if self.dia != otro_horario.dia or self.aula != otro_horario.aula:
+            return False
+        return not (self.horaFin <= otro_horario.horaInicio or self.horaInicio >= otro_horario.horaFin)
 
 class HorarioDocente(Horario):
     def __init__(self, dia, horaInicio, horaFin, aula, idDocente, asignador):
