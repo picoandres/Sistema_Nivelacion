@@ -2,15 +2,18 @@ from Usuario import Usuario
 from Docente import Docente
 from Estudiante import Estudiante
 
+
 class Administrador(Usuario):
 
     def __init__(self, cedula, nombre, correo, contrasena,
-                 sede, areaResponsable, telefono):
+                 sede, areaResponsable, telefono, idAdmin, gestor_aulas: GestorAulas):
         super().__init__(cedula, nombre, correo, contrasena)
 
         self.__sede = sede                        # encapsulado (privado)
         self.__areaResponsable = areaResponsable  # encapsulado (privado)
         self.telefono = telefono
+        self.idAdmin = idAdmin
+        self.gestor_aulas = gestor_aulas
 
         self.docentes = []
         self.estudiantes = []
@@ -191,4 +194,36 @@ class Administrador(Usuario):
 
     def __str__(self):
         return (f"Administrador | {self.nombre} | Sede: {self.__sede} "
-                f"| Área: {self.__areaResponsable}")    
+                f"| Área: {self.__areaResponsable}") 
+
+    def asignarHorarioEstudiante(self, idEstudiante, dia, hora_inicio, hora_fin, aula, idMateria) -> AsignacionHorario:
+        horario = HorarioEstudiante(dia, hora_inicio, hora_fin, aula, idEstudiante, self.idAdmin)
+        
+        if not horario.verificarAula(self.gestor_aulas):
+            print("Error: Aula ocupada o no existe")
+            return None
+        
+        horario.definir_horario(idMateria)
+        asignacion = AsignacionHorario(horario)
+        asignacion.aprobar("2026-04-10")
+        self.gestor_aulas.registrar_asignacion(asignacion)
+        return asignacion
+
+
+class GestorAulas:
+    def __init__(self):
+        self.aulas = {"A103": 40, "A302": 30, "Lab1": 25}
+        self.asignaciones = []  
+
+    def aula_disponible(self, aula, dia, h_inicio, h_fin):
+        if aula not in self.aulas:
+            return False
+        for asignacion in self.asignaciones:
+            h = asignacion.asignar
+            if h.aula == aula and h.dia == dia and h.estado != "Cancelado":
+                if not (h_fin <= h.horaInicio or h_inicio >= h.horaFin):
+                    return False
+        return True
+
+    def registrar_asignacion(self, asignacion: AsignacionHorario):
+        self.asignaciones.append(asignacion)
