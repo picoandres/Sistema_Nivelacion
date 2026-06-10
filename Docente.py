@@ -1,9 +1,10 @@
 from Usuario import Usuario
 from Materia import Materia
 from Estudiante import Estudiante
+
 class Docente(Usuario):
-    def __init__(self, Cedula, nombre, correo, contrasena, titulo, especialidad, anosExperiencia):
-        super().__init__(Cedula, nombre, correo, contrasena)
+    def __init__(self, cedula, nombre, correo, contrasena, titulo, especialidad, anosExperiencia):
+        super().__init__(cedula, nombre, correo, contrasena)
         self.titulo = titulo
         self.especialidad = especialidad
         self.anosExperiencia = anosExperiencia
@@ -45,6 +46,6 @@ class Docente(Usuario):
             print(f"Estudiantes en {curso.nombre}")
             print()
         else:
-            print("Este curso no existe.")
+            print("Este curso no existe")
     
     
