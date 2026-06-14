@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 
-
 class Horario(ABC):
     def __init__(self, dia, horaInicio, horaFin, aula, asignador):
         self.dia = dia
@@ -26,7 +25,7 @@ class Horario(ABC):
         pass
 
 class HorarioEstudiante(Horario):
-    def __init__(self, dia, horaInicio, horaFin, aula, idEstudiante, asignador):
+    def __init__(self, dia, horaInicio, horaFin, aula, asignador, idEstudiante):
         super().__init__(dia, horaInicio, horaFin, aula, asignador)
         self.idEstudiante = idEstudiante
         self.materias = []
@@ -53,7 +52,7 @@ class HorarioSistema(Horario):
         return not (self.horaFin <= otro_horario.horaInicio or self.horaInicio >= otro_horario.horaFin)
 
 class HorarioDocente(Horario):
-    def __init__(self, dia, horaInicio, horaFin, aula, idDocente, asignador):
+    def __init__(self, dia, horaInicio, horaFin, aula, asignador, idDocente):
         super().__init__(dia, horaInicio, horaFin, aula, asignador)
         self.idDocente = idDocente
         self.materias = []
