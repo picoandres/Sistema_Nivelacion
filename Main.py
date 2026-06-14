@@ -1,8 +1,11 @@
+from CursoNivelacion import CursoNivelacion
 from Estudiante import Estudiante
+from HorarioFactory import obtener_fabrica_horario
 from Docente import Docente
 from Administrador import Administrador
 
 usuarios = []
+cursos= []
 admin = Administrador( 
     "0001",
     "Administrador General",
@@ -19,9 +22,7 @@ def Sistema():
         print("----------SISTEMA NIVELACION----------")
         print("1. Registrar Estudiante")
         print("2. Registrar Docente")
-        print("3. Listar Estudiantes")
-        print("4. Listar Docentes")
-        print("4. salir")
+        print("3. salir")
         opcion = input("Escoja una opción: ")
 
         if opcion == "1":
@@ -60,12 +61,8 @@ def Sistema():
             )
 
             admin.registrarDocente(estudiante)
-            usuarios.append(Docente)
+            usuarios.append(docente)
         elif opcion == "3":
-            admin.listarEstudiantes()
-        elif opcion == "4":
-            admin.listarDocentes()
-        elif opcion == "5":
             print("Sistema Finalizado")
             break
         else:
@@ -74,7 +71,7 @@ def Sistema():
 
 def IniciarSesion():
     while True:
-        print("----------SISTEMA NIVELACION----------")
+        print("----------INICIO DE SESION----------")
         print("1. iniciar Sesion")
         print("2. Recuperar Contraseña")
         print("3. salir")
@@ -97,7 +94,7 @@ def IniciarSesion():
             print("usuario no encontrado")
 
         elif opcion == "2":
-            #Recuperar_Contrasena()
+            recuperar_contrasena()
             pass
         elif opcion == "3":
             print("Sistema Finalizado")
@@ -105,6 +102,8 @@ def IniciarSesion():
         else:
             print("Opción inválida, intente de nuevo\n")
 
+def recuperar_contrasena():
+    pass
 
 def redirigirUsuario(usuario):
     if usuario.rol == "Administrador":
@@ -131,17 +130,62 @@ def menuAdministrador():
         opcion = input("Escoja una opción: ")
 
         if opcion == "1":
-            pass
+            print("CREAR CURSO:")
+            idCurso = input("ID del curso: ")
+            nombreCurso= input("Nombre del curso: ")
+            modalidad = input("Modalidad: ")
+            jornada = input("Jornada: ")
+            dia = input("Dia: ")
+            aula= input("Aula: ")
+
+            
+            try:
+
+                fabrica = obtener_fabrica_horario(jornada)
+                horario = fabrica.crear_horario(
+                    dia,
+                    aula,
+                )
+
+                curso = CursoNivelacion(
+                    idCurso,
+                    nombreCurso,
+                    modalidad,
+                    jornada
+                )
+                
+                curso.horario= horario
+
+                admin.__registrarAccion()
+                admin.crearCurso(curso)
+                cursos.append(curso)
+                print(f"Curso '{nombreCurso}' creado y asignado a la jornada {jornada}. ")
+            except Exception as e:
+                print("Error al crear el curso: ", e)
+
         elif opcion == "2":
-            pass
+            print("-----ASIGNAR DOCENTE-----")
+            if not cursos:
+                print("No hay cursos registrados.")
+                return
+            
+            for c in cursos:
+                print(f"ID: {c.idCurso} | Curso: {c.nombreCurso} | Jornada: {c.jornada}")
+                if hasattr(c, 'horario'):
+                    c.horario.mostrarHorario()
+            admin.__registrarAccion()
+                    
         elif opcion == "3":
-            pass
+            admin.listarEstudiantes()
+            admin.__registrarAccion()
         elif opcion == "4":
-            pass
+            admin.listarDocentes()
         elif opcion == "5":
-            pass
+            print("LISTAR CURSOS ACTIVOS")
+            admin.listarCursos()
+            admin.__registrarAccion()
         elif opcion == "6":
-            pass
+            admin.mostrarHistorial()
         elif opcion == "7":
             print("Sistema Finalizado")
             break
@@ -154,11 +198,12 @@ def menuDocente():
         print("\n===== MENÚ DOCENTE =====")
         print("1. Ver perfil")
         print("2. Ver cursos asignados")
-        print("3. Ver estudiantes")
-        print("4. Calificar estudiante")
-        print("5. Crear evaluación")
-        print("6. Ver cronograma")
-        print("7. Cerrar sesión")
+        print("3. Ver Materias Disponibles")
+        print("4. Ver estudiantes")
+        print("5. Calificar estudiante")
+        print("6. Crear evaluación")
+        print("7. Ver cronograma")
+        print("8. Cerrar sesión")
 
         opcion = input("Escoja una opción: ")
 
@@ -175,6 +220,8 @@ def menuDocente():
         elif opcion == "6":
             pass
         elif opcion == "7":
+            pass
+        elif opcion == "8":
             print("Sistema Finalizado")
             break
         else:
@@ -210,5 +257,7 @@ def menuEstudiante():
             break
         else:
             print("Opción inválida, intente de nuevo\n")
+
+
 
 Sistema()
