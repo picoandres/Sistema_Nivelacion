@@ -11,7 +11,6 @@ class Materia:
             return
 
         print("----- MATERIAS DISPONIBLES -----")
-
         for materia in listaMaterias:
             print(f"ID: {materia.idMateria}")
             print(f"Nombre: {materia.nombre}")
@@ -31,7 +30,8 @@ class Materia:
         self.activa = False
         print(f"La materia {self.nombre} ha sido retirada.")
 
-#funcion Mostrar materias disponibles
+#Hay que pasar al main
+#funcion mostrar materias disponibles
 materia1 = Materia(1, "Algebra Lineal", "Álgebra Lineal")
 materia2 = Materia(2, "Base de datos", "integracion de SQL")
 
@@ -45,7 +45,5 @@ materia1.actualizarContenido(
     "Álgebra y Trigonometría"
 )
 
-listaMaterias = [materia1]
-
-#funcion desabilitar materias
+#funcion deshabilitar materias
 materia1.habilitarRetiroMateria()

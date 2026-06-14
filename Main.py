@@ -1,6 +1,4 @@
-from CursoNivelacion import CursoNivelacion
 from Estudiante import Estudiante
-from Horario import Horario
 from Docente import Docente
 from Administrador import Administrador
 
@@ -213,18 +211,4 @@ def menuEstudiante():
         else:
             print("Opción inválida, intente de nuevo\n")
 
-
-
 Sistema()
-
-    
-
-""""
-#Objetos
-horario = Horario(
-    "Lunes",
-    "8:00 a.m",
-    "13:00 p.m",
-    "Aula A-28"
-)
-"""
