@@ -3,6 +3,7 @@ from Estudiante import Estudiante
 from HorarioFactory import obtener_fabrica_horario
 from Docente import Docente
 from Administrador import Administrador
+from Usuario import Usuario
 
 usuarios = []
 cursos= []
@@ -15,14 +16,17 @@ admin = Administrador(
     "Nivelación",
     "0999999999"
 )
+
 usuarios.append(admin)
+usuario = Usuario
 
 def Sistema():
     while True:
         print("----------SISTEMA NIVELACION----------")
         print("1. Registrar Estudiante")
         print("2. Registrar Docente")
-        print("3. salir")
+        print("3. Iniciar Sesion")
+        print("4.Salir")
         opcion = input("Escoja una opción: ")
 
         if opcion == "1":
@@ -42,6 +46,7 @@ def Sistema():
 
             admin.registrarEstudiante(estudiante)
             usuarios.append(estudiante)
+            menuEstudiante()
 
         elif opcion == "2":
             cedula = input("Cédula: ")
@@ -62,48 +67,55 @@ def Sistema():
 
             admin.registrarDocente(estudiante)
             usuarios.append(docente)
+            menuDocente()
+            return docente
+
         elif opcion == "3":
-            print("Sistema Finalizado")
+            print("Redirigiendo a Inicio de Sesion")
+            IniciarSesion()
+        elif opcion == "4":
+            print("Gracias! tenga buen dia")
             break
         else:
             print("Opción inválida, intente de nuevo\n")
+        
 
 
 def IniciarSesion():
     while True:
+        print()
         print("----------INICIO DE SESION----------")
         print("1. iniciar Sesion")
         print("2. Recuperar Contraseña")
-        print("3. salir")
+        print("3. Regresar")
         opcion = input("Escoja una opción: ")
 
         if opcion == "1":
             correo = input("Correo: ")
             contrasena = input("Contraseña: ")
-
-            for usuario in usuarios:
-                if usuario.correo == correo:
-                    if usuario.iniciarSesion(contrasena):
-                        print("Inicio de sesion exitoso")
-                        redirigirUsuario(usuario)
-                        return
-                    else:
-                        print("Contraseña incorrecta")
-                        return
+            if contrasena == "admin123" and correo == "admin@uleam.edu.ec":
+                menuAdministrador()
+            else:
+                for usuario in usuarios:
+                    if usuario.correo == correo:
+                        if usuario.iniciarSesion(contrasena):
+                            print("Inicio de sesion exitoso")
+                            redirigirUsuario(usuario)
+                            return
+                        else:
+                            print("Contraseña incorrecta")
+                            return
         
-            print("usuario no encontrado")
+                print("usuario no encontrado")
 
         elif opcion == "2":
-            recuperar_contrasena()
-            pass
+            usuario.recuperarContrasena()
         elif opcion == "3":
-            print("Sistema Finalizado")
-            break
+            Sistema()
         else:
             print("Opción inválida, intente de nuevo\n")
 
-def recuperar_contrasena():
-    pass
+
 
 def redirigirUsuario(usuario):
     if usuario.rol == "Administrador":
@@ -116,7 +128,7 @@ def redirigirUsuario(usuario):
         print("Rol no reconocido")
 
 
-def menuAdministrador():
+def menuAdministrador(docente):
     while True:
         print("\n===== MENÚ ADMINISTRADOR =====")
         print("1. Crear curso")
@@ -138,7 +150,6 @@ def menuAdministrador():
             dia = input("Dia: ")
             aula= input("Aula: ")
 
-            
             try:
 
                 fabrica = obtener_fabrica_horario(jornada)
@@ -164,26 +175,21 @@ def menuAdministrador():
                 print("Error al crear el curso: ", e)
 
         elif opcion == "2":
+            """
             print("-----ASIGNAR DOCENTE-----")
-            if not cursos:
-                print("No hay cursos registrados.")
-                return
+            idCurso = input("ingrese el id del curso: ")
+            cedula_docente = input("ingrese la cedula del docente: ")
+            cursoObj = next((c for c in cursos if c.idCurso == cedula_docente).none)
+            docenteObj = next(())
+            """
             
-            for c in cursos:
-                print(f"ID: {c.idCurso} | Curso: {c.nombreCurso} | Jornada: {c.jornada}")
-                if hasattr(c, 'horario'):
-                    c.horario.mostrarHorario()
-            admin.__registrarAccion()
-                    
         elif opcion == "3":
             admin.listarEstudiantes()
-            admin.__registrarAccion()
         elif opcion == "4":
             admin.listarDocentes()
         elif opcion == "5":
             print("LISTAR CURSOS ACTIVOS")
             admin.listarCursos()
-            admin.__registrarAccion()
         elif opcion == "6":
             admin.mostrarHistorial()
         elif opcion == "7":
@@ -193,7 +199,7 @@ def menuAdministrador():
             print("Opción inválida, intente de nuevo\n")
 
 
-def menuDocente():
+def menuDocente(docenteActual):
    while True:
         print("\n===== MENÚ DOCENTE =====")
         print("1. Ver perfil")
@@ -208,7 +214,7 @@ def menuDocente():
         opcion = input("Escoja una opción: ")
 
         if opcion == "1":
-            pass
+            usuario.verPerfil
         elif opcion == "2":
             pass
         elif opcion == "3":
