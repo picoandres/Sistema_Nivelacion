@@ -5,21 +5,15 @@ from AsignarHorario import AsignacionHorario
 from Horario import HorarioEstudiante
 
 class Administrador(Usuario):
-
-    def __init__(self, cedula, nombre, correo, contrasena,
-                 sede, areaResponsable, telefono, idAdmin, gestor_aulas: GestorAulas):
+    def __init__(self, cedula, nombre, correo, contrasena, idAdmin, sede, telefono, gestor_aulas: GestorAulas):
         super().__init__(cedula, nombre, correo, contrasena)
-
-        self.__sede = sede
-        self.__areaResponsable = areaResponsable
-        self.telefono = telefono
         self.idAdmin = idAdmin
+        self.sede = sede
+        self.telefono = telefono
         self.gestor_aulas = gestor_aulas
-
         self.docentes = []
         self.estudiantes = []
         self.cursos = []
-
         self.__historialAcciones = []
 
     @property
@@ -32,17 +26,6 @@ class Administrador(Usuario):
             raise ValueError("La sede debe ser un texto válido.")
         self.__sede = nueva_sede
         self.__registrarAccion(f"Sede actualizada a: {nueva_sede}")
-
-    @property
-    def areaResponsable(self):
-        return self.__areaResponsable
-
-    @areaResponsable.setter
-    def areaResponsable(self, nueva_area):
-        if not nueva_area or not isinstance(nueva_area, str):
-            raise ValueError("El área responsable debe ser un texto válido.")
-        self.__areaResponsable = nueva_area
-        self.__registrarAccion(f"Área responsable actualizada a: {nueva_area}")
 
     def verPerfil(self):
         super().verPerfil()
