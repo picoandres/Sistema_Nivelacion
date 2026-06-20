@@ -1,6 +1,31 @@
+from abc import ABC, abstractmethod
 from Usuario import Usuario
-from Materia import Materia
-from Estudiante import Estudiante
+
+class TipoDocente(ABC):
+    @abstractmethod
+    def descripcion(self):
+        pass
+
+class Titular(TipoDocente):
+    def descripcion(self):
+        return "Titular"
+    
+class Suplente(TipoDocente):
+    def descripcion(self):
+        return "Suplente"
+    
+class TiempoContrato(ABC):
+    @abstractmethod
+    def contrato(self):
+        pass
+
+class TiempoParcial(TiempoContrato):
+    def contrato(self):
+        return "Tiempo Parcial"
+
+class TiempoCompleto(TiempoContrato):
+    def contrato(self):
+        return "Tiempo Completo"
 
 class Docente(Usuario):
     def __init__(self, cedula, nombre, correo, contrasena, titulo, especialidad, anosExperiencia):

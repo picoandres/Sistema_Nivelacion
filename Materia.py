@@ -29,7 +29,7 @@ class Materia:
     def habilitarRetiroMateria(self):
         self.activa = False
         print(f"La materia {self.nombre} ha sido retirada.")
-
+""""
 #Hay que pasar al main
 #funcion mostrar materias disponibles
 materia1 = Materia(1, "Algebra Lineal", "Álgebra Lineal")
@@ -47,3 +47,4 @@ materia1.actualizarContenido(
 
 #funcion deshabilitar materias
 materia1.habilitarRetiroMateria()
+"""
