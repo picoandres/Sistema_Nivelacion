@@ -116,7 +116,6 @@ def iniciarSesion():
             print("Opción inválida, intente de nuevo\n")
 
 
-
 def redirigirUsuario(usuario):
     if usuario.rol == "Administrador":
         menuAdministrador()
@@ -170,7 +169,7 @@ def menuAdministrador():
                 admin.__registrarAccion()
                 admin.crearCurso(curso)
                 cursos.append(curso)
-                print(f"Curso '{nombreCurso}' creado y asignado a la jornada {jornada}. ")
+                print(f"Curso '{nombreCurso}' creado y asignado a la jornada {jornada}")
             except Exception as e:
                 print("Error al crear el curso: ", e)
 
