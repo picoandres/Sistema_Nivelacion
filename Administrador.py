@@ -3,6 +3,7 @@ from Docente import Docente
 from Estudiante import Estudiante
 from AsignarHorario import AsignacionHorario
 from Horario import HorarioEstudiante
+from datetime import date
 
 class Administrador(Usuario):
     def __init__(self, cedula, nombre, correo, contrasena, rol, idAdmin, sede, telefono, gestor_aulas: GestorAulas):
@@ -18,19 +19,18 @@ class Administrador(Usuario):
 
     @property
     def sede(self):
-        return self.__sede
+        return self.sede
 
     @sede.setter
     def sede(self, nueva_sede):
         if not nueva_sede or not isinstance(nueva_sede, str):
             raise ValueError("La sede debe ser un texto válido.")
-        self.__sede = nueva_sede
+        self.sede = nueva_sede
         self.__registrarAccion(f"Sede actualizada a: {nueva_sede}")
 
     def verPerfil(self):
         super().verPerfil()
-        print(f"Sede          : {self.__sede}")
-        print(f"Área          : {self.__areaResponsable}")
+        print(f"Sede          : {self.sede}")
         print(f"Teléfono      : {self.telefono}")
 
     def registrarDocente(self, docente):
@@ -177,8 +177,7 @@ class Administrador(Usuario):
         return None
 
     def __str__(self):
-        return (f"Administrador | {self.nombre} | Sede: {self.__sede} "
-                f"| Área: {self.__areaResponsable}") 
+        return (f"Administrador | {self.nombre} | Sede: {self.sede} | Área: Nivelación") 
 
     def asignarHorarioEstudiante(self, idEstudiante, dia, hora_inicio, hora_fin, aula, idMateria) -> AsignacionHorario:
         horario = HorarioEstudiante(dia, hora_inicio, hora_fin, aula, idEstudiante, self.idAdmin)
@@ -189,7 +188,7 @@ class Administrador(Usuario):
         
         horario.definir_horario(idMateria)
         asignacion = AsignacionHorario(horario)
-        asignacion.aprobar("2026-04-10")
+        asignacion.aprobar(str(date.today()))
         self.gestor_aulas.registrar_asignacion(asignacion)
         return asignacion
 
