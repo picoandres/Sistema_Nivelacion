@@ -86,7 +86,7 @@ def IniciarSesion():
     while True:
         print()
         print("----------INICIO DE SESION----------")
-        print("1. iniciar Sesion")
+        print("1. Iniciar Sesión")
         print("2. Recuperar Contraseña")
         print("3. Regresar")
 
