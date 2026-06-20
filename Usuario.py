@@ -1,32 +1,26 @@
 import random
 
 class Usuario:
-    def __init__(self, cedula, nombre, correo, contrasena):
+    def __init__(self, cedula, nombre, correo, contrasena, rol):
         self.cedula = cedula
         self.nombre = nombre
         self.correo = correo
-        self.contrasena = contrasena
+        self.__contrasena = contrasena
+        self.rol = rol
         self.sesionActiva = False
 
-    def iniciarSesion(self, contrasena):
-        if contrasena == self.contrasena:
+    def iniciar_sesion(self, contrasena):
+        if contrasena == self.__contrasena:
             self.sesionActiva = True
             return True
         return False
 
-    def cerrarSesion(self):
-        self.sesionActiva = False
-        print(f"{self.nombre} ha salido del sistema")
+    def cambiar_contrasena(self, nueva):
+        self.__contrasena = nueva
 
-    def verPerfil(self):
-        print("Perfil de usuario")
-        print(f"ID: {self.cedula}")
-        print(f"Nombre: {self.nombre}")
-        print(f"Correo: {self.correo}")
-        print(f"Contraseña: {self.contrasena}")
-
-    def recuperarContrasena(self, **kwargs):
+    def recuperar_contrasena(self, **kwargs):
         codigo_random = random.randint(1000, 9999)
+
         print("Escoja un método para recuperar su contraseña")
         while True:
             opcion = input("Correo o teléfono: ").lower()
@@ -37,7 +31,8 @@ class Usuario:
                 codigo = int(input("Ingrese el código que acaba de recibir: "))
 
                 if codigo == codigo_random:
-                    self.contrasena = input("Escriba la nueva contraseña: ")
+                    nueva = input("Escriba la nueva contraseña: ")
+                    self.cambiar_contrasena(nueva)
                     print("Contraseña actualizada")
                     break
                 else:
@@ -45,7 +40,17 @@ class Usuario:
             else:
                 print("Escoja solo entre correo o número de teléfono")
 
-    def editarPerfil(self, *args):
+    def cerrar_sesion(self):
+        self.sesionActiva = False
+        print(f"{self.nombre} ha salido del sistema")
+
+    def ver_perfil(self):
+        print(f"Perfil de {self.rol}")
+        print(f"ID: {self.cedula}")
+        print(f"Nombre: {self.nombre}")
+        print(f"Correo: {self.correo}")
+
+    def editar_perfil(self, *args):
         print("Editar perfil")
         print("Nuevos datos:", args)
         print("Perfil actualizado exitosamente\n")

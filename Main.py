@@ -12,6 +12,7 @@ admin = Administrador(
     "Juan Sendón",
     "admin@uleam.edu.ec",
     "A$EBM#20$26!1",
+    "Administrador",
     "A-FCTV-1",
     "Matriz",
     "0999999999"
@@ -55,7 +56,7 @@ def Sistema():
             nombre = input("Nombre: ")
             correo = input("Correo: ")
             contrasena = input("Contraseña: ")
-            titulo= input("Título Académico: ")
+            titulo = input("Título Académico: ")
             especialidad = input("Especialidad: ")
 
             docente = Docente(
@@ -74,7 +75,7 @@ def Sistema():
 
         elif opcion == "3":
             print("Redirigiendo a Inicio de Sesión")
-            IniciarSesion()
+            iniciarSesion()
         elif opcion == "4":
             print("Tenga buen dia")
             break
@@ -82,7 +83,7 @@ def Sistema():
             print("Opción inválida, intente de nuevo\n")
         
 
-def IniciarSesion():
+def iniciarSesion():
     while True:
         print()
         print("----------INICIO DE SESION----------")
@@ -143,7 +144,7 @@ def menuAdministrador():
         if opcion == "1":
             print("CREAR CURSO:")
             idCurso = input("ID del curso: ")
-            nombreCurso= input("Nombre del curso: ")
+            nombreCurso = input("Nombre del curso: ")
             modalidad = input("Modalidad: ")
             jornada = input("Jornada: ")
             dia = input("Dia: ")
@@ -164,7 +165,7 @@ def menuAdministrador():
                     jornada
                 )
                 
-                curso.horario= horario
+                curso.horario = horario
 
                 admin.__registrarAccion()
                 admin.crearCurso(curso)
@@ -198,7 +199,7 @@ def menuAdministrador():
             print("Opción inválida, intente de nuevo\n")
 
 
-def menuDocente(docenteActual):
+def menuDocente():
    while True:
         print("\n===== MENÚ DOCENTE =====")
         print("1. Ver perfil")

@@ -7,25 +7,21 @@ class HorarioCreador(ABC):
         pass
 
 class HorarioMatutinoCreador(HorarioCreador):
-
     def crear_horario(self, dia: str, aula: str, asignador: str) -> Horario:
         return Horario(dia, "07:00", "13:00", aula)
 
 
 class HorarioVespertinoCreador(HorarioCreador):
-
     def crear_horario(self, dia: str, aula: str) -> Horario:
         return Horario(dia, "13:00", "18:00", aula)
 
 
 class HorarioNocturnoCreador(HorarioCreador):
-
     def crear_horario(self, dia: str, aula: str) -> Horario:
         return Horario(dia, "18:00", "22:00", aula)
 
 
 class HorarioVirtualCreador(HorarioCreador):
-
     def crear_horario(self, dia: str, aula: str = "Aula Virtual") -> Horario:
         return Horario(dia, "00:00", "23:59", aula)
 

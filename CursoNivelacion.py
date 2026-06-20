@@ -1,6 +1,6 @@
 #Relaciones con otras clases
 from Docente import Docente
-from Estudiante import Estudiante
+
 class CursoNivelacion:
     def __init__(self, idCurso, nombreCurso, modalidad, jornada, horario):
         self.idCurso = idCurso
@@ -19,14 +19,14 @@ class CursoNivelacion:
         #Historial
         self.historial = []
     
-    def mostrarInformacion(self):
+    def mostrar_informacion(self):
         print(f"ID: {self.idCurso}")
         print(f"Nombre: {self.nombreCurso}")
         print(f"Modalidad: {self.modalidad}")
         print(f"Jornada: {self.jornada}")
 
 #Nuevos Metodos implementados
-    def asignarDocente(self, docente):
+    def asignar_docente(self, docente):
         if docente is None:
             raise ValueError("Debe proporcionar un docente")
         
@@ -40,7 +40,7 @@ class CursoNivelacion:
         self.docente = docente
         self.historial.append(f"Docente{docente.nombre}asignado")
 
-    def buscarEstudiante(self, CedulaEstudiante):
+    def buscar_estudiante(self, CedulaEstudiante):
         if not CedulaEstudiante:
             raise ValueError("Debe ingresar una cedula válida")
         
@@ -50,23 +50,23 @@ class CursoNivelacion:
         return None
     
 
-    def agregarEstudiante(self, estudiante):
+    def agregar_estudiante(self, estudiante):
         pass
-    def retirar_Estudiante(self, estudiante):
+    def retirar_estudiante(self, estudiante):
         pass
 
-    def registrarAcccion(self, mensaje):
+    def registrar_acccion(self, mensaje):
         self.historial.append(mensaje)
 
 
-    def TotalInscritos(self):
+    def total_inscritos(self):
         return len(self.estudiantes)
     
-    def Historial_Acciones(self):
+    def historial_acciones(self):
         if self.historial:
             return self.historial[-1]
         return "Sin registros"
     
-    def MostrarHistorial(self):
+    def mostrar_historial(self):
         for accion in self.historial:
             print(accion)

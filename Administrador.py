@@ -5,8 +5,8 @@ from AsignarHorario import AsignacionHorario
 from Horario import HorarioEstudiante
 
 class Administrador(Usuario):
-    def __init__(self, cedula, nombre, correo, contrasena, idAdmin, sede, telefono, gestor_aulas: GestorAulas):
-        super().__init__(cedula, nombre, correo, contrasena)
+    def __init__(self, cedula, nombre, correo, contrasena, rol, idAdmin, sede, telefono, gestor_aulas: GestorAulas):
+        super().__init__(cedula, nombre, correo, contrasena, rol)
         self.idAdmin = idAdmin
         self.sede = sede
         self.telefono = telefono
