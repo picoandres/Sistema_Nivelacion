@@ -3,30 +3,29 @@ from Estudiante import Estudiante
 from HorarioFactory import obtener_fabrica_horario
 from Docente import Docente
 from Administrador import Administrador
-from Usuario import Usuario
 
 usuarios = []
-cursos= []
+cursos = []
+
 admin = Administrador( 
-    "0001",
-    "Administrador General",
+    "1305688402",
+    "Juan Sendón",
     "admin@uleam.edu.ec",
-    "admin123",
+    "A$EBM#20$26!1",
+    "A-FCTV-1",
     "Matriz",
-    "Nivelación",
     "0999999999"
 )
-
 usuarios.append(admin)
-usuario = Usuario
 
 def Sistema():
     while True:
         print("----------SISTEMA NIVELACION----------")
         print("1. Registrar Estudiante")
         print("2. Registrar Docente")
-        print("3. Iniciar Sesion")
-        print("4.Salir")
+        print("3. Iniciar Sesión")
+        print("4. Salir")
+
         opcion = input("Escoja una opción: ")
 
         if opcion == "1":
@@ -35,13 +34,16 @@ def Sistema():
             correo = input("Correo: ")
             contrasena = input("Contraseña: ")
             carrera = input("Carrera: ")
+            paralelo = input("Paralelo: ")
 
             estudiante = Estudiante(
                 cedula,
                 nombre,
                 correo,
                 contrasena,
-                carrera
+                "Estudiante",
+                carrera,
+                paralelo 
             )
 
             admin.registrarEstudiante(estudiante)
@@ -53,7 +55,7 @@ def Sistema():
             nombre = input("Nombre: ")
             correo = input("Correo: ")
             contrasena = input("Contraseña: ")
-            titulo= input("Titulo Academico: ")
+            titulo= input("Título Académico: ")
             especialidad = input("Especialidad: ")
 
             docente = Docente(
@@ -71,15 +73,14 @@ def Sistema():
             return docente
 
         elif opcion == "3":
-            print("Redirigiendo a Inicio de Sesion")
+            print("Redirigiendo a Inicio de Sesión")
             IniciarSesion()
         elif opcion == "4":
-            print("Gracias! tenga buen dia")
+            print("Tenga buen dia")
             break
         else:
             print("Opción inválida, intente de nuevo\n")
         
-
 
 def IniciarSesion():
     while True:
@@ -88,25 +89,23 @@ def IniciarSesion():
         print("1. iniciar Sesion")
         print("2. Recuperar Contraseña")
         print("3. Regresar")
+
         opcion = input("Escoja una opción: ")
 
         if opcion == "1":
             correo = input("Correo: ")
             contrasena = input("Contraseña: ")
-            if contrasena == "admin123" and correo == "admin@uleam.edu.ec":
-                menuAdministrador()
-            else:
-                for usuario in usuarios:
-                    if usuario.correo == correo:
-                        if usuario.iniciarSesion(contrasena):
-                            print("Inicio de sesion exitoso")
-                            redirigirUsuario(usuario)
-                            return
-                        else:
-                            print("Contraseña incorrecta")
-                            return
+            for usuario in usuarios:
+                if usuario.correo == correo:
+                    if usuario.iniciarSesion(contrasena):
+                        print("Inicio de sesión exitoso")
+                        redirigirUsuario(usuario)
+                        return
+                    else:
+                        print("Contraseña incorrecta")
+                        return
         
-                print("usuario no encontrado")
+            print("Usuario no encontrado")
 
         elif opcion == "2":
             usuario.recuperarContrasena()
@@ -128,7 +127,7 @@ def redirigirUsuario(usuario):
         print("Rol no reconocido")
 
 
-def menuAdministrador(docente):
+def menuAdministrador():
     while True:
         print("\n===== MENÚ ADMINISTRADOR =====")
         print("1. Crear curso")
@@ -214,7 +213,7 @@ def menuDocente(docenteActual):
         opcion = input("Escoja una opción: ")
 
         if opcion == "1":
-            usuario.verPerfil
+            pass
         elif opcion == "2":
             pass
         elif opcion == "3":
@@ -263,7 +262,5 @@ def menuEstudiante():
             break
         else:
             print("Opción inválida, intente de nuevo\n")
-
-
 
 Sistema()
