@@ -7,13 +7,9 @@ class Usuario:
         self.correo = correo
         self.__contrasena = contrasena
         self.rol = rol
-        self.sesionActiva = False
 
     def iniciar_sesion(self, contrasena):
-        if contrasena == self.__contrasena:
-            self.sesionActiva = True
-            return True
-        return False
+        pass
 
     def cambiar_contrasena(self, nueva):
         self.__contrasena = nueva
