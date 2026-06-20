@@ -30,7 +30,7 @@ class Materia:
         self.activa = False
         print(f"La materia {self.nombre} ha sido retirada.")
 """"
-#Hay que pasar al main
+# Se debe pasar al main
 #funcion mostrar materias disponibles
 materia1 = Materia(1, "Algebra Lineal", "Álgebra Lineal")
 materia2 = Materia(2, "Base de datos", "integracion de SQL")
