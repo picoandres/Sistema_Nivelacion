@@ -1,4 +1,5 @@
 from Usuario import Usuario
+from datetime import date
 
 class Estudiante(Usuario):
     def __init__(self, cedula, nombre, correo, contrasena, rol, carrera, paralelo):
@@ -32,18 +33,20 @@ class Estudiante(Usuario):
     def ver_asistencia(self):
         pass
 
-    #Metodo de subir documentos beta
+    #Método de subir documentos beta
     def subir_documentos(self, nombre_documento, tipo):
         documento = {
             "nombre": nombre_documento,
             "tipo": tipo,
-            "fecha": "2025-04-03",
+            "fecha": str(date.today()),
             "estado": "Pendiente"
         }
+    
         self.documentos_subidos.append(documento)
         print(f"Documento {nombre_documento} ha sido subido exitosamente")
         return documento
-    #El estudiante podra ver sus documentos subidos
+    
+    #El estudiante podrá ver sus documentos subidos
     def ver_documentos_subidos(self):
         if not self.documentos_subidos:
             print("No has subido documentos todavia")
