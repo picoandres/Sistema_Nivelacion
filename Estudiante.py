@@ -2,12 +2,12 @@ from Usuario import Usuario
 from Materia import Materia
 
 class Estudiante(Usuario):
-    def __init__(self, CedulaEstudiante, nombre, correo, contrasena, carrera, paralelo, promedio):
-        super().__init__(CedulaEstudiante, nombre, correo, contrasena, rol = "Estudiante")
+    def __init__(self, cedula, nombre, correo, contrasena, rol, carrera, paralelo):
+        super().__init__(cedula, nombre, correo, contrasena, rol)
         self.carrera = carrera
         self.paralelo = paralelo
         self.notas = []
-        self.DocumentosSubidos= []
+        self.documentos_subidos = []
 
     def verPerfil(self):
         super().verPerfil()
@@ -22,7 +22,7 @@ class Estudiante(Usuario):
             print("Aun no tienes notas registradas.")
             return
 
-        for Materia, nota in self.notas.items():
+        for Materia(), nota in self.notas.items():
             print(f"{Materia}: {nota}")
         print(f"promedio actual: {self.calcular_promedio():.2f}")
         print("=" * 30)
@@ -42,13 +42,13 @@ class Estudiante(Usuario):
             "fecha": "2025-04-03",
             "estado": "Pendiente"
         }
-        self.DocumentosSubidos.append(documento)
+        self.documentos_subidos.append(documento)
         print(f"Documento {nombre_documento} ha sido subido exitosamente.")
         return documento
     #El estudiante podra ver sus documentos subidos
     def verDocumentosSubidos(self):
-        if not self.DocumentosSubidos:
+        if not self.documentos_subidos:
             print("No has subido documentos todavia.")
             return
-        for doc in self.DocumentosSubidos:
+        for doc in self.documentos_subidos:
             print(f"{doc['nombre']} ({doc['tipo']}) | {doc['estado']}")
