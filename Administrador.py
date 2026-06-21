@@ -8,14 +8,13 @@ from datetime import date
 class Administrador(Usuario):
     def __init__(self, cedula, nombre, correo, contrasena, rol, idAdmin, sede, telefono):
         super().__init__(cedula, nombre, correo, contrasena, rol)
-        self.__historialAcciones = []
         self.idAdmin = idAdmin
         self.sede = sede
         self.telefono = telefono
-        #self.gestor_aulas = gestor_aulas
         self.docentes = []
         self.estudiantes = []
         self.cursos = []
+        self.__historialAcciones = []
 
     @property
     def sede(self):
@@ -168,7 +167,6 @@ class Administrador(Usuario):
         if self.__historialAcciones:
             return self.__historialAcciones[-1]
         return "Sin registros"
-
 
     def __buscarCurso(self, idCurso):
         for curso in self.cursos:
