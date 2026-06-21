@@ -5,16 +5,16 @@ from AsignarHorario import AsignacionHorario
 from Horario import HorarioEstudiante
 
 class Administrador(Usuario):
-    def __init__(self, cedula, nombre, correo, contrasena, rol, idAdmin, sede, telefono, gestor_aulas: GestorAulas):
+    def __init__(self, cedula, nombre, correo, contrasena, rol, idAdmin, sede, telefono):
         super().__init__(cedula, nombre, correo, contrasena, rol)
+        self.__historialAcciones = []
         self.idAdmin = idAdmin
         self.sede = sede
         self.telefono = telefono
-        self.gestor_aulas = gestor_aulas
+        #self.gestor_aulas = gestor_aulas
         self.docentes = []
         self.estudiantes = []
         self.cursos = []
-        self.__historialAcciones = []
 
     @property
     def sede(self):
@@ -115,7 +115,7 @@ class Administrador(Usuario):
                 return
 
         self.cursos.append(curso)
-        self.__registrarAccion(f"Curso creado: {curso.nombreCurso} (ID: {curso.idCurso})")
+        #self.__registrarAccion(f"Curso creado: {curso.nombreCurso} (ID: {curso.idCurso})")
         print(f" Curso '{curso.nombreCurso}' creado exitosamente.")
 
     def asignarDocenteACurso(self, idCurso, cedula_docente):
@@ -211,3 +211,4 @@ class GestorAulas:
 
     def registrar_asignacion(self, asignacion: AsignacionHorario):
         self.asignaciones.append(asignacion)
+    
