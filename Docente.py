@@ -28,8 +28,8 @@ class TiempoCompleto(TiempoContrato):
         return "Tiempo Completo"
 
 class Docente(Usuario):
-    def __init__(self, cedula, nombre, correo, contrasena, titulo, especialidad, anosExperiencia):
-        super().__init__(cedula, nombre, correo, contrasena)
+    def __init__(self, cedula, nombre, correo, contrasena, rol, titulo, especialidad, anosExperiencia):
+        super().__init__(cedula, nombre, correo, contrasena, rol)
         self.titulo = titulo
         self.especialidad = especialidad
         self.anosExperiencia = anosExperiencia
