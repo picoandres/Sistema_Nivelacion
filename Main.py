@@ -4,9 +4,16 @@ from HorarioFactory import obtener_fabrica_horario
 from Docente import Docente
 from Administrador import Administrador
 
+#importacion de los objetos de SQL
+from SistemaDAO import EstudianteDAO, DocenteDAO
+
 usuarios = []
 cursos = []
 
+#inicializacion de DAOs:
+estudiante_dao = EstudianteDAO()
+docente_dao = DocenteDAO()
+#gestor = GestorAulas()
 admin = Administrador( 
     "1305688402",
     "Juan Sendón",
@@ -15,7 +22,7 @@ admin = Administrador(
     "Administrador",
     "A-FCTV-1",
     "Matriz",
-    "0999999999"
+    "0999999999",
 )
 usuarios.append(admin)
 
@@ -47,9 +54,16 @@ def Sistema():
                 paralelo 
             )
 
-            admin.registrarEstudiante(estudiante)
-            usuarios.append(estudiante)
-            menuEstudiante()
+            if estudiante_dao.guardar(estudiante):
+                admin.registrarEstudiante(estudiante)
+                usuarios.append(estudiante)
+                print("Estudiante Guardado correctamente")
+            else:
+                print("Error al guardar estudiante")
+
+            #admin.registrarEstudiante(estudiante)
+            #usuarios.append(estudiante)
+            #menuEstudiante()
 
         elif opcion == "2":
             cedula = input("Cédula: ")
@@ -58,20 +72,31 @@ def Sistema():
             contrasena = input("Contraseña: ")
             titulo = input("Título Académico: ")
             especialidad = input("Especialidad: ")
+            anosExperiencia = int(input("Años de experiencia: "))
+
 
             docente = Docente(
                 cedula,
                 nombre,
                 correo,
                 contrasena,
+                "Docente",
                 titulo,
-                especialidad
+                especialidad,
+                anosExperiencia
             )
 
-            admin.registrarDocente(estudiante)
-            usuarios.append(docente)
-            menuDocente()
-            return docente
+            if docente_dao.guardar(docente):
+                admin.registrarDocente(docente)
+                usuarios.append(docente)
+                print("Docente guardado correctamente")
+            else:
+                print("error al guardar docente")
+
+            #admin.registrarDocente(docente)
+            #usuarios.append(docente)
+            #menuDocente()
+            #return docente
 
         elif opcion == "3":
             print("Redirigiendo a Inicio de Sesión")
