@@ -8,6 +8,10 @@ class Usuario:
         self.__contrasena = contrasena
         self.rol = rol
         self.sesionActiva = False
+    
+    @property
+    def contrasena(self):
+        return self.__contrasena
 
     def iniciar_sesion(self, contrasena):
         if contrasena == self.__contrasena:
