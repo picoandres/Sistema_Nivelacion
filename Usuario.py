@@ -8,8 +8,14 @@ class Usuario:
         self.__contrasena = contrasena
         self.rol = rol
 
+    @property
+    def contrasena(self):
+        return self.__contrasena
+
     def iniciar_sesion(self, contrasena):
-        pass
+        if contrasena == self.__contrasena:
+            return True
+        return False
 
     def cambiar_contrasena(self, nueva):
         self.__contrasena = nueva
@@ -35,10 +41,6 @@ class Usuario:
                     print("Código incorrecto")
             else:
                 print("Escoja solo entre correo o número de teléfono")
-
-    def cerrar_sesion(self):
-        self.sesionActiva = False
-        print(f"{self.nombre} ha salido del sistema")
 
     def ver_perfil(self):
         print(f"Perfil de {self.rol}")
