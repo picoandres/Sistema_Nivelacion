@@ -3,12 +3,10 @@ from Estudiante import Estudiante
 from HorarioFactory import obtener_fabrica_horario
 from Docente import Docente
 from Administrador import Administrador
+from Usuario import Usuario
 
 #importacion de los objetos de SQL
 from SistemaDAO import EstudianteDAO, DocenteDAO
-
-usuarios = []
-cursos = []
 
 #inicializacion de DAOs:
 estudiante_dao = EstudianteDAO()
@@ -24,268 +22,252 @@ admin = Administrador(
     "Matriz",
     "0999999999",
 )
-usuarios.append(admin)
 
-def Sistema():
-    while True:
-        print("----------SISTEMA NIVELACION----------")
-        print("1. Registrar Estudiante")
-        print("2. Registrar Docente")
-        print("3. Iniciar Sesión")
-        print("4. Salir")
+class Sistema():
+    def __init__(self):
+        self.usuarios = []
+        self.cursos = []
+        self.usuario_actual = None
+    
+    def sistemaNivelacion(self):
+        while True:
+            print("----------SISTEMA NIVELACION----------")
+            print("1. Registrar Estudiante")
+            print("2. Registrar Docente")
+            print("3. Iniciar sesión")
+            print("4. Salir")
 
-        opcion = input("Escoja una opción: ")
+            opcion = input("Escoja una opción: ")
 
-        if opcion == "1":
-            cedula = input("Cédula: ")
-            nombre = input("Nombre: ")
-            correo = input("Correo: ")
-            contrasena = input("Contraseña: ")
-            carrera = input("Carrera: ")
-            paralelo = input("Paralelo: ")
-
-            estudiante = Estudiante(
-                cedula,
-                nombre,
-                correo,
-                contrasena,
-                "Estudiante",
-                carrera,
-                paralelo 
-            )
-
-            if estudiante_dao.guardar(estudiante):
-                admin.registrarEstudiante(estudiante)
-                usuarios.append(estudiante)
-                print("Estudiante Guardado correctamente")
-            else:
-                print("Error al guardar estudiante")
-
-            #admin.registrarEstudiante(estudiante)
-            #usuarios.append(estudiante)
-            #menuEstudiante()
-
-        elif opcion == "2":
-            cedula = input("Cédula: ")
-            nombre = input("Nombre: ")
-            correo = input("Correo: ")
-            contrasena = input("Contraseña: ")
-            titulo = input("Título Académico: ")
-            especialidad = input("Especialidad: ")
-            anosExperiencia = int(input("Años de experiencia: "))
-
-
-            docente = Docente(
-                cedula,
-                nombre,
-                correo,
-                contrasena,
-                "Docente",
-                titulo,
-                especialidad,
-                anosExperiencia
-            )
-
-            if docente_dao.guardar(docente):
-                admin.registrarDocente(docente)
-                usuarios.append(docente)
-                print("Docente guardado correctamente")
-            else:
-                print("error al guardar docente")
-
-            #admin.registrarDocente(docente)
-            #usuarios.append(docente)
-            #menuDocente()
-            #return docente
-
-        elif opcion == "3":
-            print("Redirigiendo a Inicio de Sesión")
-            iniciarSesion()
-        elif opcion == "4":
-            print("Tenga buen dia")
-            break
-        else:
-            print("Opción inválida, intente de nuevo\n")
-        
-
-def iniciarSesion():
-    while True:
-        print()
-        print("----------INICIO DE SESION----------")
-        print("1. Iniciar Sesión")
-        print("2. Recuperar Contraseña")
-        print("3. Regresar")
-
-        opcion = input("Escoja una opción: ")
-
-        if opcion == "1":
-            correo = input("Correo: ")
-            contrasena = input("Contraseña: ")
-            for usuario in usuarios:
-                if usuario.correo == correo:
-                    if usuario.iniciarSesion(contrasena):
-                        print("Inicio de sesión exitoso")
-                        redirigirUsuario(usuario)
-                        return
-                    else:
-                        print("Contraseña incorrecta")
-                        return
-        
-            print("Usuario no encontrado")
-
-        elif opcion == "2":
-            usuario.recuperarContrasena()
-        elif opcion == "3":
-            Sistema()
-        else:
-            print("Opción inválida, intente de nuevo\n")
-
-
-def redirigirUsuario(usuario):
-    if usuario.rol == "Administrador":
-        menuAdministrador()
-    elif usuario.rol == "Docente":
-        menuDocente()
-    elif usuario.rol == "Estudiante":
-        menuEstudiante()
-    else:
-        print("Rol no reconocido")
-
-
-def menuAdministrador():
-    while True:
-        print("\n===== MENÚ ADMINISTRADOR =====")
-        print("1. Crear curso")
-        print("2. Asignar docente a curso")
-        print("3. Listar estudiantes")
-        print("4. Listar docentes")
-        print("5. Listar cursos")
-        print("6. Ver historial")
-        print("7. Salir")
-
-        opcion = input("Escoja una opción: ")
-
-        if opcion == "1":
-            print("CREAR CURSO:")
-            idCurso = input("ID del curso: ")
-            nombreCurso = input("Nombre del curso: ")
-            modalidad = input("Modalidad: ")
-            jornada = input("Jornada: ")
-            dia = input("Dia: ")
-            aula= input("Aula: ")
-
-            try:
-
-                fabrica = obtener_fabrica_horario(jornada)
-                horario = fabrica.crear_horario(
-                    dia,
-                    aula,
-                )
-
-                curso = CursoNivelacion(
-                    idCurso,
-                    nombreCurso,
-                    modalidad,
-                    jornada
-                )
+            if opcion == "1":
+                cedula = input("Cédula: ")
+                nombre = input("Nombre: ")
+                correo = input("Correo: ")
+                contrasena = input("Contraseña: ")
+                carrera = input("Carrera: ")
+                paralelo = input("Paralelo: ")
                 
-                curso.horario = horario
+                estudiante = Estudiante(
+                    cedula,
+                    nombre,
+                    correo,
+                    contrasena,
+                    carrera,
+                    paralelo
+                    )
 
-                admin.__registrarAccion()
-                admin.crearCurso(curso)
-                cursos.append(curso)
-                print(f"Curso '{nombreCurso}' creado y asignado a la jornada {jornada}")
-            except Exception as e:
-                print("Error al crear el curso: ", e)
+                if estudiante_dao.guardar(estudiante):
+                    admin.registrarEstudiante(estudiante)
+                    self.usuarios.append(estudiante)
+                    print("Estudiante guardado correctamente")
+                else:
+                    print("Error al guardar estudiante")
 
-        elif opcion == "2":
-            """
-            print("-----ASIGNAR DOCENTE-----")
-            idCurso = input("ingrese el id del curso: ")
-            cedula_docente = input("ingrese la cedula del docente: ")
-            cursoObj = next((c for c in cursos if c.idCurso == cedula_docente).none)
-            docenteObj = next(())
-            """
+            if opcion == "2":
+                cedula = input("Cédula: ")
+                nombre = input("Nombre: ")
+                correo = input("Correo: ")
+                contrasena = input("Contraseña: ")
+                titulo = input("Título Académico: ")
+                especialidad = input("Especialidad: ")
+                anosExperiencia = int(input("Años de experiencia: "))
             
-        elif opcion == "3":
-            admin.listarEstudiantes()
-        elif opcion == "4":
-            admin.listarDocentes()
-        elif opcion == "5":
-            print("LISTAR CURSOS ACTIVOS")
-            admin.listarCursos()
-        elif opcion == "6":
-            admin.mostrarHistorial()
-        elif opcion == "7":
-            print("Sistema Finalizado")
-            break
+                docente = Docente(
+                    cedula,
+                    nombre,
+                    correo,
+                    contrasena,
+                    "Docente",
+                    titulo,
+                    especialidad,
+                    anosExperiencia
+                )
+
+                if docente_dao.guardar(docente):
+                    admin.registrarDocente(docente)
+                    self.usuarios.append(docente)
+                    print("Docente guardado correctamente")
+                else:
+                    print("Error al guardar docente")
+
+            elif opcion == "3":
+                Sistema.iniciarSesion()
+
+            elif opcion == "4":
+                print("Tenga buen dia")
+                break
+            else:
+                print("Opción inválida, intente de nuevo\n")
+        
+
+    def iniciarSesion(self):
+        while True:
+            print()
+            print("----------INICIO DE SESIÓN----------")
+            print("1. Iniciar sesión")
+            print("2. Recuperar contraseña")
+            print("3. Regresar")
+
+            opcion = input("Escoja una opción: ")
+
+            if opcion == "1":
+                correo = input("Correo: ")
+                contrasena = input("Contraseña: ")
+                
+                for usuario in self.usuarios:
+                    if usuario.autenticar(correo, contrasena):
+                        self.redirigirUsuario(usuario)
+                        return
+
+            elif opcion == "2":
+                pass
+
+            elif opcion == "3":
+                Sistema.sistema_nivelacion()
+            else:
+                print("Opción inválida, intente de nuevo\n")
+
+
+    def redirigirUsuario(self, usuario):
+        if usuario.rol == "Administrador":
+            self.menuAdministrador()
+        elif usuario.rol == "Docente":
+            self.menuDocente()
+        elif usuario.rol == "Estudiante":
+            self.menuEstudiante()
         else:
-            print("Opción inválida, intente de nuevo\n")
+            print("Rol no reconocido")
 
 
-def menuDocente():
-   while True:
-        print("\n===== MENÚ DOCENTE =====")
-        print("1. Ver perfil")
-        print("2. Ver cursos asignados")
-        print("3. Ver Materias Disponibles")
-        print("4. Ver estudiantes")
-        print("5. Calificar estudiante")
-        print("6. Crear evaluación")
-        print("7. Ver cronograma")
-        print("8. Cerrar sesión")
+    def menuAdministrador(self):
+        while True:
+            print("\n===== MENÚ ADMINISTRADOR =====")
+            print("1. Crear curso")
+            print("2. Asignar docente a curso")
+            print("3. Listar estudiantes")
+            print("4. Listar docentes")
+            print("5. Listar cursos")
+            print("6. Ver historial")
+            print("7. Salir")
 
-        opcion = input("Escoja una opción: ")
+            opcion = input("Escoja una opción: ")
 
-        if opcion == "1":
-            pass
-        elif opcion == "2":
-            pass
-        elif opcion == "3":
-            pass
-        elif opcion == "4":
-            pass
-        elif opcion == "5":
-            pass
-        elif opcion == "6":
-            pass
-        elif opcion == "7":
-            pass
-        elif opcion == "8":
-            print("Sistema Finalizado")
-            break
-        else:
-            print("Opción inválida, intente de nuevo\n")
+            if opcion == "1":
+                print("CREAR CURSO:")
+                idCurso = input("ID del curso: ")
+                nombreCurso = input("Nombre del curso: ")
+                modalidad = input("Modalidad: ")
+                jornada = input("Jornada: ")
+                dia = input("Dia: ")
+                aula = input("Aula: ")
 
-def menuEstudiante():
-    while True:
-        print("\n===== MENÚ ESTUDIANTE =====")
-        print("1. Ver perfil")
-        print("2. Ver notas")
-        print("3. Ver asistencia")
-        print("4. Subir documento")
-        print("5. Ver documentos")
-        print("6. Recuperar contraseña")
-        print("7. Cerrar sesión")
+                try:
 
-        opcion = input("Escoja una opción: ")
+                    fabrica = obtener_fabrica_horario(jornada)
+                    horario = fabrica.crear_horario(
+                        dia,
+                        aula,
+                    )
 
-        if opcion == "1":
-            pass
-        elif opcion == "2":
-            pass
-        elif opcion == "3":
-            pass
-        elif opcion == "4":
-            pass
-        elif opcion == "5":
-            pass
-        elif opcion == "6":
-            pass
-        elif opcion == "7":
-            print("Sistema Finalizado")
-            break
-        else:
-            print("Opción inválida, intente de nuevo\n")
+                    curso = CursoNivelacion(
+                        idCurso,
+                        nombreCurso,
+                        modalidad,
+                        jornada,
+                        horario
+                    )
 
-Sistema()
+                    admin.registrarAccion()
+                    admin.crearCurso(curso)
+                    self.cursos.append(curso)
+                    print(f"Curso '{nombreCurso}' creado y asignado a la jornada {jornada}")
+                except Exception as e:
+                    print("Error al crear el curso: ", e)
+
+            elif opcion == "2":
+                print("-----ASIGNAR DOCENTE-----")
+                nombreDocente = input("ingrese el nombre del docente: ")
+                curso.asignar_docente(nombreDocente)
+
+            elif opcion == "3":
+                admin.listarEstudiantes()
+            elif opcion == "4":
+                admin.listarDocentes()
+            elif opcion == "5":
+                print("LISTAR CURSOS ACTIVOS")
+                admin.listarCursos()
+            elif opcion == "6":
+                admin.mostrarHistorial()
+            elif opcion == "7":
+                print("Sistema Finalizado")
+                break
+            else:
+                print("Opción inválida, intente de nuevo\n")
+
+
+    def menuDocente():
+        while True:
+            print("\n===== MENÚ DOCENTE =====")
+            print("1. Ver perfil")
+            print("2. Ver cursos asignados")
+            print("3. Ver Materias Disponibles")
+            print("4. Ver estudiantes")
+            print("5. Calificar estudiante")
+            print("6. Crear evaluación")
+            print("7. Ver cronograma")
+            print("8. Cerrar sesión")
+
+            opcion = input("Escoja una opción: ")
+
+            if opcion == "1":
+                pass
+            elif opcion == "2":
+                pass
+            elif opcion == "3":
+                pass
+            elif opcion == "4":
+                pass
+            elif opcion == "5":
+                pass
+            elif opcion == "6":
+                pass
+            elif opcion == "7":
+                pass
+            elif opcion == "8":
+                print("Sistema Finalizado")
+                break
+            else:
+                print("Opción inválida, intente de nuevo\n")
+
+    def menuEstudiante():
+        while True:
+            print("\n===== MENÚ ESTUDIANTE =====")
+            print("1. Ver perfil")
+            print("2. Ver notas")
+            print("3. Ver asistencia")
+            print("4. Subir documento")
+            print("5. Ver documentos")
+            print("6. Recuperar contraseña")
+            print("7. Cerrar sesión")
+
+            opcion = input("Escoja una opción: ")
+
+            if opcion == "1":
+                pass
+            elif opcion == "2":
+                pass
+            elif opcion == "3":
+                pass
+            elif opcion == "4":
+                pass
+            elif opcion == "5":
+                pass
+            elif opcion == "6":
+                pass
+            elif opcion == "7":
+                print("Sistema Finalizado")
+                break
+            else:
+                print("Opción inválida, intente de nuevo\n")
+                
+Sistema.sistemaNivelacion()
