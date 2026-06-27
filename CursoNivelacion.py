@@ -12,7 +12,6 @@ class CursoNivelacion:
         #relaciones
         self.estudiantes = []
         
-
         #Docente asignado
         self.docente = None
 
@@ -36,9 +35,8 @@ class CursoNivelacion:
         if self.docente is not None:
             raise Exception("El curso ya tiene un docente asignado")
 
-
         self.docente = docente
-        self.historial.append(f"Docente{docente.nombre}asignado")
+        self.historial.append(f"Docente {docente.nombre} asignado")
 
     def buscar_estudiante(self, CedulaEstudiante):
         if not CedulaEstudiante:
