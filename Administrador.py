@@ -14,18 +14,13 @@ class Administrador(Usuario):
         self.docentes = []
         self.estudiantes = []
         self.cursos = []
-        self.__historialAcciones = []
+        self.historialAcciones = []
 
-    @property
-    def sede(self):
-        return self.sede
-
-    @sede.setter
-    def sede(self, nueva_sede):
+    def actualizarSede(self, nueva_sede):
         if not nueva_sede or not isinstance(nueva_sede, str):
             raise ValueError("La sede debe ser un texto válido.")
         self.sede = nueva_sede
-        self.__registrarAccion(f"Sede actualizada a: {nueva_sede}")
+        self.registrarAccion(f"Sede actualizada a: {nueva_sede}")
 
     def verPerfil(self):
         super().verPerfil()
@@ -86,7 +81,7 @@ class Administrador(Usuario):
         for estudiante in self.estudiantes:
             if estudiante.cedula == cedula:
                 self.estudiantes.remove(estudiante)
-                self.__registrarAccion(f"Estudiante eliminado: {estudiante.nombre} (C.I: {cedula})")
+                self.registrarAccion(f"Estudiante eliminado: {estudiante.nombre} (C.I: {cedula})")
                 print(f" Estudiante con cédula {cedula} eliminado.")
                 return
         print(f"No se encontró un estudiante con cédula {cedula}.")
@@ -119,7 +114,7 @@ class Administrador(Usuario):
 
     def asignarDocenteACurso(self, idCurso, cedula_docente):
         """Busca el curso y el docente, y realiza la asignación."""
-        curso = self.__buscarCurso(idCurso)
+        curso = self.buscarCurso(idCurso)
         if curso is None:
             print(f"No se encontró el curso con ID '{idCurso}'.")
             return
@@ -132,7 +127,7 @@ class Administrador(Usuario):
         try:
             curso.asignarDocente(docente)
             docente.asignarCurso(curso)
-            self.__registrarAccion(
+            self.registrarAccion(
                 f"Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'"
             )
             print(f"Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'.")
@@ -151,24 +146,24 @@ class Administrador(Usuario):
                   f"Docente: {docente_nombre}")
         print()
 
-    def __registrarAccion(self, mensaje):
-        self.__historialAcciones.append(mensaje)
+    def registrarAccion(self, mensaje):
+        self.historialAcciones.append(mensaje)
 
     def mostrarHistorial(self):
-        if not self.__historialAcciones:
+        if not self.historialAcciones:
             print("Sin acciones registradas.")
             return
         print(f"\n──── HISTORIAL DE ACCIONES — {self.nombre} ────")
-        for i, accion in enumerate(self.__historialAcciones, 1):
+        for i, accion in enumerate(self.historialAcciones, 1):
             print(f"  {i}. {accion}")
         print()
 
     def ultimaAccion(self):
-        if self.__historialAcciones:
-            return self.__historialAcciones[-1]
+        if self.historialAcciones:
+            return self.historialAcciones[-1]
         return "Sin registros"
 
-    def __buscarCurso(self, idCurso):
+    def buscarCurso(self, idCurso):
         for curso in self.cursos:
             if curso.idCurso == idCurso:
                 return curso
@@ -208,4 +203,3 @@ class GestorAulas:
 
     def registrar_asignacion(self, asignacion: AsignacionHorario):
         self.asignaciones.append(asignacion)
-    
