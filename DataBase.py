@@ -4,7 +4,7 @@ class ConexionSQLServer:
     def __init__(self):
       #se conecta a un SQL local
         self.server = 'localhost\\SQLEXPRESS'
-        self.database= 'SistemaDeNivelacion'
+        self.database = 'SistemaDeNivelacion'
 
         self.conexion = None
         self.cursor = None
@@ -49,6 +49,7 @@ class ConexionSQLServer:
             f"Trusted_Connection=yes;"
             )
 
+            self.conexion = pyodbc.connect(self.connection_string)
             self.cursor = self.conexion.cursor()
 
             print("Conexion exitosa con SQL Server")
