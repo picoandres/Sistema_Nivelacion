@@ -54,7 +54,6 @@ class Sistema():
                     )
 
                 if estudiante_dao.guardar(estudiante):
-                    admin.registrarEstudiante(estudiante)
                     print("Estudiante guardado en BD correctamente\n")
                 else:
                     print("Error al guardar estudiante en BD\n")
@@ -78,7 +77,6 @@ class Sistema():
                 )
 
                 if docente_dao.guardar(docente):
-                    admin.registrarDocente(docente)
                     print("Docente guardado en BD correctamente\n")
                 else:
                     print("Error al guardar docente en BD\n")
