@@ -1,6 +1,110 @@
 from DataBase import ConexionSQLServer
 from Estudiante import Estudiante
 from Docente import Docente
+from Administrador import Administrador
+
+class UsuarioDAO:
+    def __init__(self):
+        self.db = ConexionSQLServer()
+    def buscarUsuario(self, correo, contrasena):
+        conexion = self.db.conectar()
+        if not conexion:
+            return None
+        
+        try:
+            sql = """
+            SELECT *
+            FROM Usuario
+            WHERE correo = ? AND contrasena = ?
+            """
+
+            self.db.cursor.execute(sql, (correo, contrasena))
+
+            usuario = self.db.cursor.fetchone()
+        
+            if usuario is None:
+                return None
+
+            cedula = usuario.cedula
+            nombre = usuario.nombre
+            correo = usuario.correo
+            contrasena = usuario.contrasena
+            rol = usuario.rol
+
+            if rol == "Estudiante":
+
+                sql = """
+                SELECT carrera, paralelo
+                FROM Alumnos
+                WHERE cedula = ?
+                """
+
+                self.db.cursor.execute(sql, (cedula,))
+                datos = self.db.cursor.fetchone()
+
+                return Estudiante(
+                    cedula,
+                    nombre,
+                    correo,
+                    contrasena,
+                    rol,
+                    datos.carrera,
+                    datos.paralelo
+                )
+
+            elif rol == "Docente":
+
+                sql = """
+                SELECT titulo, especialidad
+                FROM Docente
+                WHERE cedula = ?
+                """
+
+                self.db.cursor.execute(sql, (cedula,))
+                datos = self.db.cursor.fetchone()
+
+                return Docente(
+                    cedula,
+                    nombre,
+                    correo,
+                    contrasena,
+                    rol,
+                    datos.titulo,
+                    datos.especialidad,
+                    0
+                )
+
+            # ===== ADMINISTRADOR =====
+            elif rol == "Administrador":
+
+                sql = """
+                SELECT id_admin, sede, telefono
+                FROM Administrador
+                WHERE cedula = ?
+                """
+
+                self.db.cursor.execute(sql, (cedula,))
+                datos = self.db.cursor.fetchone()
+
+                return Administrador(
+                    cedula,
+                    nombre,
+                    correo,
+                    contrasena,
+                    rol,
+                    datos.id_admin,
+                    datos.sede,
+                    datos.telefono
+                )
+            return None
+
+        except Exception as e:
+            print("Error: ", e)
+            return None
+
+        finally:
+            self.db.cerrarConexion()        
+
 
 class EstudianteDAO:
     def __init__(self):
@@ -10,6 +114,7 @@ class EstudianteDAO:
         conexion = self.db.conectar()
         if not conexion:
             return False
+        
         try:
             #insertar en Usuario (padre)
             sql_usuario ="""
@@ -43,12 +148,15 @@ class EstudianteDAO:
             ))
             conexion.commit()
             return True
+        
         except Exception as e:
             conexion.rollback()
             print(f"error al guardar estudiante en BD: {e}")
             return False
+        
         finally:
             self.db.cerrarConexion()
+
 
 class DocenteDAO:
     def __init__(self):
@@ -58,6 +166,7 @@ class DocenteDAO:
         conexion = self.db.conectar()
         if not conexion:
             return False
+        
         try:
             #insertar en Usuario (padre)
             sql_usuario ="""
@@ -94,9 +203,11 @@ class DocenteDAO:
             ))
             conexion.commit()
             return True
+        
         except Exception as e:
             conexion.rollback()
             print(f"error al guardar estudiante en BD: {e}")
             return False
+        
         finally:
             self.db.cerrarConexion()
