@@ -5,7 +5,7 @@ class Materia:
         self.descripcion = descripcion
         self.activa = True
 
-    def mostrar_materias_disponibles(self, listaMaterias):
+    def mostrarMateriasDisponibles(self, listaMaterias):
         if len(listaMaterias) == 0:
             print("No hay materias registradas")
             return
@@ -17,18 +17,18 @@ class Materia:
             print(f"Descripción: {materia.descripcion}")
             print("-" * 30)
 
-    def actualizar_contenido(self, nuevoNombre, nuevaDescripcion):
+    def actualizarContenido(self, nuevoNombre, nuevaDescripcion):
         self.nombre = nuevoNombre
         self.descripcion = nuevaDescripcion
         
-        print("Materia actualizada correctamente.")
+        print("Materia actualizada correctamente")
         print(f"ID: {self.idMateria}")
         print(f"Nombre: {self.nombre}")
         print(f"Descripción: {self.descripcion}")
 
-    def habilitar_retiro_materia(self):
+    def habilitarRetiroMateria(self):
         self.activa = False
-        print(f"La materia {self.nombre} ha sido retirada.")
+        print(f"La materia {self.nombre} ha sido retirada")
 """"
 # Se debe pasar al main
 #funcion mostrar materias disponibles
