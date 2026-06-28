@@ -96,7 +96,7 @@ class DocenteDAO:
             return True
         except Exception as e:
             conexion.rollback()
-            print(f"error al guardar estudiante en BD: {e}")
+            print(f"error al guardar docente en BD: {e}")
             return False
         finally:
             self.db.cerrarConexion()
