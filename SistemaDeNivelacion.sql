@@ -1,3 +1,6 @@
+USE SistemaDeNivelacion;
+GO
+
 --Tabla Padre
 CREATE TABLE Usuario(
 	cedula VARCHAR(20),
@@ -41,3 +44,4 @@ CREATE TABLE Administrador(
 SELECT * FROM Usuario;
 SELECT * FROM Alumnos;
 SELECT * FROM Docente;
+SELECT * FROM Administrador;
