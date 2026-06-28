@@ -150,7 +150,7 @@ class EstudianteDAO:
         
         except Exception as e:
             conexion.rollback()
-            print(f"error al guardar estudiante en BD: {e}")
+            print(f"Error al guardar estudiante en BD: {e}")
             return False
         
         finally:
@@ -190,21 +190,20 @@ class DocenteDAO:
             (
                 cedula,
                 titulo,
-                especialidad,
+                especialidad
             )
 
             VALUES (?, ?, ?)
             """
             self.db.cursor.execute(sql_docente, (
-                docente.cedula, docente.titulo, docente.especialidad,
-                None
+                docente.cedula, docente.titulo, docente.especialidad
             ))
             conexion.commit()
             return True
         
         except Exception as e:
             conexion.rollback()
-            print(f"error al guardar estudiante en BD: {e}")
+            print(f"Error al guardar docente en BD: {e}")
             return False
         
         finally:

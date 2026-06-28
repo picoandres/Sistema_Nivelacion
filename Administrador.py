@@ -29,16 +29,16 @@ class Administrador(Usuario):
 
     def registrarDocente(self, docente):
         if not isinstance(docente, Docente):
-            raise TypeError("Solo se pueden registrar objetos de tipo Docente.")
+            raise TypeError("Solo se pueden registrar objetos de tipo Docente")
 
         for d in self.docentes:
             if d.cedula == docente.cedula:
-                print(f" El docente con cédula {docente.cedula} ya está registrado.")
+                print(f" El docente con cédula {docente.cedula} ya está registrado")
                 return
 
         self.docentes.append(docente)
         self.registrarAccion(f"Docente registrado: {docente.nombre} (C.I: {docente.cedula})")
-        print(f" Docente '{docente.nombre}' registrado exitosamente.")
+        print(f"Docente {docente.nombre} registrado exitosamente")
 
     def eliminarDocente(self, cedula):
         for docente in self.docentes:
@@ -66,16 +66,16 @@ class Administrador(Usuario):
 
     def registrarEstudiante(self, estudiante):
         if not isinstance(estudiante, Estudiante):
-            raise TypeError("Solo se pueden registrar objetos de tipo Estudiante.")
+            raise TypeError("Solo se pueden registrar objetos de tipo Estudiante")
 
         for e in self.estudiantes:
             if e.cedula == estudiante.cedula:
-                print(f" El estudiante con cédula {estudiante.cedula} ya está registrado.")
+                print(f" El estudiante con cédula {estudiante.cedula} ya está registrado")
                 return
 
         self.estudiantes.append(estudiante)
         self.registrarAccion(f"Estudiante registrado: {estudiante.nombre} (C.I: {estudiante.cedula})")
-        print(f" Estudiante '{estudiante.nombre}' registrado exitosamente.")
+        print(f"Estudiante {estudiante.nombre} registrado exitosamente")
 
     def eliminarEstudiante(self, cedula):
         for estudiante in self.estudiantes:
