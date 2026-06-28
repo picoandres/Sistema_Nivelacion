@@ -6,13 +6,13 @@ class MallaCurricular:
         self.modalidad = modalidadMalla
         self.materias = []
 
-    def mostrar_info_malla(self):
+    def mostrarInfoMalla(self):
         print(f"Malla Curricular {self.idMalla} de la Facultad de {self.facultad}")
         print(f"Carrera: {self.carrera} Modalidad: {self.modalidad}")
         print(f"Materias: {self.materias}")
 
-    def agregar_materia(self, materia):
+    def agregarMteria(self, materia):
         self.materias.append(materia)
 
-    def total_creditos(self):
+    def totalCreditos(self):
         return sum(materia.creditos for materia in self.materias)
