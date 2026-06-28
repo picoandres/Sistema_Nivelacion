@@ -37,7 +37,7 @@ class Administrador(Usuario):
                 return
 
         self.docentes.append(docente)
-        self.__registrarAccion(f"Docente registrado: {docente.nombre} (C.I: {docente.cedula})")
+        self.registrarAccion(f"Docente registrado: {docente.nombre} (C.I: {docente.cedula})")
         print(f" Docente '{docente.nombre}' registrado exitosamente.")
 
     def eliminarDocente(self, cedula):
@@ -74,7 +74,7 @@ class Administrador(Usuario):
                 return
 
         self.estudiantes.append(estudiante)
-        self.__registrarAccion(f"Estudiante registrado: {estudiante.nombre} (C.I: {estudiante.cedula})")
+        self.registrarAccion(f"Estudiante registrado: {estudiante.nombre} (C.I: {estudiante.cedula})")
         print(f" Estudiante '{estudiante.nombre}' registrado exitosamente.")
 
     def eliminarEstudiante(self, cedula):
