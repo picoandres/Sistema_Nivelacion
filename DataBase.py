@@ -10,7 +10,7 @@ class ConexionSQLServer:
         self.cursor = None
 
   #Crea la base de datos en caso de no existir
-    def crearBaseDedatos(self):
+    def crearBaseDeDatos(self):
         try:
             conexion = pyodbc.connect(
                 f"DRIVER={{ODBC Driver 17 for SQL Server}};"
@@ -71,6 +71,6 @@ class ConexionSQLServer:
 
 if __name__ == "__main__":
     db = ConexionSQLServer()
-    db.crearBaseDedatos()
+    db.crearBaseDeDatos()
     db.conectar()
     db.cerrarConexion()
