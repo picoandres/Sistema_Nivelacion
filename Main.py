@@ -3,12 +3,10 @@ from Estudiante import Estudiante
 from HorarioFactory import obtener_fabrica_horario
 from Docente import Docente
 from Administrador import Administrador
-from Usuario import Usuario
-
-#importacion de los objetos de SQL
-from SistemaDAO import EstudianteDAO, DocenteDAO
+from SistemaDAO import UsuarioDAO, EstudianteDAO, DocenteDAO
 
 #inicializacion de DAOs:
+usuario_dao = UsuarioDAO()
 estudiante_dao = EstudianteDAO()
 docente_dao = DocenteDAO()
 #gestor = GestorAulas()
@@ -25,10 +23,8 @@ admin = Administrador(
 
 class Sistema():
     def __init__(self):
-        self.usuarios = []
-        self.cursos = []
         self.usuario_actual = None
-    
+
     def sistemaNivelacion(self):
         while True:
             print("----------SISTEMA NIVELACION----------")
@@ -52,25 +48,24 @@ class Sistema():
                     nombre,
                     correo,
                     contrasena,
+                    "Estudiante",
                     carrera,
                     paralelo
                     )
 
                 if estudiante_dao.guardar(estudiante):
                     admin.registrarEstudiante(estudiante)
-                    self.usuarios.append(estudiante)
-                    print("Estudiante guardado correctamente")
+                    print("Estudiante guardado en BD correctamente\n")
                 else:
-                    print("Error al guardar estudiante")
+                    print("Error al guardar estudiante en BD\n")
 
-            if opcion == "2":
+            elif opcion == "2":
                 cedula = input("Cédula: ")
                 nombre = input("Nombre: ")
                 correo = input("Correo: ")
                 contrasena = input("Contraseña: ")
                 titulo = input("Título Académico: ")
                 especialidad = input("Especialidad: ")
-                anosExperiencia = int(input("Años de experiencia: "))
             
                 docente = Docente(
                     cedula,
@@ -79,19 +74,17 @@ class Sistema():
                     contrasena,
                     "Docente",
                     titulo,
-                    especialidad,
-                    anosExperiencia
+                    especialidad
                 )
 
                 if docente_dao.guardar(docente):
                     admin.registrarDocente(docente)
-                    self.usuarios.append(docente)
-                    print("Docente guardado correctamente")
+                    print("Docente guardado en BD correctamente\n")
                 else:
-                    print("Error al guardar docente")
+                    print("Error al guardar docente en BD\n")
 
             elif opcion == "3":
-                Sistema.iniciarSesion()
+                sistema.iniciarSesion()
 
             elif opcion == "4":
                 print("Tenga buen dia")
@@ -106,7 +99,8 @@ class Sistema():
             print("----------INICIO DE SESIÓN----------")
             print("1. Iniciar sesión")
             print("2. Recuperar contraseña")
-            print("3. Regresar")
+            print("3. Regresar a menú principal")
+            print()
 
             opcion = input("Escoja una opción: ")
 
@@ -114,16 +108,22 @@ class Sistema():
                 correo = input("Correo: ")
                 contrasena = input("Contraseña: ")
                 
-                for usuario in self.usuarios:
-                    if usuario.autenticar(correo, contrasena):
-                        self.redirigirUsuario(usuario)
-                        return
+                usuario = usuario_dao.buscarUsuario(correo, contrasena)
+
+                if usuario:
+                    print(f"\nBienvenido {usuario.nombre}")
+                    self.usuario_actual = usuario
+                    self.redirigirUsuario(usuario)
+                    return
+                else:
+                    print("Correo o contraseña incorrectos")
 
             elif opcion == "2":
                 pass
 
             elif opcion == "3":
-                Sistema.sistema_nivelacion()
+                return            
+            
             else:
                 print("Opción inválida, intente de nuevo\n")
 
@@ -199,13 +199,13 @@ class Sistema():
             elif opcion == "6":
                 admin.mostrarHistorial()
             elif opcion == "7":
-                print("Sistema Finalizado")
+                print("Cerrando sesión\n")
                 break
             else:
                 print("Opción inválida, intente de nuevo\n")
 
 
-    def menuDocente():
+    def menuDocente(self):
         while True:
             print("\n===== MENÚ DOCENTE =====")
             print("1. Ver perfil")
@@ -234,12 +234,12 @@ class Sistema():
             elif opcion == "7":
                 pass
             elif opcion == "8":
-                print("Sistema Finalizado")
+                print("Cerrando sesión\n")
                 break
             else:
                 print("Opción inválida, intente de nuevo\n")
 
-    def menuEstudiante():
+    def menuEstudiante(self):
         while True:
             print("\n===== MENÚ ESTUDIANTE =====")
             print("1. Ver perfil")
@@ -265,9 +265,10 @@ class Sistema():
             elif opcion == "6":
                 pass
             elif opcion == "7":
-                print("Sistema Finalizado")
+                print("Cerrando sesión\n")
                 break
             else:
                 print("Opción inválida, intente de nuevo\n")
-                
-Sistema.sistemaNivelacion()
+
+sistema = Sistema()
+sistema.sistemaNivelacion()
