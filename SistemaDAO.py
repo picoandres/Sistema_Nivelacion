@@ -156,6 +156,34 @@ class EstudianteDAO:
         finally:
             self.db.cerrarConexion()
 
+    def listar(self):
+        conexion = self.db.conectar()
+        if not conexion:
+            return []
+        
+        try:
+            sql = """
+            SELECT U.cedula,
+               U.nombre,
+               U.correo,
+               A.carrera,
+               A.paralelo
+            FROM Usuario U
+            INNER JOIN Alumnos A
+            ON U.cedula = A.cedula
+            """
+
+            self.db.cursor.execute(sql)
+
+            return self.db.cursor.fetchall()
+        
+        except Exception as e:
+            print("Error: ", e)
+            return []
+        
+        finally:
+            self.db.cerrarConexion()
+
 
 class DocenteDAO:
     def __init__(self):
@@ -206,5 +234,34 @@ class DocenteDAO:
             print(f"Error al guardar docente en BD: {e}")
             return False
         
+        finally:
+            self.db.cerrarConexion()
+    
+    def listar(self):
+        conexion = self.db.conectar()
+
+        if not conexion:
+            return []
+
+        try:
+            sql = """
+            SELECT U.cedula,
+               U.nombre,
+               U.correo,
+               D.titulo,
+               D.especialidad
+            FROM Usuario U
+            INNER JOIN Docente D
+            ON U.cedula = D.cedula
+            """
+
+            self.db.cursor.execute(sql)
+
+            return self.db.cursor.fetchall()
+
+        except Exception as e:
+            print("Error: ", e)
+            return []
+
         finally:
             self.db.cerrarConexion()
