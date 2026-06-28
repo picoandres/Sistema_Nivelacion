@@ -22,7 +22,7 @@ CREATE TABLE Docente(
 	cedula VARCHAR(20),
 	titulo VARCHAR(50),
 	especialidad VARCHAR(50),
-	paralelo VARCHAR(10),
+	anosExperiencia INT,
 	CONSTRAINT PK_Docente_cedula PRIMARY KEY(cedula),
 	CONSTRAINT FK_Docente_usuario 
 	FOREIGN KEY (cedula) REFERENCES Usuario(cedula) ON DELETE CASCADE
