@@ -12,11 +12,10 @@ class Usuario:
     def contrasena(self):
         return self.__contrasena
 
-    def autenticar(self, contrasena, correo):
-        if contrasena == self.__contrasena and correo == self.correo:
-            print("Usuario autenticado")
-        else:
-            print("Usuario inválido")
+    def autenticar(self, correo, contrasena):
+        if correo == self.correo and contrasena == self.contrasena:
+            return True
+        return False
 
     def cambiar_contrasena(self, nueva):
         self.__contrasena = nueva
