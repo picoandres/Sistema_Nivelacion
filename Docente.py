@@ -28,11 +28,10 @@ class TiempoCompleto(TiempoContrato):
         return "Tiempo Completo"
 
 class Docente(Usuario):
-    def __init__(self, cedula, nombre, correo, contrasena, rol, titulo, especialidad, anosExperiencia):
+    def __init__(self, cedula, nombre, correo, contrasena, rol, titulo, especialidad):
         super().__init__(cedula, nombre, correo, contrasena, rol)
         self.titulo = titulo
         self.especialidad = especialidad
-        self.anosExperiencia = anosExperiencia
         self.cursos = []
         self.evaluaciones_creadas = []
 
@@ -41,17 +40,16 @@ class Docente(Usuario):
         super().ver_perfil()  
         print(f"Título Académico: {self.titulo}")
         print(f"Especialidad: {self.especialidad}")
-        print(f"Años de Experiencia: {self.anosExperiencia}")
         print(f"Cursos Asignados: {len(self.cursos)}")
 
 #califica a un estudiante en una materia
     def calificar(self, estudiante, nota, materia):
         if not (0 <= nota <= 10):
-            print("Error: la calificacion debe estar entre 0 y 10.")
+            print("Error: la calificacion debe estar entre 0 y 10")
             return
         else:
             estudiante.agregarNota(materia, nota)
-            print(f"Se calificó a {estudiante.nombre} con {nota} en la materia '{materia.nombre}'.")
+            print(f"Se calificó a {estudiante.nombre} con {nota} en la materia {materia.nombre}")
             
 #Ahora el docente puede crear una evaluacion        
     def crear_evaluacion(self, tituloEvaluacion, descripcion):
