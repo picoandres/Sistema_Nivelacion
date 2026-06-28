@@ -18,7 +18,7 @@ class Administrador(Usuario):
 
     def actualizarSede(self, nueva_sede):
         if not nueva_sede or not isinstance(nueva_sede, str):
-            raise ValueError("La sede debe ser un texto válido.")
+            raise ValueError("La sede debe ser un texto válido")
         self.sede = nueva_sede
         self.registrarAccion(f"Sede actualizada a: {nueva_sede}")
 
@@ -44,10 +44,10 @@ class Administrador(Usuario):
         for docente in self.docentes:
             if docente.cedula == cedula:
                 self.docentes.remove(docente)
-                self.__registrarAccion(f"Docente eliminado: {docente.nombre} (C.I: {cedula})")
-                print(f" Docente con cédula {cedula} eliminado.")
+                self.registrarAccion(f"Docente eliminado: {docente.nombre} (C.I: {cedula})")
+                print(f" Docente con cédula {cedula} eliminado")
                 return
-        print(f" No se encontró un docente con cédula {cedula}.")
+        print(f" No se encontró un docente con cédula {cedula}")
 
     def buscarDocente(self, cedula):
         for docente in self.docentes:
@@ -57,7 +57,7 @@ class Administrador(Usuario):
 
     def listarDocentes(self):
         if not self.docentes:
-            print("No hay docentes registrados en el sistema.")
+            print("No hay docentes registrados en el sistema")
             return
         print("\n──── DOCENTES REGISTRADOS ────")
         for i, d in enumerate(self.docentes, 1):
@@ -82,9 +82,9 @@ class Administrador(Usuario):
             if estudiante.cedula == cedula:
                 self.estudiantes.remove(estudiante)
                 self.registrarAccion(f"Estudiante eliminado: {estudiante.nombre} (C.I: {cedula})")
-                print(f" Estudiante con cédula {cedula} eliminado.")
+                print(f" Estudiante con cédula {cedula} eliminado")
                 return
-        print(f"No se encontró un estudiante con cédula {cedula}.")
+        print(f"No se encontró un estudiante con cédula {cedula}")
 
     def buscarEstudiante(self, cedula):
         for estudiante in self.estudiantes:
@@ -95,7 +95,7 @@ class Administrador(Usuario):
     def listarEstudiantes(self):
         """Muestra todos los estudiantes registrados."""
         if not self.estudiantes:
-            print("No hay estudiantes registrados en el sistema.")
+            print("No hay estudiantes registrados en el sistema")
             return
         print("\n──── ESTUDIANTES REGISTRADOS ────")
         for i, e in enumerate(self.estudiantes, 1):
@@ -105,38 +105,38 @@ class Administrador(Usuario):
     def crearCurso(self, curso):
         for c in self.cursos:
             if c.idCurso == curso.idCurso:
-                print(f" El curso con ID '{curso.idCurso}' ya existe.")
+                print(f" El curso con ID '{curso.idCurso}' ya existe")
                 return
 
         self.cursos.append(curso)
-        #self.__registrarAccion(f"Curso creado: {curso.nombreCurso} (ID: {curso.idCurso})")
-        print(f" Curso '{curso.nombreCurso}' creado exitosamente.")
+        self.registrarAccion(f"Curso creado: {curso.nombreCurso} (ID: {curso.idCurso})")
+        print(f" Curso '{curso.nombreCurso}' creado exitosamente")
 
     def asignarDocenteACurso(self, idCurso, cedula_docente):
         """Busca el curso y el docente, y realiza la asignación."""
         curso = self.buscarCurso(idCurso)
         if curso is None:
-            print(f"No se encontró el curso con ID '{idCurso}'.")
+            print(f"No se encontró el curso con ID {idCurso}")
             return
 
         docente = self.buscarDocente(cedula_docente)
         if docente is None:
-            print(f"No se encontró un docente con cédula {cedula_docente}.")
+            print(f"No se encontró un docente con cédula {cedula_docente}")
             return
 
         try:
             curso.asignarDocente(docente)
             docente.asignarCurso(curso)
             self.registrarAccion(
-                f"Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'"
+                f"Docente {docente.nombre} asignado al curso {curso.nombreCurso}"
             )
-            print(f"Docente '{docente.nombre}' asignado al curso '{curso.nombreCurso}'.")
+            print(f"Docente {docente.nombre} asignado al curso {curso.nombreCurso}")
         except Exception as e:
             print(f"Error al asignar docente: {e}")
 
     def listarCursos(self):
         if not self.cursos:
-            print("No hay cursos registrados en el sistema.")
+            print("No hay cursos registrados en el sistema")
             return
         print("\n──── CURSOS DE NIVELACIÓN ────")
         for i, c in enumerate(self.cursos, 1):
@@ -151,7 +151,7 @@ class Administrador(Usuario):
 
     def mostrarHistorial(self):
         if not self.historialAcciones:
-            print("Sin acciones registradas.")
+            print("Sin acciones registradas")
             return
         print(f"\n──── HISTORIAL DE ACCIONES — {self.nombre} ────")
         for i, accion in enumerate(self.historialAcciones, 1):
