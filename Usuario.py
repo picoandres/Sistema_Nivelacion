@@ -12,15 +12,10 @@ class Usuario:
     def contrasena(self):
         return self.__contrasena
 
-    def autenticar(self, correo, contrasena):
-        if correo == self.correo and contrasena == self.contrasena:
-            return True
-        return False
-
-    def cambiar_contrasena(self, nueva):
+    def cambiarContrasena(self, nueva):
         self.__contrasena = nueva
 
-    def recuperar_contrasena(self, **kwargs):
+    def recuperarContrasena(self, **kwargs):
         codigo_random = random.randint(1000, 9999)
 
         print("Escoja un método para recuperar su contraseña")
@@ -42,13 +37,13 @@ class Usuario:
             else:
                 print("Escoja solo entre correo o número de teléfono")
 
-    def ver_perfil(self):
+    def verPerfil(self):
         print(f"Perfil de {self.rol}")
         print(f"ID: {self.cedula}")
         print(f"Nombre: {self.nombre}")
         print(f"Correo: {self.correo}")
 
-    def editar_perfil(self, *args):
+    def editarPerfil(self, *args):
         print("Editar perfil")
         print("Nuevos datos:", args)
         print("Perfil actualizado exitosamente\n")
