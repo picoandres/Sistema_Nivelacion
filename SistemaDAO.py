@@ -26,7 +26,7 @@ class EstudianteDAO:
             """
             self.db.cursor.execute(sql_usuario, (
                 estudiante.cedula, estudiante.nombre, estudiante.correo,
-                estudiante.__contrasena, estudiante.rol
+                estudiante.contrasena, estudiante.rol
             ))
             #Insertar Estudiante (Hijo)
             sql_estudiante ="""
@@ -44,7 +44,7 @@ class EstudianteDAO:
             conexion.commit()
             return True
         except Exception as e:
-            conexion.rollbak()
+            conexion.rollback()
             print(f"error al guardar estudiante en BD: {e}")
             return False
         finally:
@@ -74,7 +74,7 @@ class DocenteDAO:
             """
             self.db.cursor.execute(sql_usuario, (
                 docente.cedula, docente.nombre, docente.correo,
-                docente._Usuario__contrasena, docente.rol
+                docente.contrasena, docente.rol
             ))
             #Insertar Docente (Hijo)
             sql_docente ="""
