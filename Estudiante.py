@@ -9,12 +9,12 @@ class Estudiante(Usuario):
         self.notas = {}
         self.documentos_subidos = []
 
-    def ver_perfil(self):
+    def verPerfil(self):
         super().ver_perfil()
         print(f"Carrera: {self.carrera}")
         print(f"Paralelo: {self.paralelo}")
 
-    def ver_notas(self):
+    def verNotas(self):
         if not self.notas:
             print("Aun no hay notas registradas")
             return
@@ -25,16 +25,16 @@ class Estudiante(Usuario):
         print("=" * 30)
 
     #el sistema calcula el promedio del estudiante
-    def calcular_promedio(self):
+    def calcularPromedio(self):
         if not self.notas:
             return 0.0
         return sum(self.notas.values()) / len(self.notas)
 
-    def ver_asistencia(self):
+    def verAsistencia(self):
         pass
 
     #Método de subir documentos beta
-    def subir_documentos(self, nombre_documento, tipo):
+    def subirDocumentos(self, nombre_documento, tipo):
         documento = {
             "nombre": nombre_documento,
             "tipo": tipo,
@@ -47,7 +47,7 @@ class Estudiante(Usuario):
         return documento
     
     #El estudiante podrá ver sus documentos subidos
-    def ver_documentos_subidos(self):
+    def verDocumentosSubidos(self):
         if not self.documentos_subidos:
             print("No has subido documentos todavia")
             return

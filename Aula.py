@@ -11,7 +11,7 @@ class Aula(ABC):
         self.aulas = []
         
         
-    def mostrar_info(self):
+    def mostrarInfo(self):
         print(self.nombre)
         print(f"Id: {self.id}")
         print(f"Capacidad {self.capacidad}")

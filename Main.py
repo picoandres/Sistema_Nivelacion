@@ -1,6 +1,6 @@
 from CursoNivelacion import CursoNivelacion
 from Estudiante import Estudiante
-from HorarioFactory import obtener_fabrica_horario
+from HorarioFactory import obtenerFabricaHorario
 from Docente import Docente
 from Administrador import Administrador
 from SistemaDAO import UsuarioDAO, EstudianteDAO, DocenteDAO
@@ -163,8 +163,8 @@ class Sistema():
 
                 try:
 
-                    fabrica = obtener_fabrica_horario(jornada)
-                    horario = fabrica.crear_horario(
+                    fabrica = obtenerFabricaHorario(jornada)
+                    horario = fabrica.crearHorario(
                         dia,
                         aula,
                     )
@@ -187,7 +187,7 @@ class Sistema():
             elif opcion == "2":
                 print("-----ASIGNAR DOCENTE-----")
                 nombreDocente = input("ingrese el nombre del docente: ")
-                curso.asignar_docente(nombreDocente)
+                curso.asignarDocente(nombreDocente)
 
             elif opcion == "3":
                 admin.listarEstudiantes()

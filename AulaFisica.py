@@ -6,7 +6,7 @@ class AulaFisica(Aula):
         self.ubicacion = ubicacion
         self.bloque = bloque
         
-    def mostrar_info(self):
-        super().mostrar_info(self)
+    def mostraInfo(self):
+        super().mostrarInfo(self)
         print(f"Ubicación: {self.ubicacion}")
         print(f"Bloque: {self.bloque}")

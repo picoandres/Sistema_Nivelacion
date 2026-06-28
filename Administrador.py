@@ -179,10 +179,10 @@ class Administrador(Usuario):
             print("Error: Aula ocupada o no existe")
             return None
         
-        horario.definir_horario(idMateria)
+        horario.definirHorario(idMateria)
         asignacion = AsignacionHorario(horario)
         asignacion.aprobar(str(date.today()))
-        self.gestor_aulas.registrar_asignacion(asignacion)
+        self.gestor_aulas.registrarAsignacion(asignacion)
         return asignacion
 
 
@@ -191,7 +191,7 @@ class GestorAulas:
         self.aulas = {"A103": 40, "A302": 30, "Lab1": 25}
         self.asignaciones = []  
 
-    def aula_disponible(self, aula, dia, h_inicio, h_fin):
+    def aulaDisponible(self, aula, dia, h_inicio, h_fin):
         if aula not in self.aulas:
             return False
         for asignacion in self.asignaciones:
@@ -201,5 +201,5 @@ class GestorAulas:
                     return False
         return True
 
-    def registrar_asignacion(self, asignacion: AsignacionHorario):
+    def registrarAsignacion(self, asignacion: AsignacionHorario):
         self.asignaciones.append(asignacion)

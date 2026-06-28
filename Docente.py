@@ -36,8 +36,8 @@ class Docente(Usuario):
         self.evaluaciones_creadas = []
 
     #Polimorfismo con sobreescritura de verperfil
-    def ver_perfil(self):
-        super().ver_perfil()  
+    def verPerfil(self):
+        super().verPerfil()  
         print(f"Título Académico: {self.titulo}")
         print(f"Especialidad: {self.especialidad}")
         print(f"Cursos Asignados: {len(self.cursos)}")
@@ -52,7 +52,7 @@ class Docente(Usuario):
             print(f"Se calificó a {estudiante.nombre} con {nota} en la materia {materia.nombre}")
             
 #Ahora el docente puede crear una evaluacion        
-    def crear_evaluacion(self, tituloEvaluacion, descripcion):
+    def crearEvaluacion(self, tituloEvaluacion, descripcion):
         evaluacion = {
             "titulo": tituloEvaluacion,
             "descripcion": descripcion,
@@ -62,10 +62,10 @@ class Docente(Usuario):
         print(f"Evaluacion {tituloEvaluacion} creada exitosamente")
         return evaluacion
 
-    def ver_cronograma_trabajo(self):
+    def verCronogramaTrabajo(self):
         pass
     
-    def ver_estudiantes_curso(self, curso):
+    def verEstudiantesCurso(self, curso):
         if curso in self.cursos:
             print(f"Estudiantes en {curso.nombre}")
             print()

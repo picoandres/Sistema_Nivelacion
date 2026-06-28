@@ -6,15 +6,15 @@ class AulaVirtual(Aula):
         self.plataforma = plataforma
         self.enlace = enlace
 
-    def mostrar_info(self):
-        super().mostrar_info(self)
+    def mostrarInfo(self):
+        super().mostrarInfo(self)
         print(f"Plataforma: {self.plataforma}")
         print(f"URL: {self.enlace}")
         
-    def cerrar_aula(self):
+    def cerrarAula(self):
         print("Cerrando aula ")
         self.estado = False
         
-    def abrir_aula(self):
+    def abrirAula(self):
         print("Abriendo aula ")
         self.estado = True
