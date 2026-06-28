@@ -9,17 +9,6 @@ from SistemaDAO import UsuarioDAO, EstudianteDAO, DocenteDAO
 usuario_dao = UsuarioDAO()
 estudiante_dao = EstudianteDAO()
 docente_dao = DocenteDAO()
-#gestor = GestorAulas()
-admin = Administrador( 
-    "1305688402",
-    "Juan Sendón",
-    "admin@uleam.edu.ec",
-    "A$EBM#20$26!1",
-    "Administrador",
-    "A-FCTV-1",
-    "Matriz",
-    "0999999999",
-)
 
 class Sistema():
     def __init__(self):
@@ -160,7 +149,6 @@ class Sistema():
                 aula = input("Aula: ")
 
                 try:
-
                     fabrica = obtenerFabricaHorario(jornada)
                     horario = fabrica.crearHorario(
                         dia,
@@ -175,9 +163,8 @@ class Sistema():
                         horario
                     )
 
-                    admin.registrarAccion()
-                    admin.crearCurso(curso)
-                    self.cursos.append(curso)
+                    self.usuario_actual.registrarAccion()
+                    self.usuario_actual.crearCurso(curso)
                     print(f"Curso '{nombreCurso}' creado y asignado a la jornada {jornada}")
                 except Exception as e:
                     print("Error al crear el curso: ", e)
@@ -188,17 +175,28 @@ class Sistema():
                 curso.asignarDocente(nombreDocente)
 
             elif opcion == "3":
-                admin.listarEstudiantes()
+                estudiantes = estudiante_dao.listar()
+                print("\n----- ESTUDIANTES -----")
+                for e in estudiantes:
+                    print(f"{e.nombre} - {e.carrera} - {e.paralelo}")
+
             elif opcion == "4":
-                admin.listarDocentes()
+                docentes = docente_dao.listar()
+                print("\n----- DOCENTES -----")
+                for d in docentes:
+                    print(f"{d.nombre} - {d.titulo}")
+
             elif opcion == "5":
                 print("LISTAR CURSOS ACTIVOS")
-                admin.listarCursos()
+                self.usuario_actual.listarCursos()
+
             elif opcion == "6":
-                admin.mostrarHistorial()
+                self.usuario_actual.mostrarHistorial()
+
             elif opcion == "7":
                 print("Cerrando sesión\n")
                 break
+
             else:
                 print("Opción inválida, intente de nuevo\n")
 
