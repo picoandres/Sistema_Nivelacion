@@ -71,7 +71,6 @@ class UsuarioDAO:
                     rol,
                     datos.titulo,
                     datos.especialidad,
-                    0
                 )
 
             # ===== ADMINISTRADOR =====
@@ -192,10 +191,9 @@ class DocenteDAO:
                 cedula,
                 titulo,
                 especialidad,
-                paralelo
             )
 
-            VALUES (?, ?, ?, ?)
+            VALUES (?, ?, ?)
             """
             self.db.cursor.execute(sql_docente, (
                 docente.cedula, docente.titulo, docente.especialidad,
