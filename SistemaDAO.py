@@ -1,4 +1,4 @@
-from DataBase import ConexionSQLServer
+from BaseDeDatos import ConexionSQLServer
 from Estudiante import Estudiante
 from Docente import Docente
 from Administrador import Administrador
