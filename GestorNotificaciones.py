@@ -1,16 +1,19 @@
 #Subject del patron Observer
 from abc import ABC
 
-class gestorNotificaciones(ABC):
+class GestorNotificaciones(ABC):
     def __init__(self):
-        self._observadores = []
+        self.observadores = []
 
-    def agregarObservador(self, observador):
-        self._observadores.append(observador)
+    def agregar_observador(self, usuario):
+        if usuario not in self.observadores:
+            self.observadores.append(usuario)
 
-    def eliminarObservador(self, observador):
-        self._observadores.remove(observador)
-
-    def notificar(self, mensaje):
-        for observador in self._observadores:
-            observador.actualizar(mensaje)
+    def eliminar_observador(self, usuario):
+        if usuario in self.observadores:
+            self.observadores.remove(usuario)
+    
+    def notificar_Todos(self, mensaje):
+        print("====NOTIFICACIONES====")
+        for usuario in self.observadores:
+            usuario.actualizar(mensaje)
