@@ -2,13 +2,13 @@ from CursoNivelacion import CursoNivelacion
 from Estudiante import Estudiante
 from HorarioFactory import obtenerFabricaHorario
 from Docente import Docente
-from Administrador import Administrador
-from SistemaDAO import UsuarioDAO, EstudianteDAO, DocenteDAO
+from SistemaDAO import UsuarioDAO, EstudianteDAO, DocenteDAO, AdministradorDAO
 
 #inicializacion de DAOs:
 usuario_dao = UsuarioDAO()
 estudiante_dao = EstudianteDAO()
 docente_dao = DocenteDAO()
+administrador_dao = AdministradorDAO()
 
 class Sistema():
     def __init__(self):
@@ -198,7 +198,7 @@ class Sistema():
                 break
 
             else:
-                print("Opción inválida, intente de nuevo\n")
+                print("Opción inválida, intente de nuevo")
 
 
     def menuDocente(self):
