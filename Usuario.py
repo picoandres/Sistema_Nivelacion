@@ -1,21 +1,27 @@
 import random
-
-class Usuario:
+from ReceptorNotificacion import ReceptorNotificacion
+class Usuario(ReceptorNotificacion):
     def __init__(self, cedula, nombre, correo, contrasena, rol):
         self.cedula = cedula
         self.nombre = nombre
         self.correo = correo
         self.__contrasena = contrasena
         self.rol = rol
+        self.notificaciones = []
 
     @property
     def contrasena(self):
         return self.__contrasena
 
-    def cambiarContrasena(self, nueva):
+    def autenticar(self, correo, contrasena):
+        if correo == self.correo and contrasena == self.contrasena:
+            return True
+        return False
+
+    def cambiar_contrasena(self, nueva):
         self.__contrasena = nueva
 
-    def recuperarContrasena(self, **kwargs):
+    def recuperar_contrasena(self, **kwargs):
         codigo_random = random.randint(1000, 9999)
 
         print("Escoja un método para recuperar su contraseña")
@@ -37,13 +43,31 @@ class Usuario:
             else:
                 print("Escoja solo entre correo o número de teléfono")
 
-    def verPerfil(self):
+    def ver_perfil(self):
         print(f"Perfil de {self.rol}")
         print(f"ID: {self.cedula}")
         print(f"Nombre: {self.nombre}")
         print(f"Correo: {self.correo}")
 
-    def editarPerfil(self, *args):
+    def editar_perfil(self, *args):
         print("Editar perfil")
         print("Nuevos datos:", args)
         print("Perfil actualizado exitosamente\n")
+
+    def actualizar(self, mensaje):
+        self.notificaciones.append(mensaje)
+        print(40*"=")
+        print("Usuario:", self.nombre)
+        print("Rol:", self.rol)
+        print(f"Notificación: {mensaje}")
+        print(40*"=")
+
+    def ver_notificaciones(self):
+        if len(self.notificaiones) == 0:
+            print("Sin notificaciones")
+            return
+        
+        print("-----Historial-----")
+        
+        for n in self.notificaciones:
+            print("-", n)
