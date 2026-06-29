@@ -10,7 +10,7 @@ class Estudiante(Usuario):
         self.documentos_subidos = []
 
     def verPerfil(self):
-        super().ver_perfil()
+        super().verPerfil()
         print(f"Carrera: {self.carrera}")
         print(f"Paralelo: {self.paralelo}")
 
@@ -21,7 +21,7 @@ class Estudiante(Usuario):
 
         for materia, nota in self.notas.items():
             print(f"{materia}: {nota}")
-        print(f"Promedio actual: {self.calcular_promedio():.2f}")
+        print(f"Promedio actual: {self.calcularPromedio():.2f}")
         print("=" * 30)
 
     #el sistema calcula el promedio del estudiante
