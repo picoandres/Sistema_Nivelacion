@@ -37,8 +37,7 @@ class ConexionSQLServer:
         except Exception as e:
             print(f"Error creando BD: {e}")
             
-
-
+            
      #Conexion con la base de datos   
     def conectar(self):
         try:
