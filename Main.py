@@ -12,7 +12,7 @@ estudiante_dao = EstudianteDAO()
 docente_dao = DocenteDAO()
 administrador_dao = AdministradorDAO()
 
-#Patron de comportamiento observer:
+#Patrón de comportamiento Observer:
 gestor = GestorNotificaciones()
 
 class Sistema():
@@ -140,17 +140,21 @@ class Sistema():
     def menuAdministrador(self):
         while True:
             print("\n===== MENÚ ADMINISTRADOR =====")
-            print("1. Crear curso")
-            print("2. Asignar docente a curso")
-            print("3. Listar estudiantes")
-            print("4. Listar docentes")
-            print("5. Listar cursos")
-            print("6. Ver historial")
-            print("7. Salir")
+            print("1. Ver perfil")
+            print("2. Crear curso")
+            print("3. Asignar docente a curso")
+            print("4. Listar estudiantes")
+            print("5. Listar docentes")
+            print("6. Listar cursos")
+            print("7. Ver historial")
+            print("8. Salir")
 
             opcion = input("Escoja una opción: ")
 
             if opcion == "1":
+                self.usuario_actual.verPerfil()
+
+            if opcion == "2":
                 print("CREAR CURSO:")
                 idCurso = input("ID del curso: ")
                 nombreCurso = input("Nombre del curso: ")
@@ -176,35 +180,35 @@ class Sistema():
 
                     self.usuario_actual.registrarAccion()
                     self.usuario_actual.crearCurso(curso)
-                    gestor.notificar_Todos("Se creo el curso" + curso.nombreCurso + "en la jornada" + curso.jornada)
+                    gestor.notificar_Todos("Se creó el curso" + curso.nombreCurso + "en la jornada" + curso.jornada)
                 except Exception as e:
                     print("Error al crear el curso: ", e)
 
-            elif opcion == "2":
+            elif opcion == "3":
                 print("-----ASIGNAR DOCENTE-----")
                 nombreDocente = input("ingrese el nombre del docente: ")
                 curso.asignarDocente(nombreDocente)
 
-            elif opcion == "3":
+            elif opcion == "4":
                 estudiantes = estudiante_dao.listar()
                 print("\n----- ESTUDIANTES -----")
                 for e in estudiantes:
                     print(f"{e.nombre} - {e.carrera} - {e.paralelo}")
 
-            elif opcion == "4":
+            elif opcion == "5":
                 docentes = docente_dao.listar()
                 print("\n----- DOCENTES -----")
                 for d in docentes:
                     print(f"{d.nombre} - {d.titulo}")
 
-            elif opcion == "5":
+            elif opcion == "6":
                 print("LISTAR CURSOS ACTIVOS")
                 self.usuario_actual.listarCursos()
 
-            elif opcion == "6":
+            elif opcion == "7":
                 self.usuario_actual.mostrarHistorial()
 
-            elif opcion == "7":
+            elif opcion == "8":
                 print("Cerrando sesión\n")
                 break
 
@@ -227,7 +231,7 @@ class Sistema():
             opcion = input("Escoja una opción: ")
 
             if opcion == "1":
-                pass
+                self.usuario_actual.ver_perfil()
             elif opcion == "2":
                 pass
             elif opcion == "3":
@@ -260,7 +264,7 @@ class Sistema():
             opcion = input("Escoja una opción: ")
 
             if opcion == "1":
-                pass
+                self.usuario_actual.ver_perfil()
             elif opcion == "2":
                 pass
             elif opcion == "3":

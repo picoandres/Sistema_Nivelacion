@@ -13,16 +13,18 @@ class Administrador(Usuario):
         self.telefono = telefono
         self.historialAcciones = []
 
+
+    def verPerfil(self):
+        super().verPerfil()
+        print(f"Sede: {self.sede}")
+        print(f"Teléfono: {self.telefono}")
+
+
     def actualizarSede(self, nueva_sede):
         if not nueva_sede or not isinstance(nueva_sede, str):
             raise ValueError("La sede debe ser un texto válido")
         self.sede = nueva_sede
         self.registrarAccion(f"Sede actualizada a: {nueva_sede}")
-
-    def verPerfil(self):
-        super().verPerfil()
-        print(f"Sede          : {self.sede}")
-        print(f"Teléfono      : {self.telefono}")
 
 
     def eliminarDocente(self, cedula):
