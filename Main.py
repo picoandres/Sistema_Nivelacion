@@ -3,12 +3,17 @@ from Estudiante import Estudiante
 from HorarioFactory import obtenerFabricaHorario
 from Docente import Docente
 from SistemaDAO import UsuarioDAO, EstudianteDAO, DocenteDAO, AdministradorDAO
+from GestorNotificaciones import GestorNotificaciones
+
 
 #inicializacion de DAOs:
 usuario_dao = UsuarioDAO()
 estudiante_dao = EstudianteDAO()
 docente_dao = DocenteDAO()
 administrador_dao = AdministradorDAO()
+
+#Patron de comportamiento observer:
+gestor = GestorNotificaciones()
 
 class Sistema():
     def __init__(self):
@@ -43,7 +48,10 @@ class Sistema():
                     )
 
                 if estudiante_dao.guardar(estudiante):
+                    gestor.agregar_observador(estudiante)
                     print("Estudiante guardado en BD correctamente\n")
+                    gestor.notificar_Todos("Se registró un nuevo estudiante")
+                    gestor.eliminar_observador(estudiante)
                 else:
                     print("Error al guardar estudiante en BD\n")
 
@@ -66,7 +74,10 @@ class Sistema():
                 )
 
                 if docente_dao.guardar(docente):
+                    gestor.agregar_observador(docente)
                     print("Docente guardado en BD correctamente\n")
+                    gestor.notificar_Todos("Se registró un nuevo Docente")
+                    gestor.eliminar_observador(docente)
                 else:
                     print("Error al guardar docente en BD\n")
 
@@ -165,7 +176,7 @@ class Sistema():
 
                     self.usuario_actual.registrarAccion()
                     self.usuario_actual.crearCurso(curso)
-                    print(f"Curso '{nombreCurso}' creado y asignado a la jornada {jornada}")
+                    gestor.notificar_Todos("Se creo el curso" + curso.nombreCurso + "en la jornada" + curso.jornada)
                 except Exception as e:
                     print("Error al crear el curso: ", e)
 
@@ -198,7 +209,7 @@ class Sistema():
                 break
 
             else:
-                print("Opción inválida, intente de nuevo")
+                print("Opción inválida, intente de nuevo\n")
 
 
     def menuDocente(self):
