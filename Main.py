@@ -154,7 +154,9 @@ class Sistema():
             if opcion == "1":
                 self.usuario_actual.verPerfil()
 
-            if opcion == "2":
+            elif opcion == "2":
+                pass
+                """
                 print("CREAR CURSO:")
                 idCurso = input("ID del curso: ")
                 nombreCurso = input("Nombre del curso: ")
@@ -183,12 +185,14 @@ class Sistema():
                     gestor.notificar_Todos("Se creó el curso" + curso.nombreCurso + "en la jornada" + curso.jornada)
                 except Exception as e:
                     print("Error al crear el curso: ", e)
-
+                """
             elif opcion == "3":
+                pass
+                """
                 print("-----ASIGNAR DOCENTE-----")
                 nombreDocente = input("ingrese el nombre del docente: ")
                 curso.asignarDocente(nombreDocente)
-
+                """
             elif opcion == "4":
                 estudiantes = estudiante_dao.listar()
                 print("\n----- ESTUDIANTES -----")
@@ -202,18 +206,17 @@ class Sistema():
                     print(f"{d.nombre} - {d.titulo}")
 
             elif opcion == "6":
-                print("LISTAR CURSOS ACTIVOS")
-                self.usuario_actual.listarCursos()
+                pass
 
             elif opcion == "7":
-                self.usuario_actual.mostrarHistorial()
+                pass
 
             elif opcion == "8":
                 print("Cerrando sesión\n")
                 break
 
             else:
-                print("Opción inválida, intente de nuevo\n")
+                print("Opción inválida, intente de nuevo")
 
 
     def menuDocente(self):
@@ -231,7 +234,7 @@ class Sistema():
             opcion = input("Escoja una opción: ")
 
             if opcion == "1":
-                self.usuario_actual.ver_perfil()
+                self.usuario_actual.verPerfil()
             elif opcion == "2":
                 pass
             elif opcion == "3":
@@ -264,7 +267,7 @@ class Sistema():
             opcion = input("Escoja una opción: ")
 
             if opcion == "1":
-                self.usuario_actual.ver_perfil()
+                self.usuario_actual.verPerfil()
             elif opcion == "2":
                 pass
             elif opcion == "3":
