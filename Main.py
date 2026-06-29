@@ -244,7 +244,7 @@ class Sistema():
                 print("Cerrando sesión\n")
                 break
             else:
-                print("Opción inválida, intente de nuevo\n")
+                print("Opción inválida, intente de nuevo")
 
     def menuEstudiante(self):
         while True:
@@ -275,7 +275,7 @@ class Sistema():
                 print("Cerrando sesión\n")
                 break
             else:
-                print("Opción inválida, intente de nuevo\n")
+                print("Opción inválida, intente de nuevo")
 
 sistema = Sistema()
 sistema.sistemaNivelacion()
