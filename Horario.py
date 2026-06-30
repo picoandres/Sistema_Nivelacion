@@ -7,6 +7,7 @@ class Horario(ABC):
         self.horaFin = horaFin
         self.aula = aula
         self.asignador = asignador
+        self.estado = "Pendiente"
 
     @abstractmethod
     def verificarHorario(self, otro_horario):
@@ -40,16 +41,30 @@ class HorarioEstudiante(Horario):
     def mostrarHorario(self):
         materias = ", ".join(self.materias) if self.materias else "Sin materias"
         print(f"[Estudiante {self.idEstudiante}] {self.dia} {self.horaInicio}-{self.horaFin} | Aula: {self.aula}")
-        print(f"Materias: {materias} | Estado: {self.estado} | Asignado por: {self._asignado_por}")
+        print(f"Materias: {materias} | Estado: {self.estado} | Asignado por: {self.asignador}")
 
     def verificarAula(self, gestor_aulas):
         return gestor_aulas.aulaDisponible(self.aula, self.dia, self.horaInicio, self.horaFin)
 
 class HorarioSistema(Horario):
-     def verificarHorario(self, otro_horario):
+    def verificarHorario(self, otro_horario):
         if self.dia != otro_horario.dia or self.aula != otro_horario.aula:
             return False
         return not (self.horaFin <= otro_horario.horaInicio or self.horaInicio >= otro_horario.horaFin)
+     
+    def definir_horario(self):
+        pass
+
+    def mostrarHorario(self):
+        print(f"{self.dia} {self.horaInicio}-{self.horaFin}")
+
+    def verificarAula(self, gestor_aulas):
+        return gestor_aulas.aula_disponible(
+            self.aula,
+            self.dia,
+            self.horaInicio,
+            self.horaFin
+        )
 
 class HorarioDocente(Horario):
     def __init__(self, dia, horaInicio, horaFin, aula, asignador, idDocente):
@@ -72,3 +87,36 @@ class HorarioDocente(Horario):
 
     def verificarAula(self, gestor_aulas):
         return gestor_aulas.aulaDisponible(self.aula, self.dia, self.horaInicio, self.horaFin)
+    
+class HorarioCurso(Horario):
+    def __init__(self, dia, horaInicio, horaFin, aula, asignador):
+        super().__init__(dia, horaInicio, horaFin, aula, asignador)
+        self.estado = "Activo"
+
+    def verificarHorario(self, otroHorario):
+        if self.dia != otroHorario.dia:
+            return False
+
+        return not (
+            self.horaFin <= otroHorario.horaInicio or
+            self.horaInicio >= otroHorario.horaFin
+        )
+
+    def definirHorario(self):
+        pass
+
+    def mostrarHorario(self):
+        print(f"""
+        Día: {self.dia}
+        Hora: {self.horaInicio} - {self.horaFin}
+        Aula: {self.aula}
+        Estado: {self.estado}
+        """)
+
+    def verificarAula(self, gestorAulas):
+        return gestorAulas.aula_disponible(
+            self.aula,
+            self.dia,
+            self.horaInicio,
+            self.horaFin
+        )
