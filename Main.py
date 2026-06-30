@@ -2,15 +2,15 @@ from CursoNivelacion import CursoNivelacion
 from Estudiante import Estudiante
 from HorarioFactory import obtenerFabricaHorario
 from Docente import Docente
-from SistemaDAO import UsuarioDAO, EstudianteDAO, DocenteDAO, AdministradorDAO
+from SistemaDAO import UsuarioDAO, EstudianteDAO, DocenteDAO, AdministradorDAO, CursoDAO
 from GestorNotificaciones import GestorNotificaciones
-
 
 #inicializacion de DAOs:
 usuario_dao = UsuarioDAO()
 estudiante_dao = EstudianteDAO()
 docente_dao = DocenteDAO()
 administrador_dao = AdministradorDAO()
+curso_dao = CursoDAO()
 
 #Patrón de comportamiento Observer:
 gestor = GestorNotificaciones()
@@ -155,9 +155,6 @@ class Sistema():
                 self.usuario_actual.verPerfil()
 
             elif opcion == "2":
-                pass
-                """
-                print("CREAR CURSO:")
                 idCurso = input("ID del curso: ")
                 nombreCurso = input("Nombre del curso: ")
                 modalidad = input("Modalidad: ")
@@ -170,6 +167,7 @@ class Sistema():
                     horario = fabrica.crearHorario(
                         dia,
                         aula,
+                        self.usuario_actual.nombre
                     )
 
                     curso = CursoNivelacion(
@@ -180,19 +178,22 @@ class Sistema():
                         horario
                     )
 
-                    self.usuario_actual.registrarAccion()
-                    self.usuario_actual.crearCurso(curso)
-                    gestor.notificar_Todos("Se creó el curso" + curso.nombreCurso + "en la jornada" + curso.jornada)
+                    self.usuario_actual.registrarAccion(f"Se creó el curso: {nombreCurso}")
+                    if curso_dao.guardar(curso):
+                        print("Curso creado exitosamente")
+                    else:
+                        print("No se pudo crear el curso")
+
                 except Exception as e:
                     print("Error al crear el curso: ", e)
-                """
+            
             elif opcion == "3":
-                pass
-                """
                 print("-----ASIGNAR DOCENTE-----")
-                nombreDocente = input("ingrese el nombre del docente: ")
-                curso.asignarDocente(nombreDocente)
-                """
+                idCurso = input("ID del Curso: ")
+                cedulaDocente = input("Cédula del docente: ")
+                curso_dao.asignarDocente(idCurso, cedulaDocente)
+                print("Docente asignado")
+
             elif opcion == "4":
                 estudiantes = estudiante_dao.listar()
                 print("\n----- ESTUDIANTES -----")
@@ -206,7 +207,8 @@ class Sistema():
                     print(f"{d.nombre} - {d.titulo}")
 
             elif opcion == "6":
-                pass
+                cursos = curso_dao.listar()
+                self.usuario_actual.mostrarCursos(cursos)
 
             elif opcion == "7":
                 pass
@@ -235,21 +237,32 @@ class Sistema():
 
             if opcion == "1":
                 self.usuario_actual.verPerfil()
+
             elif opcion == "2":
-                pass
+                cursos = curso_dao.buscarPorDocente(self.usuario_actual.cedula)
+                self.usuario_actual.mostrarCursosAsignados(cursos)
+
             elif opcion == "3":
                 pass
+
             elif opcion == "4":
                 pass
+
             elif opcion == "5":
                 pass
+
             elif opcion == "6":
-                pass
+                titulo_evaluacion = input("Título de evaluación: ")
+                descripcion = input("Descripción: ")
+                self.usuario_actual.crearEvaluacion(titulo_evaluacion, descripcion)
+
             elif opcion == "7":
                 pass
+
             elif opcion == "8":
                 print("Cerrando sesión\n")
                 break
+
             else:
                 print("Opción inválida, intente de nuevo")
 
@@ -261,23 +274,32 @@ class Sistema():
             print("3. Ver asistencia")
             print("4. Subir documento")
             print("5. Ver documentos")
-            print("6. Recuperar contraseña")
+            print("6. Cambiar contraseña")
             print("7. Cerrar sesión")
 
             opcion = input("Escoja una opción: ")
 
             if opcion == "1":
                 self.usuario_actual.verPerfil()
+
             elif opcion == "2":
-                pass
+                self.usuario_actual.verNotas()
+
             elif opcion == "3":
                 pass
+                
             elif opcion == "4":
-                pass
+                nombre = input("Nombre del documento: ")
+                tipo = input("Tipo de documento: ")
+                self.usuario_actual.subir_documentos(nombre, tipo)
+
             elif opcion == "5":
-                pass
+                self.usuario_actual.verDocumentosSubidos()
+
             elif opcion == "6":
-                pass
+                nueva = input("Ingrese su nueva contraseña: ")
+                self.usuario_actual.cambiarContrasena(nueva)
+
             elif opcion == "7":
                 print("Cerrando sesión\n")
                 break
