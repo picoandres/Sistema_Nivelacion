@@ -16,6 +16,7 @@ class Usuario(ReceptorNotificacion):
 
     def cambiarContrasena(self, nueva):
         self.__contrasena = nueva
+        print("Contraseña actualizada")
 
     def recuperarContrasena(self, **kwargs):
         codigo_random = random.randint(1000, 9999)
@@ -32,7 +33,6 @@ class Usuario(ReceptorNotificacion):
                 if codigo == codigo_random:
                     nueva = input("Escriba la nueva contraseña: ")
                     self.cambiarContrasena(nueva)
-                    print("Contraseña actualizada")
                     break
                 else:
                     print("Código incorrecto")
