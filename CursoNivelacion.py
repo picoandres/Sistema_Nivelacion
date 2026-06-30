@@ -2,20 +2,15 @@
 from Docente import Docente
 
 class CursoNivelacion:
-    def __init__(self, idCurso, nombreCurso, modalidad, jornada, horario):
+    def __init__(self, idCurso, nombreCurso, modalidad, jornada, horario, docente = None):
         self.idCurso = idCurso
         self.nombreCurso = nombreCurso
         self.modalidad = modalidad
         self.jornada = jornada
         self.horario = horario
 
-        #relaciones
+        self.docente = docente
         self.estudiantes = []
-        
-        #Docente asignado
-        self.docente = None
-
-        #Historial
         self.historial = []
     
     def mostrarInformacion(self):
