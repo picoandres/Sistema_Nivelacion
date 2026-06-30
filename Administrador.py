@@ -109,17 +109,23 @@ class Administrador(Usuario):
         except Exception as e:
             print(f"Error al asignar docente: {e}")
 
-    def listarCursos(self):
-        if not self.cursos:
-            print("No hay cursos registrados en el sistema")
-            return
-        print("\n──── CURSOS DE NIVELACIÓN ────")
-        for i, c in enumerate(self.cursos, 1):
-            docente_nombre = c.docente.nombre if c.docente else "Sin asignar"
-            print(f"  {i}. [{c.idCurso}] {c.nombreCurso}  |  "
-                  f"Modalidad: {c.modalidad}  |  Jornada: {c.jornada}  |  "
-                  f"Docente: {docente_nombre}")
-        print()
+    def mostrarCursos(self, cursos):
+        print("\n===== CURSOS =====")
+        for curso in cursos:
+            docente = curso.cedulaDocente
+
+            if curso.nombreDocente:
+                docente = curso.nombreDocente
+            else:
+                docente = "Sin asignar"
+
+            print(f"ID: {curso.idCurso}")
+            print(f"Nombre: {curso.nombreCurso}")
+            print(f"Modalidad: {curso.modalidad}")
+            print(f"Jornada: {curso.jornada}")
+            print(f"Docente: {docente}")
+            print("-"*20)
+
 
     def registrarAccion(self, mensaje):
         self.historialAcciones.append(mensaje)
@@ -147,8 +153,8 @@ class Administrador(Usuario):
     def __str__(self):
         return (f"Administrador | {self.nombre} | Sede: {self.sede} | Área: Nivelación") 
 
-    def asignarHorarioEstudiante(self, idEstudiante, dia, hora_inicio, hora_fin, aula, idMateria) -> AsignacionHorario:
-        horario = HorarioEstudiante(dia, hora_inicio, hora_fin, aula, idEstudiante, self.idAdmin)
+    def asignarHorarioEstudiante(self, dia, hora_inicio, hora_fin, aula, asignador, idEstudiante, idMateria) -> AsignacionHorario:
+        horario = HorarioEstudiante(dia, hora_inicio, hora_fin, aula, asignador, idEstudiante)
         
         if not horario.verificarAula(self.gestor_aulas):
             print("Error: Aula ocupada o no existe")
