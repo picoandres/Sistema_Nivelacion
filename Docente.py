@@ -35,14 +35,27 @@ class Docente(Usuario):
         self.cursos = []
         self.evaluaciones_creadas = []
 
-    #Polimorfismo con sobreescritura de verperfil
+    #Polimorfismo con sobreescritura de métodos de usuario
     def verPerfil(self):
         super().verPerfil()  
         print(f"Título Académico: {self.titulo}")
         print(f"Especialidad: {self.especialidad}")
         print(f"Cursos Asignados: {len(self.cursos)}")
 
-#califica a un estudiante en una materia
+    #Métodos de Docente
+    def mostrarCursosAsignados(self, cursos):
+        if not cursos:
+            print("\nNo tiene cursos asignados\n")
+            return
+
+        print("\n===== MIS CURSOS =====")
+        for curso in cursos:
+            print(f"ID: {curso.idCurso}")
+            print(f"Nombre: {curso.nombreCurso}")
+            print(f"Modalidad: {curso.modalidad}")
+            print(f"Jornada: {curso.jornada}")
+            print("-"*20)
+
     def calificar(self, estudiante, nota, materia):
         if not (0 <= nota <= 10):
             print("Error: la calificacion debe estar entre 0 y 10")
@@ -50,8 +63,7 @@ class Docente(Usuario):
         else:
             estudiante.agregarNota(materia, nota)
             print(f"Se calificó a {estudiante.nombre} con {nota} en la materia {materia.nombre}")
-            
-#Ahora el docente puede crear una evaluacion        
+                   
     def crearEvaluacion(self, tituloEvaluacion, descripcion):
         evaluacion = {
             "titulo": tituloEvaluacion,
