@@ -40,7 +40,19 @@ CREATE TABLE Administrador(
 	FOREIGN KEY (cedula) REFERENCES Usuario(cedula) ON DELETE CASCADE
 );
 
+CREATE TABLE Curso(
+    idCurso VARCHAR(20),
+    nombreCurso VARCHAR(100) NOT NULL,
+    modalidad VARCHAR(30) NOT NULL,
+    jornada VARCHAR(20) NOT NULL,
+    cedulaDocente VARCHAR(20) NULL,
+    CONSTRAINT PK_Curso PRIMARY KEY(idCurso),
+    CONSTRAINT FK_Curso_Docente
+    FOREIGN KEY(cedulaDocente) REFERENCES Docente(cedula)
+);
+
 SELECT * FROM Usuario;
 SELECT * FROM Alumnos;
 SELECT * FROM Docente;
 SELECT * FROM Administrador;
+SELECT * FROM Curso;
