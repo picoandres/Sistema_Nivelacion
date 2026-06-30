@@ -1,29 +1,30 @@
 from abc import ABC, abstractmethod
-from Horario import Horario
+from Horario import HorarioCurso
 
 class HorarioCreador(ABC):
     @abstractmethod
-    def crearHorario(self, dia: str, aula: str, asignador: str) -> Horario:
+    def crearHorario(self, dia: str, aula: str, asignador: str):
         pass
 
+
 class HorarioMatutinoCreador(HorarioCreador):
-    def crearHorario(self, dia: str, aula: str, asignador: str) -> Horario:
-        return Horario(dia, "07:00", "13:00", aula)
+    def crearHorario(self, dia: str, aula: str, asignador: str):
+        return HorarioCurso(dia, "07:00", "13:00", aula, asignador)
 
 
 class HorarioVespertinoCreador(HorarioCreador):
-    def crearHorario(self, dia: str, aula: str) -> Horario:
-        return Horario(dia, "13:00", "18:00", aula)
+    def crearHorario(self, dia: str, aula: str, asignador: str):
+        return HorarioCurso(dia, "13:00", "18:00", aula, asignador)
 
 
 class HorarioNocturnoCreador(HorarioCreador):
-    def crearHorario(self, dia: str, aula: str) -> Horario:
-        return Horario(dia, "18:00", "22:00", aula)
+    def crearHorario(self, dia: str, aula: str, asignador: str):
+        return HorarioCurso(dia, "18:00", "22:00", aula, asignador)
 
 
 class HorarioVirtualCreador(HorarioCreador):
-    def crearHorario(self, dia: str, aula: str = "Aula Virtual") -> Horario:
-        return Horario(dia, "00:00", "23:59", aula)
+    def crearHorario(self, dia: str, aula: str, asignador: str):
+        return HorarioCurso(dia, "00:00", "23:59", aula, asignador)
 
 _fabricas_horario = {
     "matutina":    HorarioMatutinoCreador,
@@ -32,8 +33,7 @@ _fabricas_horario = {
     "virtual":     HorarioVirtualCreador,
 }
 
-def obtenerFabricaHorario(jornada: str) -> HorarioCreador:
-
+def obtenerFabricaHorario(jornada: str):
     jornada = jornada.strip().lower()
     if jornada not in _fabricas_horario:
         validas = list(_fabricas_horario.keys())
