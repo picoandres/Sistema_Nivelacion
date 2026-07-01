@@ -14,10 +14,6 @@ class Usuario(ReceptorNotificacion):
     def contrasena(self):
         return self.__contrasena
 
-    def cambiarContrasena(self, nueva):
-        self.__contrasena = nueva
-        print("Contraseña actualizada")
-
     def recuperarContrasena(self, **kwargs):
         codigo_random = random.randint(1000, 9999)
 

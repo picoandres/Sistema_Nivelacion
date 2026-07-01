@@ -291,14 +291,13 @@ class Sistema():
             elif opcion == "4":
                 nombre = input("Nombre del documento: ")
                 tipo = input("Tipo de documento: ")
-                self.usuario_actual.subir_documentos(nombre, tipo)
+                self.usuario_actual.subirDocumentos(nombre, tipo)
 
             elif opcion == "5":
                 self.usuario_actual.verDocumentosSubidos()
 
             elif opcion == "6":
-                nueva = input("Ingrese su nueva contraseña: ")
-                self.usuario_actual.cambiarContrasena(nueva)
+                pass
 
             elif opcion == "7":
                 print("Cerrando sesión\n")
