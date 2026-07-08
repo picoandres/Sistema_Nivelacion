@@ -20,7 +20,7 @@ CREATE TABLE Alumnos(
 	CONSTRAINT FK_Estudiante_usuario 
 	FOREIGN KEY (cedula) REFERENCES Usuario(cedula) ON DELETE CASCADE
 );
-
+-- Crea la tabla de Docente
 CREATE TABLE Docente(
 	cedula VARCHAR(20),
 	profesion VARCHAR(50),
@@ -32,7 +32,7 @@ CREATE TABLE Docente(
 	CONSTRAINT FK_Docente_usuario 
 	FOREIGN KEY (cedula) REFERENCES Usuario(cedula) ON DELETE CASCADE
 );
-
+-- Crea la tabla de los administradores
 CREATE TABLE Administrador(
 	cedula VARCHAR(20),
 	id_admin INT UNIQUE,
@@ -42,7 +42,7 @@ CREATE TABLE Administrador(
 	CONSTRAINT FK_Administrador_usuario 
 	FOREIGN KEY (cedula) REFERENCES Usuario(cedula) ON DELETE CASCADE
 );
-
+-- Crea la tabla de los cursos
 CREATE TABLE Curso(
     idCurso VARCHAR(20),
     nombreCurso VARCHAR(100) NOT NULL,
