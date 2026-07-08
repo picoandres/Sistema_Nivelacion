@@ -121,14 +121,15 @@ class Administrador(Usuario):
             print("Modalidad inválida.")
 
         while True:
-            jornada = input("Jornada (matutina / vespertina / nocturna / virtual): ").strip().lower()
+            jornada = input("Jornada (matutina / vespertina / nocturna ): ").strip().lower()
 
-            if jornada in ["matutina", "vespertina", "nocturna", "virtual"]:
+            if jornada in ["matutina", "vespertina", "nocturna"]:
                 break
 
             print("Jornada inválida.")
 
         while True:
+            print("Ejemplo: lunes-viernes ,lunes, miércoles y viernes ")
             dia = input("Día: ").strip().lower()
 
             if dia in ["lunes-viernes", "lunes, miércoles y viernes", "lunes, miercoles y viernes"]:
