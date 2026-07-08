@@ -132,7 +132,7 @@ CREATE TABLE Horario (
     dia VARCHAR(30) NOT NULL,
     horaInicio TIME NOT NULL,
     horaFin TIME NOT NULL,
-    aula VARCHAR NULL,
+    aula VARCHAR(5) NOT NULL,
     asignador VARCHAR(100) NOT NULL,
     FOREIGN KEY (idCurso) REFERENCES Curso(idCurso)
 );
@@ -183,7 +183,3 @@ SELECT * FROM CursoMateria;
 SELECT * FROM Calificacion;
 SELECT * FROM Evaluacion;
 SELECT * FROM Horario;
-
---para cambiar la columna de "aula" de int a varchar
-ALTER TABLE Horario
-ALTER COLUMN aula NVARCHAR(50);
