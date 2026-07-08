@@ -82,15 +82,17 @@ class Administrador(Usuario):
 
 
     def crearCurso(self, curso_dao, horario_dao, gestor_aulas):
-        print("\n=============== CREAR CURSO ===============")
-        idCurso = input("ID del curso: ").strip().upper()
-        if len(idCurso) > 5:
-            print("\nEl ID del curso no puede tener más de 5 caracteres\n")
-            return
-
         import re
-        if not re.fullmatch(r"[A-Za-z]+", idCurso):
-            print("\nEl ID del curso solo puede contener letras\n")
+        
+        idCurso = input("ID del curso (Ej: A01): ").strip()
+        if not re.fullmatch(r"[A-Z][0-9]{2}", idCurso):
+            print("\nEl ID del curso debe tener el formato: una letra mayúscula seguida de dos números \n")
+            return
+        
+        numero = int(idCurso[1:])
+
+        if numero < 1 or numero > 99:
+            print("\nEl número del curso debe estar entre 01 y 99\n")
             return
         
         nombreCurso = input("Nombre del curso: ").strip()
