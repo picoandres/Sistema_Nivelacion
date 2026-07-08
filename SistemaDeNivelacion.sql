@@ -132,7 +132,7 @@ CREATE TABLE Horario (
     dia VARCHAR(30) NOT NULL,
     horaInicio TIME NOT NULL,
     horaFin TIME NOT NULL,
-    aula INT NULL,
+    aula VARCHAR NULL,
     asignador VARCHAR(100) NOT NULL,
     FOREIGN KEY (idCurso) REFERENCES Curso(idCurso)
 );
