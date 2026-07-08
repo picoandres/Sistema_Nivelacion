@@ -175,39 +175,53 @@ class Administrador(Usuario):
     def registrarMateria(self, materia_dao):
         print("\n=============== REGISTRO DE MATERIA ================")
 
-        idMateria = input("ID de la materia: ").strip()
-        if len(idMateria) > 5:
-            print("\nEl ID de la materia no puede tener más de 5 caracteres\n")
-            return
-        
         import re
-        if not re.fullmatch(r"[A-Za-z0-9\-]+", idMateria):
-            print("\nEl ID del curso solo puede contener letras, números y guiones\n")
-            return
 
-        nombre = input("Nombre: ").strip()
-        descripcion = input("Descripción: ").strip()
+        while True:
+            idMateria = input("ID de la materia: ").strip().upper()
 
-        try:
-            horas = int(input("Horas: ").strip())
-        except ValueError:
-            print("\nLas horas deben ser un número entero\n")
-            return
+            if len(idMateria) > 5:
+                print("\nEl ID de la materia no puede tener más de 5 caracteres.")
+                continue
+
+            if not re.fullmatch(r"[A-Za-z0-9\-]+", idMateria):
+                print("\nEl ID solo puede contener letras, números y guiones.")
+                continue
+
+            if materia_dao.buscar(idMateria):
+                print("\nYa existe una materia con ese ID.")
+                continue
+            break
+
+        while True:
+            nombre = input("Nombre: ").strip()
+
+            if nombre:
+                break
+
+            print("El nombre no puede estar vacío.")
+        
+        while True:
+            descripcion = input("Descripción: ").strip()
+
+            if descripcion:
+                break
+
+            print("La descripción no puede estar vacía.")
+
+        while True:
+            try:
+                horas = int(input("Horas: ").strip())
+
+                if horas > 0:
+                    break
+
+                print("Las horas deben ser mayores a 0.")
+
+            except ValueError:
+                print("Debe ingresar un número entero.")
 
         estado = True
-
-        if not idMateria or not nombre or not descripcion or not horas:
-            print("\nTodos los campos son obligatorios\n")
-            return
-
-        if horas <= 0:
-            print("\nLas horas deben ser mayores a 0\n")
-            return
-
-        materia_existente = materia_dao.buscar(idMateria)
-        if materia_existente is not None:
-            print("\nYa existe una materia con ese ID\n")
-            return
 
         from Materia import Materia
         materia = Materia(idMateria, nombre, descripcion, horas, estado)
