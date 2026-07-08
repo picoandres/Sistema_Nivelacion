@@ -355,17 +355,36 @@ class Administrador(Usuario):
             print(f"Horas       : {materia.horas}")
             print("-" * 50)
 
-        idCurso = input("\nIngrese el ID del curso: ").strip()
-        idMateria = input("Ingrese el ID de la materia: ").strip()
+        while True:
+            idCurso = input("\nIngrese el ID del curso: ").strip().upper()
 
-        curso = curso_dao.buscar(idCurso)
-        if curso is None:
-            print("\nNo existe un curso con ese ID\n")
-            return
+            if not idCurso:
+                print("Debe ingresar el ID del curso.")
+                continue
 
-        materia = materia_dao.buscar(idMateria)
-        if materia is None:
-            print("\nNo existe una materia con ese ID\n")
+            curso = curso_dao.buscar(idCurso)
+
+            if curso:
+                break
+
+            print("No existe un curso con ese ID.")
+
+        while True:
+            idMateria = input("Ingrese el ID de la materia: ").strip().upper()
+
+            if not idMateria:
+                print("Debe ingresar el ID de la materia.")
+                continue
+
+            materia = materia_dao.buscar(idMateria)
+
+            if materia:
+                break
+
+            print("No existe una materia con ese ID.")
+
+        if cursoMateria_dao.existe(idCurso, idMateria):
+            print("\nLa materia ya está asignada a este curso.\n")
             return
 
         if cursoMateria_dao.guardar(idCurso, idMateria):
@@ -373,7 +392,6 @@ class Administrador(Usuario):
             print(f"\nMateria {materia.nombre} asignada al curso {curso.nombreCurso} correctamente\n")
         else:
             print("\nNo se pudo asignar la materia al curso\n")
-        
 
     def verHorario(self, horario_dao):
         print("\n=============== HORARIO GENERAL ===============")
