@@ -1,6 +1,6 @@
-from abc import ABC, abstractmethod
+class Aula:
+    capacidad_maxima = 40
 
-class Aula(ABC):
     def __init__(self, id_aula, nombre, capacidad, modalidad, tipo, estado):
         self.id = id_aula
         self.nombre = nombre
@@ -8,13 +8,11 @@ class Aula(ABC):
         self.modalidad = modalidad
         self.tipo = tipo
         self.estado = estado
-        self.aulas = []
-        
-        
+
     def mostrarInfo(self):
-        print(self.nombre)
-        print(f"Id: {self.id}")
-        print(f"Capacidad {self.capacidad}")
-        print(f"Tipo: {self.tipo}")
-        print(f"Estado: {self.estado}")
-    
+        print(f"ID        : {self.id}")
+        print(f"Nombre    : {self.nombre}")
+        print(f"Capacidad : {self.capacidad}")
+        print(f"Modalidad : {self.modalidad}")
+        print(f"Tipo      : {self.tipo}")
+        print(f"Estado    : {'Disponible' if self.estado else 'No disponible'}")

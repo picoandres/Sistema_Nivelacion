@@ -8,8 +8,8 @@ class AulaVirtual(Aula):
 
     def mostrarInfo(self):
         super().mostrarInfo(self)
-        print(f"Plataforma: {self.plataforma}")
-        print(f"URL: {self.enlace}")
+        print(f"Plataforma : {self.plataforma}")
+        print(f"URL        : {self.enlace}")
         
     def cerrarAula(self):
         print("Cerrando aula ")
