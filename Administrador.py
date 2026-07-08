@@ -83,49 +83,69 @@ class Administrador(Usuario):
 
     def crearCurso(self, curso_dao, horario_dao, gestor_aulas):
         import re
-        
-        idCurso = input("ID del curso (Ej: A01): ").strip()
-        if not re.fullmatch(r"[A-Z][0-9]{2}", idCurso):
-            print("\nEl ID del curso debe tener el formato: una letra mayúscula seguida de dos números \n")
-            return
-        
-        numero = int(idCurso[1:])
 
-        if numero < 1 or numero > 99:
-            print("\nEl número del curso debe estar entre 01 y 99\n")
-            return
+        while True:
+            idCurso = input("ID del curso (Ej: A01): ").strip().upper()
+
+            if not re.fullmatch(r"[A-Z][0-9]{2}", idCurso):
+                print("\nError: Debe ingresar una letra mayúscula seguida de dos números. Ej: A01")
+                continue
+
+            numero = int(idCurso[1:])
+
+            if not (1 <= numero <= 99):
+                print("\nError: El número debe estar entre 01 y 99.")
+                continue
+
+            if curso_dao.buscar(idCurso):
+                print("\nYa existe un curso con ese ID.")
+                continue
+            break
         
-        nombreCurso = input("Nombre del curso: ").strip()
-        modalidad = input("Modalidad (presencial / virtual / híbrida): ").strip().lower()
-        jornada = input("Jornada (matutina / vespertina / nocturna / virtual): ").strip().lower()
-        dia = input("Día: ").strip().lower()
-        aula = input("Aula: ").strip()
+        while True:
+            nombreCurso = input("Nombre del curso: ").strip()
+
+            if nombreCurso:
+                break
+
+            print("El nombre no puede estar vacío.")
+
+
+        while True:
+            modalidad = input("Modalidad (presencial / virtual / híbrida): ").strip().lower()
+
+            if modalidad in ["presencial", "virtual", "hibrida", "híbrida"]:
+                modalidad = modalidad.replace("híbrida", "hibrida")
+                break
+
+            print("Modalidad inválida.")
+
+        while True:
+            jornada = input("Jornada (matutina / vespertina / nocturna / virtual): ").strip().lower()
+
+            if jornada in ["matutina", "vespertina", "nocturna", "virtual"]:
+                break
+
+            print("Jornada inválida.")
+
+        while True:
+            dia = input("Día: ").strip().lower()
+
+            if dia in ["lunes-viernes", "lunes, miércoles y viernes", "lunes, miercoles y viernes"]:
+                break
+
+            print("Día inválido.")
+
+        while True:
+            aula = input("Aula: ").strip()
+
+            if aula:
+                break
+
+            print("Debe ingresar un aula.")
 
         if not idCurso or not nombreCurso or not modalidad or not jornada or not dia or not aula:
             print("\nTodos los campos son obligatorios")
-            return
-
-        curso_existente = curso_dao.buscar(idCurso)
-        if curso_existente is not None:
-            print("\nYa existe un curso con ese ID\n")
-            return
-
-        modalidades_validas = ["presencial", "virtual", "hibrida", "híbrida"]
-        if modalidad not in modalidades_validas:
-            print("\nModalidad inválida. Use presencial, virtual o híbrida\n")
-            return
-
-        if modalidad == "híbrida":
-            modalidad = "hibrida"
-
-        dias_validos = ["lunes-viernes", "lunes, miércoles y viernes", "lunes, miercoles y viernes"]
-        if dia not in dias_validos:
-            print("\nDía inválido. Use lunes-viernes o lunes, miércoles y viernes\n")
-            return
-
-        jornadas_validas = ["matutina", "vespertina", "nocturna", "virtual"]
-        if jornada not in jornadas_validas:
-            print("\nJornada inválida. Use: matutina, vespertina, nocturna o virtual\n")
             return
 
         try:
