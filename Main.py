@@ -94,7 +94,7 @@ class Sistema():
                 self.usuario_actual.verPerfil()
 
             elif opcion == "2":
-                self.usuario_actual.cambiarContrasena()
+                self.usuario_actual.cambiarContrasena(self.usuario_dao)
 
             elif opcion == "3":
                 self.usuario_actual.crearCurso(self.curso_dao, self.horario_dao, self.gestor_aulas)
