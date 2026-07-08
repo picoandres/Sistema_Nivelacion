@@ -39,7 +39,7 @@ CREATE TABLE Administrador(
 	CONSTRAINT FK_Administrador_usuario 
 	FOREIGN KEY (cedula) REFERENCES Usuario(cedula) ON DELETE CASCADE
 );
-
+-- Crea la tabla de los cursos
 CREATE TABLE Curso(
     idCurso VARCHAR(20),
     nombreCurso VARCHAR(100) NOT NULL,
