@@ -301,18 +301,33 @@ class Administrador(Usuario):
         
         self.mostrarEstudiantes(estudiantes)
 
-        cedula = input("\nCédula del estudiante: ").strip()
-        idCurso = input("ID del curso: ").strip()
+        while True:
+            cedula = input("\nCédula del estudiante: ").strip()
 
-        curso = curso_dao.buscar(idCurso)
-        if curso is None:
-            print("No existe un curso con esa ID\n")
-            return
+            if not cedula:
+                print("Debe ingresar la cédula del estudiante.")
+                continue
 
-        estudiante = estudiante_dao.buscar(cedula)
-        if estudiante is None:
-            print("\nNo existe un estudiante con esa cédula\n")
-            return
+            estudiante = estudiante_dao.buscar(cedula)
+
+            if estudiante:
+                break
+
+            print("No existe un estudiante con esa cédula.")
+
+        while True:
+            idCurso = input("ID del curso: ").strip().upper()
+
+            if not idCurso:
+                print("Debe ingresar el ID del curso.")
+                continue
+
+            curso = curso_dao.buscar(idCurso)
+
+            if curso:
+                break
+
+            print("No existe un curso con ese ID.")
 
         if asignacionCurso_dao.existe(cedula, idCurso):
             print("\nEl estudiante ya está asignado a ese curso\n")
@@ -323,7 +338,6 @@ class Administrador(Usuario):
             self.registrarAccion(f"Estudiante {estudiante.nombre} ({cedula}) asignado al curso {curso.nombreCurso} ({idCurso})")
         else:
             print("\nNo fue posible realizar la asignación\n")
-
 
     def asignarMateriaACurso(self, curso_dao, materia_dao, cursoMateria_dao):
         self.mostrarCursos(curso_dao)
