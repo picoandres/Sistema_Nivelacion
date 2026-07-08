@@ -183,3 +183,7 @@ SELECT * FROM CursoMateria;
 SELECT * FROM Calificacion;
 SELECT * FROM Evaluacion;
 SELECT * FROM Horario;
+
+--para cambiar la columna de "aula" de int a varchar
+ALTER TABLE Horario
+ALTER COLUMN aula NVARCHAR(50);
