@@ -97,15 +97,10 @@ class Administrador(Usuario):
         modalidad = input("Modalidad (presencial / virtual / híbrida): ").strip().lower()
         jornada = input("Jornada (matutina / vespertina / nocturna / virtual): ").strip().lower()
         dia = input("Día: ").strip().lower()
+        aula = input("Aula: ").strip()
 
-        if not idCurso or not nombreCurso or not modalidad or not jornada or not dia:
+        if not idCurso or not nombreCurso or not modalidad or not jornada or not dia or not aula:
             print("\nTodos los campos son obligatorios")
-            return
-
-        try:
-            aula = int(input("Aula: ").strip())
-        except ValueError:
-            print("\nEl aula debe ser un número entero")
             return
 
         curso_existente = curso_dao.buscar(idCurso)
