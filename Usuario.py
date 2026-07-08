@@ -1,7 +1,6 @@
-import random
-from ReceptorNotificacion import ReceptorNotificacion
+from Observador import Observador
 
-class Usuario(ReceptorNotificacion):
+class Usuario(Observador):
     def __init__(self, cedula, nombre, correo, contrasena, rol):
         self.cedula = cedula
         self.nombre = nombre
@@ -10,58 +9,57 @@ class Usuario(ReceptorNotificacion):
         self.rol = rol
         self.notificaciones = []
 
-    @property
-    def contrasena(self):
-        return self.__contrasena
-
-    def recuperarContrasena(self, **kwargs):
-        codigo_random = random.randint(1000, 9999)
-
-        print("Escoja un método para recuperar su contraseña")
-        while True:
-            opcion = input("Correo o teléfono: ").lower()
-
-            if opcion in kwargs.values():
-                print(f"Código: {codigo_random}")
-
-                codigo = int(input("Ingrese el código que acaba de recibir: "))
-
-                if codigo == codigo_random:
-                    nueva = input("Escriba la nueva contraseña: ")
-                    self.cambiarContrasena(nueva)
-                    break
-                else:
-                    print("Código incorrecto")
-            else:
-                print("Escoja solo entre correo o número de teléfono")
-
     def verPerfil(self):
-        print(f"Perfil de {self.rol}")
-        print(f"Cédula: {self.cedula}")
-        print(f"Nombre: {self.nombre}")
-        print(f"Correo: {self.correo}")
+        print(f"\n=============== Perfil de {self.rol} ===============")
+        print(f"Cédula          : {self.cedula}")
+        print(f"Nombre          : {self.nombre}")
+        print(f"Correo          : {self.correo}")
 
-    def editarPerfil(self, *args):
-        print("Editar perfil")
-        print("Nuevos datos:", args)
-        print("Perfil actualizado exitosamente\n")
+    def cambiarContrasena(self, usuario_dao):
+        print("\n========== CAMBIAR CONTRASEÑA ==========")
 
+        actual = input("Ingrese su contraseña actual: ").strip()
+
+        if actual != self.__contrasena:
+            print("\nLa contraseña actual no es correcta\n")
+            return False
+
+        nueva = input("Ingrese la nueva contraseña (mínimo 8 caracteres): ").strip()
+        confirmar = input("Confirme la nueva contraseña: ").strip()
+
+        if not nueva or not confirmar:
+            print("\nDebe completar todos los campos\n")
+            return False
+
+        if nueva != confirmar:
+            print("\nLas contraseñas no coinciden\n")
+            return False
+
+        if nueva == self.__contrasena:
+            print("\nLa nueva contraseña no puede ser igual a la actual\n")
+            return False
+
+        if len(nueva) < 8:
+            print("\nLa nueva contraseña debe tener al menos 8 caracteres\n")
+            return False
+
+        if usuario_dao.actualizarContrasena(self.cedula, nueva):
+            self.__contrasena = nueva
+            print("\nContraseña actualizada correctamente\n")
+            return True
+        else:
+            print("\nNo se pudo actualizar la contraseña\n")
+            return False
+
+    # MÉTODOS DEL OBSERVER
     def actualizar(self, mensaje):
         self.notificaciones.append(mensaje)
-        print(40*"=")
-        print("Usuario:", self.nombre)
-        print("Rol:", self.rol)
-        print(f"Notificación: {mensaje}")
-        print(40*"=")
+        if not self.notificaciones:
+            print("\nNo hay notificaciones\n")
 
-""""
-    def verNotificaciones(self):
-        if len(self.notificaiones) == 0:
-            print("Sin notificaciones")
-            return
-        
-        print("-----Historial-----")
-        
-        for n in self.notificaciones:
-            print("-", n)
-"""
+        print("=" * 60)
+        print("NOTIFICACIÓN RECIBIDA")
+        print(f"Usuario: {self.nombre}")
+        print(f"Rol    : {self.rol}")
+        print(f"Mensaje: {mensaje}")
+        print("=" * 60 + "\n")
