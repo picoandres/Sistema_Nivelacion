@@ -33,9 +33,11 @@ _fabricas_horario = {
     "virtual":     HorarioVirtualCreador,
 }
 
-def obtenerFabricaHorario(jornada: str):
+def obtenerFabricaHorario(jornada: str) -> HorarioCreador:
     jornada = jornada.strip().lower()
+
     if jornada not in _fabricas_horario:
-        validas = list(_fabricas_horario.keys())
-        raise ValueError(f"Jornada '{jornada}' no reconocida. Válidas: {validas}")
+        validas = ", ".join(_fabricas_horario.keys())
+        raise ValueError(f"Jornada {jornada} no reconocida. Válidas: {validas}")
+    
     return _fabricas_horario[jornada]()
