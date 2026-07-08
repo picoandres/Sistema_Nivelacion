@@ -1,50 +1,29 @@
-class Materia: 
-    def __init__(self, idMateria, nombre, descripcion):
+class Materia:
+    def __init__(self, idMateria, nombre, descripcion, horas, estado=True):
         self.idMateria = idMateria
         self.nombre = nombre
         self.descripcion = descripcion
-        self.activa = True
+        self.horas = horas
+        self.estado = estado
 
-    def mostrarMateriasDisponibles(self, listaMaterias):
-        if len(listaMaterias) == 0:
-            print("No hay materias registradas")
-            return
-
-        print("----- MATERIAS DISPONIBLES -----")
-        for materia in listaMaterias:
-            print(f"ID: {materia.idMateria}")
-            print(f"Nombre: {materia.nombre}")
-            print(f"Descripción: {materia.descripcion}")
-            print("-" * 30)
-
-    def actualizarContenido(self, nuevoNombre, nuevaDescripcion):
-        self.nombre = nuevoNombre
-        self.descripcion = nuevaDescripcion
-        
-        print("Materia actualizada correctamente")
+    def verInformacion(self):
         print(f"ID: {self.idMateria}")
         print(f"Nombre: {self.nombre}")
         print(f"Descripción: {self.descripcion}")
+        print(f"Horas: {self.horas}")
+        print(f"Estado: {'Activa' if self.estado else 'Inactiva'}")
 
-    def habilitarRetiroMateria(self):
-        self.activa = False
-        print(f"La materia {self.nombre} ha sido retirada")
-""""
-# Se debe pasar al main
-#funcion mostrar materias disponibles
-materia1 = Materia(1, "Algebra Lineal", "Álgebra Lineal")
-materia2 = Materia(2, "Base de datos", "integracion de SQL")
+    def cambiarEstado(self, nuevo_estado):
+        self.estado = nuevo_estado
 
-listaMaterias = [materia1, materia2]
+    def editarMateria(self, nuevoNombre=None, nuevaDescripcion=None, nuevasHoras=None):
+        if nuevoNombre:
+            self.nombre = nuevoNombre
+        if nuevaDescripcion:
+            self.descripcion = nuevaDescripcion
+        if nuevasHoras is not None:
+            self.horas = nuevasHoras
 
-materia1.mostrarMateriasDisponibles(listaMaterias)
-
-#funcion actualizar materias
-materia1.actualizarContenido(
-    "Matemáticas Avanzadas",
-    "Álgebra y Trigonometría"
-)
-
-#funcion deshabilitar materias
-materia1.habilitarRetiroMateria()
-"""
+    def __str__(self):
+        estado = "Activa" if self.estado else "Inactiva"
+        return f"{self.idMateria} - {self.nombre} ({estado})"
