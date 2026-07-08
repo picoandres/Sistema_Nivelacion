@@ -1,4 +1,4 @@
-import pyodbc #--> en caso de que suelte error es por que la libreria no se encuentra descargada, use pip install pyodbc en su terminal.
+import pyodbc #--> en caso de que suelte error es porque la libreria no se encuentra descargada, use pip install pyodbc en su terminal.
 
 class ConexionSQLServer:
     def __init__(self):
@@ -51,7 +51,7 @@ class ConexionSQLServer:
             self.conexion = pyodbc.connect(self.connection_string)
             self.cursor = self.conexion.cursor()
 
-            print("Conexion exitosa con SQL Server")
+            #print("Conexion exitosa con SQL Server")
             return self.conexion
         
         except Exception as e:
@@ -65,7 +65,7 @@ class ConexionSQLServer:
             self.cursor.close()
         if self.conexion:
             self.conexion.close()
-            print("Conexion cerrada")
+            #print("Conexion cerrada")
 
 
 if __name__ == "__main__":
