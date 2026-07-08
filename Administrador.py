@@ -85,16 +85,16 @@ class Administrador(Usuario):
         import re
 
         while True:
-            idCurso = input("ID del curso (Ej: A01): ").strip().upper()
+            idCurso = input("ID del curso: ").strip().upper()
 
             if not re.fullmatch(r"[A-Z][0-9]{2}", idCurso):
-                print("\nError: Debe ingresar una letra mayúscula seguida de dos números. Ej: A01")
+                print("\nDebe ingresar una letra mayúscula seguida de dos números.")
                 continue
 
             numero = int(idCurso[1:])
 
             if not (1 <= numero <= 99):
-                print("\nError: El número debe estar entre 01 y 99.")
+                print("\nEl número debe estar entre 01 y 99.")
                 continue
 
             if curso_dao.buscar(idCurso):
@@ -173,7 +173,7 @@ class Administrador(Usuario):
 
 
     def registrarMateria(self, materia_dao):
-        print("\n=============== REGISTRAR MATERIA ================")
+        print("\n=============== REGISTRO DE MATERIA ================")
 
         idMateria = input("ID de la materia: ").strip()
         if len(idMateria) > 5:
@@ -252,7 +252,7 @@ class Administrador(Usuario):
         
         docente = docente_dao.buscar(cedula_docente)
         if docente is None:
-            print("\nNo existe un docente con esa cédula\n")
+            print("\nNo existe un docente registrado con esa cédula\n")
             return
 
         if not cursoMateria_dao.existe(idCurso, docente.idMateria):
