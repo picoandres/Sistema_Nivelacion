@@ -20,7 +20,7 @@ CREATE TABLE Alumnos(
 	CONSTRAINT FK_Estudiante_usuario 
 	FOREIGN KEY (cedula) REFERENCES Usuario(cedula) ON DELETE CASCADE
 );
-
+-- Crea la tabla de Docente
 CREATE TABLE Docente(
 	cedula VARCHAR(20),
 	titulo VARCHAR(50),
