@@ -1,9 +1,6 @@
 from Usuario import Usuario
-from Docente import Docente
-from Estudiante import Estudiante
-from AsignarHorario import AsignacionHorario
-from Horario import HorarioEstudiante
-from datetime import date
+from HorarioFactory import obtenerFabricaHorario
+from CursoNivelacion import CursoNivelacion
 
 class Administrador(Usuario):
     def __init__(self, cedula, nombre, correo, contrasena, rol, idAdmin, sede, telefono):
@@ -13,118 +10,13 @@ class Administrador(Usuario):
         self.telefono = telefono
         self.historialAcciones = []
 
-
     def verPerfil(self):
         super().verPerfil()
-        print(f"Sede: {self.sede}")
-        print(f"Teléfono: {self.telefono}")
-
-
-    def actualizarSede(self, nueva_sede):
-        if not nueva_sede or not isinstance(nueva_sede, str):
-            raise ValueError("La sede debe ser un texto válido")
-        self.sede = nueva_sede
-        self.registrarAccion(f"Sede actualizada a: {nueva_sede}")
-
-
-    def eliminarDocente(self, cedula):
-        for docente in self.docentes:
-            if docente.cedula == cedula:
-                self.docentes.remove(docente)
-                self.registrarAccion(f"Docente eliminado: {docente.nombre} (C.I: {cedula})")
-                print(f" Docente con cédula {cedula} eliminado")
-                return
-        print(f" No se encontró un docente con cédula {cedula}")
-
-    def buscarDocente(self, cedula):
-        for docente in self.docentes:
-            if docente.cedula == cedula:
-                return docente
-        return None
-
-    def listarDocentes(self):
-        if not self.docentes:
-            print("No hay docentes registrados en el sistema")
-            return
-        print("\n──── DOCENTES REGISTRADOS ────")
-        for i, d in enumerate(self.docentes, 1):
-            print(f"  {i}. {d.nombre}  |  Especialidad: {d.especialidad}  |  C.I: {d.cedula}")
-        print()
-
-
-    def eliminarEstudiante(self, cedula):
-        for estudiante in self.estudiantes:
-            if estudiante.cedula == cedula:
-                self.estudiantes.remove(estudiante)
-                self.registrarAccion(f"Estudiante eliminado: {estudiante.nombre} (C.I: {cedula})")
-                print(f" Estudiante con cédula {cedula} eliminado")
-                return
-        print(f"No se encontró un estudiante con cédula {cedula}")
-
-    def buscarEstudiante(self, cedula):
-        for estudiante in self.estudiantes:
-            if estudiante.cedula == cedula:
-                return estudiante
-        return None
-
-    def listarEstudiantes(self):
-        """Muestra todos los estudiantes registrados."""
-        if not self.estudiantes:
-            print("No hay estudiantes registrados en el sistema")
-            return
-        print("\n──── ESTUDIANTES REGISTRADOS ────")
-        for i, e in enumerate(self.estudiantes, 1):
-            print(f"  {i}. {e.nombre}  |  Carrera: {e.carrera}  |  Paralelo: {e.paralelo}  |  C.I: {e.cedula}")
-        print()
-
-    def crearCurso(self, curso):
-        for c in self.cursos:
-            if c.idCurso == curso.idCurso:
-                print(f" El curso con ID '{curso.idCurso}' ya existe")
-                return
-
-        self.cursos.append(curso)
-        self.registrarAccion(f"Curso creado: {curso.nombreCurso} (ID: {curso.idCurso})")
-        print(f" Curso '{curso.nombreCurso}' creado exitosamente")
-
-    def asignarDocenteACurso(self, idCurso, cedula_docente):
-        """Busca el curso y el docente, y realiza la asignación."""
-        curso = self.buscarCurso(idCurso)
-        if curso is None:
-            print(f"No se encontró el curso con ID {idCurso}")
-            return
-
-        docente = self.buscarDocente(cedula_docente)
-        if docente is None:
-            print(f"No se encontró un docente con cédula {cedula_docente}")
-            return
-
-        try:
-            curso.asignarDocente(docente)
-            docente.asignarCurso(curso)
-            self.registrarAccion(
-                f"Docente {docente.nombre} asignado al curso {curso.nombreCurso}"
-            )
-            print(f"Docente {docente.nombre} asignado al curso {curso.nombreCurso}")
-        except Exception as e:
-            print(f"Error al asignar docente: {e}")
-
-    def mostrarCursos(self, cursos):
-        print("\n===== CURSOS =====")
-        for curso in cursos:
-            docente = curso.cedulaDocente
-
-            if curso.nombreDocente:
-                docente = curso.nombreDocente
-            else:
-                docente = "Sin asignar"
-
-            print(f"ID: {curso.idCurso}")
-            print(f"Nombre: {curso.nombreCurso}")
-            print(f"Modalidad: {curso.modalidad}")
-            print(f"Jornada: {curso.jornada}")
-            print(f"Docente: {docente}")
-            print("-"*20)
+        print(f"Sede            : {self.sede}")
+        print(f"Teléfono        : {self.telefono}")
+    
+    def cambiarContrasena(self, usuario_dao):
+        return super().cambiarContrasena(usuario_dao)
 
 
     def registrarAccion(self, mensaje):
@@ -132,55 +24,323 @@ class Administrador(Usuario):
 
     def mostrarHistorial(self):
         if not self.historialAcciones:
-            print("Sin acciones registradas")
+            print("\nSin acciones registradas")
             return
+
         print(f"\n──── HISTORIAL DE ACCIONES — {self.nombre} ────")
         for i, accion in enumerate(self.historialAcciones, 1):
             print(f"  {i}. {accion}")
         print()
 
-    def ultimaAccion(self):
-        if self.historialAcciones:
-            return self.historialAcciones[-1]
-        return "Sin registros"
+ 
+    def mostrarCursos(self, curso_dao):
+        cursos = curso_dao.listar()
+        if not cursos:
+            print("\nNo hay cursos registrados\n")
+            return
 
-    def buscarCurso(self, idCurso):
-        for curso in self.cursos:
-            if curso.idCurso == idCurso:
-                return curso
-        return None
+        print("\n===================== CURSOS =====================")
+        for curso in cursos:
+            print(f"ID        : {curso.idCurso}")
+            print(f"Nombre    : {curso.nombreCurso}")
+            print(f"Modalidad : {curso.modalidad}")
+            print(f"Jornada   : {curso.jornada}")
+            print(f"Docente   : {curso.nombreDocente}")
+            print("-" * 50)
+
+    def mostrarEstudiantes(self, estudiantes):
+        if not estudiantes:
+            print("\nNo hay estudiantes registrados\n")
+            return
+
+        print("\n=================== ESTUDIANTES ==================")
+        for estudiante in estudiantes:
+            print(f"Cédula   : {estudiante.cedula}")
+            print(f"Nombre   : {estudiante.nombre}")
+            print(f"Correo   : {estudiante.correo}")
+            print(f"Carrera  : {estudiante.carrera}")
+            print(f"Paralelo : {estudiante.paralelo}")
+            print("-" * 50)
+
+    def mostrarDocentes(self, docentes):
+        if not docentes:
+            print("\nNo hay docentes registrados\n")
+            return
+
+        print("\n==================== DOCENTES ====================")
+        for docente in docentes:
+            materia = docente.idMateria if docente.idMateria else "Sin materia"
+            print(f"Cédula           : {docente.cedula}")
+            print(f"Nombre           : {docente.nombre}")
+            print(f"Correo           : {docente.correo}")
+            print(f"Profesión        : {docente.profesion}")
+            print(f"Especialidad     : {docente.especialidad}")
+            print(f"Tipo de docente  : {docente.obtenerTipoDocente()}")
+            print(f"Tipo de contrato : {docente.obtenerTiempoContrato()}")
+            print(f"ID de Materia    : {materia}")
+            print("-" * 50)
+
+
+    def crearCurso(self, curso_dao, horario_dao, gestor_aulas):
+        print("\n=============== CREAR CURSO ===============")
+        idCurso = input("ID del curso: ").strip().upper()
+        if len(idCurso) > 5:
+            print("\nEl ID del curso no puede tener más de 5 caracteres\n")
+            return
+
+        import re
+        if not re.fullmatch(r"[A-Za-z]+", idCurso):
+            print("\nEl ID del curso solo puede contener letras\n")
+            return
+        
+        nombreCurso = input("Nombre del curso: ").strip()
+        modalidad = input("Modalidad (presencial / virtual / híbrida): ").strip().lower()
+        jornada = input("Jornada (matutina / vespertina / nocturna / virtual): ").strip().lower()
+        dia = input("Día: ").strip().lower()
+
+        if not idCurso or not nombreCurso or not modalidad or not jornada or not dia:
+            print("\nTodos los campos son obligatorios")
+            return
+
+        try:
+            aula = int(input("Aula: ").strip())
+        except ValueError:
+            print("\nEl aula debe ser un número entero")
+            return
+
+        curso_existente = curso_dao.buscar(idCurso)
+        if curso_existente is not None:
+            print("\nYa existe un curso con ese ID\n")
+            return
+
+        modalidades_validas = ["presencial", "virtual", "hibrida", "híbrida"]
+        if modalidad not in modalidades_validas:
+            print("\nModalidad inválida. Use presencial, virtual o híbrida\n")
+            return
+
+        if modalidad == "híbrida":
+            modalidad = "hibrida"
+
+        dias_validos = ["lunes-viernes", "lunes, miércoles y viernes", "lunes, miercoles y viernes"]
+        if dia not in dias_validos:
+            print("\nDía inválido. Use lunes-viernes o lunes, miércoles y viernes\n")
+            return
+
+        jornadas_validas = ["matutina", "vespertina", "nocturna", "virtual"]
+        if jornada not in jornadas_validas:
+            print("\nJornada inválida. Use: matutina, vespertina, nocturna o virtual\n")
+            return
+
+        try:
+            fabrica = obtenerFabricaHorario(jornada)
+            horario = fabrica.crearHorario(dia, aula, self.nombre)
+
+            if not horario.verificarAula(gestor_aulas):
+                print("\nEl aula ya está ocupada en ese día y horario\n")
+                return
+
+            curso = CursoNivelacion(idCurso,nombreCurso, modalidad, jornada, horario)
+
+            if curso_dao.guardar(curso):
+                print(f"\nCurso {nombreCurso} ({idCurso}) creado exitosamente\n")
+                self.registrarAccion(f"Se creó el curso: {nombreCurso} ({idCurso})")
+            else:
+                print("\nNo se pudo crear el curso\n")
+
+            if not horario_dao.guardar(idCurso, horario):
+                print("\nEl curso se creó, pero no se pudo guardar el horario\n")
+                return
+
+        except Exception as e:
+            print("Error al crear el curso:", e)
+
+
+    def registrarMateria(self, materia_dao):
+        print("\n=============== REGISTRAR MATERIA ================")
+
+        idMateria = input("ID de la materia: ").strip()
+        if len(idMateria) > 5:
+            print("\nEl ID de la materia no puede tener más de 5 caracteres\n")
+            return
+        
+        import re
+        if not re.fullmatch(r"[A-Za-z0-9\-]+", idMateria):
+            print("\nEl ID del curso solo puede contener letras, números y guiones\n")
+            return
+
+        nombre = input("Nombre: ").strip()
+        descripcion = input("Descripción: ").strip()
+
+        try:
+            horas = int(input("Horas: ").strip())
+        except ValueError:
+            print("\nLas horas deben ser un número entero\n")
+            return
+
+        estado = True
+
+        if not idMateria or not nombre or not descripcion or not horas:
+            print("\nTodos los campos son obligatorios\n")
+            return
+
+        if horas <= 0:
+            print("\nLas horas deben ser mayores a 0\n")
+            return
+
+        materia_existente = materia_dao.buscar(idMateria)
+        if materia_existente is not None:
+            print("\nYa existe una materia con ese ID\n")
+            return
+
+        from Materia import Materia
+        materia = Materia(idMateria, nombre, descripcion, horas, estado)
+
+        if materia_dao.guardar(materia):
+            self.registrarAccion(f"Se registró la materia: {nombre}")
+            print(f"\nMateria {nombre} ({idMateria}) registrada correctamente\n")
+        else:
+            print("\nNo se pudo registrar la materia\n")
+
+
+    def listarCursos(self, curso_dao):
+        self.mostrarCursos(curso_dao)
+
+    def listarEstudiantes(self, estudiante_dao):
+        estudiantes = estudiante_dao.listar()
+        self.mostrarEstudiantes(estudiantes)
+
+    def listarDocentes(self, docente_dao):
+        docentes = docente_dao.listar()
+        self.mostrarDocentes(docentes)
+
+
+    def asignarDocenteACurso(self, curso_dao, docente_dao, cursoMateria_dao):
+        print("\n=============== ASIGNAR DOCENTE A CURSO ===============")
+        self.mostrarCursos(curso_dao)
+
+        docentes = docente_dao.listar()
+        self.mostrarDocentes(docentes)
+
+        idCurso = input("\nID del Curso: ").strip()
+        cedula_docente = input("Cédula del docente: ").strip()
+        
+        if not idCurso or not cedula_docente:
+            print("\nTodos los campos son obligatorios")
+            return
+        
+        curso = curso_dao.buscar(idCurso)
+        if curso is None:
+            print("\nNo existe un curso con ese ID")
+            return
+        
+        docente = docente_dao.buscar(cedula_docente)
+        if docente is None:
+            print("\nNo existe un docente con esa cédula\n")
+            return
+
+        if not cursoMateria_dao.existe(idCurso, docente.idMateria):
+            print("\nLa materia del docente no está asignada al curso\n")
+            return        
+
+        if curso_dao.asignarDocente(idCurso, cedula_docente):
+            print(f"\nDocente {docente.nombre} asignado correctamente al curso {curso.nombreCurso}\n")
+            self.registrarAccion(f"Docente {docente.nombre} ({cedula_docente}) asignado al curso {curso.nombreCurso} ({idCurso})")
+        else:
+            print("\nNo se pudo asignar el docente al curso\n")
+
+
+    def asignarEstudianteACurso(self, curso_dao, estudiante_dao, asignacionCurso_dao):
+        self.mostrarCursos(curso_dao)
+
+        estudiantes = estudiante_dao.listar()
+        if not estudiantes:
+            print("\nNo hay estudiantes registrados\n")
+            return
+        
+        self.mostrarEstudiantes(estudiantes)
+
+        cedula = input("\nCédula del estudiante: ").strip()
+        idCurso = input("ID del curso: ").strip()
+
+        curso = curso_dao.buscar(idCurso)
+        if curso is None:
+            print("No existe un curso con esa ID\n")
+            return
+
+        estudiante = estudiante_dao.buscar(cedula)
+        if estudiante is None:
+            print("\nNo existe un estudiante con esa cédula\n")
+            return
+
+        if asignacionCurso_dao.existe(cedula, idCurso):
+            print("\nEl estudiante ya está asignado a ese curso\n")
+            return
+
+        if asignacionCurso_dao.guardar(cedula, idCurso):
+            print(f"\nEstudiante {estudiante.nombre} asignado correctamente al curso {curso.nombreCurso}\n")
+            self.registrarAccion(f"Estudiante {estudiante.nombre} ({cedula}) asignado al curso {curso.nombreCurso} ({idCurso})")
+        else:
+            print("\nNo fue posible realizar la asignación\n")
+
+
+    def asignarMateriaACurso(self, curso_dao, materia_dao, cursoMateria_dao):
+        self.mostrarCursos(curso_dao)
+
+        print("\n============== MATERIAS DISPONIBLES ==============")
+        materias = materia_dao.listar()
+        if not materias:
+            print("No hay materias registradas\n")
+            return
+
+        for materia in materias:
+            print(f"ID          : {materia.idMateria}")
+            print(f"Nombre      : {materia.nombre}")
+            print(f"Descripción : {materia.descripcion}")
+            print(f"Horas       : {materia.horas}")
+            print("-" * 50)
+
+        idCurso = input("\nIngrese el ID del curso: ").strip()
+        idMateria = input("Ingrese el ID de la materia: ").strip()
+
+        curso = curso_dao.buscar(idCurso)
+        if curso is None:
+            print("\nNo existe un curso con ese ID\n")
+            return
+
+        materia = materia_dao.buscar(idMateria)
+        if materia is None:
+            print("\nNo existe una materia con ese ID\n")
+            return
+
+        if cursoMateria_dao.guardar(idCurso, idMateria):
+            self.registrarAccion(f"Materia {materia.nombre} ({idMateria}) asignada al curso {curso.nombreCurso} ({idCurso})")
+            print(f"\nMateria {materia.nombre} asignada al curso {curso.nombreCurso} correctamente\n")
+        else:
+            print("\nNo se pudo asignar la materia al curso\n")
+        
+
+    def verHorario(self, horario_dao):
+        print("\n=============== HORARIO GENERAL ===============")
+        horario = horario_dao.listarTodos()
+
+        if not horario:
+            print("\nNo hay cursos con horario registrado\n")
+            return
+
+        for item in horario:
+            docente = item.nombreDocente if item.nombreDocente else "Sin asignar"
+            aula = item.aula if item.aula is not None else "Aula virtual"
+
+            print(f"Curso        : {item.nombreCurso} ({item.idCurso})")
+            print(f"Modalidad    : {item.modalidad}")
+            print(f"Jornada      : {item.jornada}")
+            print(f"Docente      : {docente}")
+            print(f"Día          : {item.dia}")
+            print(f"Hora         : {item.horaInicio} - {item.horaFin}")
+            print(f"Aula         : {aula}")
+            print(f"Asignado por : {item.asignador}")
+            print("-" * 50)
+
 
     def __str__(self):
-        return (f"Administrador | {self.nombre} | Sede: {self.sede} | Área: Nivelación") 
-
-    def asignarHorarioEstudiante(self, dia, hora_inicio, hora_fin, aula, asignador, idEstudiante, idMateria) -> AsignacionHorario:
-        horario = HorarioEstudiante(dia, hora_inicio, hora_fin, aula, asignador, idEstudiante)
-        
-        if not horario.verificarAula(self.gestor_aulas):
-            print("Error: Aula ocupada o no existe")
-            return None
-        
-        horario.definirHorario(idMateria)
-        asignacion = AsignacionHorario(horario)
-        asignacion.aprobar(str(date.today()))
-        self.gestor_aulas.registrarAsignacion(asignacion)
-        return asignacion
-
-
-class GestorAulas:
-    def __init__(self):
-        self.aulas = {"A103": 40, "A302": 30, "Lab1": 25}
-        self.asignaciones = []  
-
-    def aulaDisponible(self, aula, dia, h_inicio, h_fin):
-        if aula not in self.aulas:
-            return False
-        for asignacion in self.asignaciones:
-            h = asignacion.asignar
-            if h.aula == aula and h.dia == dia and h.estado != "Cancelado":
-                if not (h_fin <= h.horaInicio or h_inicio >= h.horaFin):
-                    return False
-        return True
-
-    def registrarAsignacion(self, asignacion: AsignacionHorario):
-        self.asignaciones.append(asignacion)
+        return f"Administrador | {self.nombre} | Sede: {self.sede} | Área: Nivelación"
