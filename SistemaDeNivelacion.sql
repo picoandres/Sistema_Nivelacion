@@ -29,7 +29,7 @@ CREATE TABLE Docente(
 	CONSTRAINT FK_Docente_usuario 
 	FOREIGN KEY (cedula) REFERENCES Usuario(cedula) ON DELETE CASCADE
 );
-
+-- Crea la tabla de los administradores
 CREATE TABLE Administrador(
 	cedula VARCHAR(20),
 	id_admin INT UNIQUE,
