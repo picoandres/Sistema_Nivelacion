@@ -252,22 +252,33 @@ class Administrador(Usuario):
         docentes = docente_dao.listar()
         self.mostrarDocentes(docentes)
 
-        idCurso = input("\nID del Curso: ").strip()
-        cedula_docente = input("Cédula del docente: ").strip()
-        
-        if not idCurso or not cedula_docente:
-            print("\nTodos los campos son obligatorios")
-            return
-        
-        curso = curso_dao.buscar(idCurso)
-        if curso is None:
-            print("\nNo existe un curso con ese ID")
-            return
-        
-        docente = docente_dao.buscar(cedula_docente)
-        if docente is None:
-            print("\nNo existe un docente registrado con esa cédula\n")
-            return
+        while True:
+            idCurso = input("\nID del Curso: ").strip().upper()
+
+            if not idCurso:
+                print("Debe ingresar un ID de curso.")
+                continue
+
+            curso = curso_dao.buscar(idCurso)
+
+            if curso:
+                break
+
+            print("No existe un curso con ese ID.")
+
+        while True:
+            cedula_docente = input("Cédula del docente: ").strip()
+
+            if not cedula_docente:
+                print("Debe ingresar la cédula del docente.")
+                continue
+
+            docente = docente_dao.buscar(cedula_docente)
+
+            if docente:
+                break
+
+            print("No existe un docente con esa cédula.")
 
         if not cursoMateria_dao.existe(idCurso, docente.idMateria):
             print("\nLa materia del docente no está asignada al curso\n")
