@@ -180,6 +180,6 @@ SELECT * FROM Curso;           -- Cada curso tiene 1 docente asignado por cédul
 SELECT * FROM AsignacionCurso; -- Estudiante asignado a un curso
 SELECT * FROM Materia;
 SELECT * FROM CursoMateria;
-SELECT * FROM Calificacion;
 SELECT * FROM Evaluacion;
+SELECT * FROM Calificacion;
 SELECT * FROM Horario;
