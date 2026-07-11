@@ -213,16 +213,18 @@ SELECT * FROM Curso;
 SELECT * FROM Paralelo; -- Cada paralelo tiene 1 docente asignado por cédula
 SELECT * FROM Matricula; -- Estudiante asignado a un curso
 SELECT * FROM Materia;
+SELECT * FROM AsignacionDocente;
 SELECT * FROM ParaleloMateria;
-SELECT * FROM ItemCalificacion;
+SELECT * FROM Evaluacion;
 SELECT * FROM Calificacion;
 SELECT * FROM Horario;
 
 -- Para eliminar tablas por si acaso (en orden descendente, es importante por los FK)
 DROP TABLE Horario;
 DROP TABLE Calificacion;
-DROP TABLE ItemCalificacion;
+DROP TABLE Evaluacion;
 DROP TABLE ParaleloMateria;
+DROP TABLE AsignacionDocente;
 DROP TABLE Materia;
 DROP TABLE Matricula;
 DROP TABLE Paralelo;
