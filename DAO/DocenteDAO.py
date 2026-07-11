@@ -1,6 +1,8 @@
-from BaseDeDatos import ConexionSQLServer
-from Docente import Docente, Titular, Suplente, TiempoCompleto, TiempoParcial
-from Materia import Materia
+from BaseDeDatos import ConexionSQLServer # DEBE MODIFICARSE #
+from Modelos.Docente import Docente
+from Modelos.TipoDocente import Titular, Suplente
+from Modelos.TiempoContrato import TiempoCompleto, TiempoParcial
+from Modelos.Materia import Materia
 
 class DocenteDAO:
     def __init__(self):
@@ -259,6 +261,137 @@ class DocenteDAO:
 
         except Exception as e:
             print("Error al listar docentes:", e)
+            return []
+
+        finally:
+            self.db.cerrarConexion()
+
+
+    def asignarMateria(self, cedulaDocente, idMateria):
+        conexion = self.db.conectar()
+        if not conexion:
+            return False
+
+        try:
+            cedulaDocente = str(cedulaDocente).strip()
+
+            if not cedulaDocente:
+                print("La cédula del docente es obligatoria")
+                return False
+            
+            idMateria = str(idMateria).strip()
+
+            if not idMateria:
+                print("El ID de la materia es obligatoria")
+                return False
+
+            # Verificar que el docente exista en la tabla Docente
+            sql_docente = """
+            SELECT idMateria
+            FROM Docente
+            WHERE cedula = ?
+            """
+            self.db.cursor.execute(sql_docente, (cedulaDocente,))
+            docente = self.db.cursor.fetchone()
+
+            if docente is None:
+                print("No existe un docente con esa cédula")
+                return False
+
+            # Verificar que la materia exista
+            sql_materia = """
+            SELECT 1
+            FROM Materia
+            WHERE idMateria = ?
+            """
+            self.db.cursor.execute(sql_materia, (idMateria,))
+            if self.db.cursor.fetchone() is None:
+                print("No existe una materia con ese ID")
+                return False
+
+            # Si ya tiene esa materia, no hacer nada
+            if docente.idMateria == idMateria:
+                print("Ese docente ya tiene asignada esa materia")
+                return False
+
+            # Validar si el docente ya tiene una materia asignada
+            sql_materia_asignada = """
+            SELECT idMateria
+            FROM Docente
+            WHERE cedulaDocente = ?
+            """
+            self.db.cursor.execute(sql_materia_asignada, (cedulaDocente,))
+            if self.db.cursor.fetchone() is not None:
+                print("No se puede cambiar la materia del docente porque ya tiene cursos asignados")
+                return False
+
+             # Validar si ya tiene evaluaciones registradas
+            sql_evaluaciones = """
+            SELECT 1
+            FROM Evaluacion e
+            INNER JOIN Curso c
+                ON e.idCurso = c.idCurso
+            WHERE c.cedulaDocente = ?
+            """
+            self.db.cursor.execute(sql_evaluaciones, (cedulaDocente,))
+            if self.db.cursor.fetchone() is not None:
+                print("No se puede cambiar la materia del docente porque ya tiene evaluaciones registradas")
+                return False
+
+            # Para ahora sí asignar la materia al docente
+            sql_update = """
+            UPDATE Docente
+            SET idMateria = ?
+            WHERE cedula = ?
+            """
+            self.db.cursor.execute(sql_update, (idMateria, cedulaDocente))
+
+            if self.db.cursor.rowcount == 0:
+                print("No se pudo asignar la materia al docente")
+                return False
+
+            conexion.commit()
+            return True
+
+        except Exception as e:
+            conexion.rollback()
+            print("Error al asignar materia al docente:", e)
+            return False
+
+        finally:
+            self.db.cerrarConexion()
+
+
+    def listarConMateria(self):
+        conexion = self.db.conectar()
+        if not conexion:
+            return []
+
+        try:
+            sql = """
+            SELECT
+                u.cedula,
+                u.nombre,
+                u.correo,
+                d.profesion,
+                d.especialidad,
+                d.tipoDocente,
+                d.tiempoContrato,
+                d.idMateria,
+                m.nombre AS nombreMateria
+            FROM Docente d
+            INNER JOIN Usuario u
+                ON d.cedula = u.cedula
+            LEFT JOIN Materia m
+                ON d.idMateria = m.idMateria
+            ORDER BY u.nombre
+            """
+
+            self.db.cursor.execute(sql)
+            return self.db.cursor.fetchall()
+
+        except Exception as e:
+            print("Error al listar docentes con materia:", e)
             return []
 
         finally:

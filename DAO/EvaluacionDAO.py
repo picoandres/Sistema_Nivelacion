@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime # SE DEBE MODIFICAR #
 from BaseDeDatos import ConexionSQLServer
 
 class EvaluacionDAO:
@@ -11,7 +11,7 @@ class EvaluacionDAO:
             return False
 
         try:
-            idCurso = str(idCurso).strip()
+            idCurso = str(idCurso).strip().upper()
             idMateria = str(idMateria).strip()
             titulo = str(titulo).strip()
             descripcion = str(descripcion).strip()

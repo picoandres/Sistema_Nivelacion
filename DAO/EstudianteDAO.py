@@ -1,5 +1,5 @@
-from BaseDeDatos import ConexionSQLServer
-from Estudiante import Estudiante
+from BaseDeDatos import ConexionSQLServer # DEBE MODIFICARSE #
+from Modelos.Estudiante import Estudiante
 
 class EstudianteDAO:
     def __init__(self):

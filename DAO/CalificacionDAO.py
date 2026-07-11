@@ -1,4 +1,4 @@
-from BaseDeDatos import ConexionSQLServer
+from BaseDeDatos import ConexionSQLServer # PENDIENTE DE MODIFICAR
 
 class CalificacionDAO:
     def __init__(self):
@@ -317,7 +317,7 @@ class CalificacionDAO:
             if fila is None:
                 return None
 
-            from Estudiante import Estudiante
+            from Modelos.Estudiante import Estudiante
             estudiante = Estudiante(
                 fila.cedula,
                 fila.nombre,

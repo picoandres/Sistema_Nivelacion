@@ -1,5 +1,5 @@
-from BaseDeDatos import ConexionSQLServer
-from Horario import HorarioCurso
+from BaseDeDatos import ConexionSQLServer # SE DEBE MODIFICAR #
+from Modelos.HorarioCurso import HorarioCurso
 
 class HorarioDAO:
     def __init__(self):

@@ -1,12 +1,12 @@
-from BaseDeDatos import ConexionSQLServer
-from CursoNivelacion import CursoNivelacion
+from BaseDeDatos import ConexionSQLServer #CLASE VIEJA, SOLO LE CAMBIÉ LOS OBJETOS CursoNivelacion POR Curso
+from Modelos.Curso import Curso
 
 class CursoDAO:
     def __init__(self):
         self.db = ConexionSQLServer()
     
 
-    def guardar(self, curso: CursoNivelacion):
+    def guardar(self, curso: Curso):
         conexion = self.db.conectar()
         if not conexion:
             return False
@@ -106,7 +106,7 @@ class CursoDAO:
 
             cursos = []
             for fila in resultados:
-                curso = CursoNivelacion(
+                curso = Curso(
                     fila.idCurso,
                     fila.nombreCurso,
                     fila.modalidad,
@@ -159,7 +159,7 @@ class CursoDAO:
             if fila is None:
                 return None
 
-            curso = CursoNivelacion(
+            curso = Curso(
             fila.idCurso,
             fila.nombreCurso,
             fila.modalidad,

@@ -1,16 +1,15 @@
-from UsuarioDAO import UsuarioDAO
-from EstudianteDAO import EstudianteDAO
-from DocenteDAO import DocenteDAO
-from AdministradorDAO import AdministradorDAO
-from CursoDAO import CursoDAO
-from AsignacionCursoDAO import AsignacionCursoDAO
-from CalificacionDAO import CalificacionDAO
-from MateriaDAO import MateriaDAO
-from CursoMateriaDAO import CursoMateriaDAO
-from EvaluacionDAO import EvaluacionDAO
-from HorarioDAO import HorarioDAO
-from GestorNotificaciones import GestorNotificaciones
-from GestorAulas import GestorAulas
+from DAO.UsuarioDAO import UsuarioDAO
+from DAO.EstudianteDAO import EstudianteDAO
+from DAO.DocenteDAO import DocenteDAO
+from DAO.AdministradorDAO import AdministradorDAO
+from DAO.CursoDAO import CursoDAO
+from DAO.CalificacionDAO import CalificacionDAO
+from DAO.MateriaDAO import MateriaDAO
+from DAO.CursoMateriaDAO import CursoMateriaDAO
+from DAO.EvaluacionDAO import EvaluacionDAO
+from DAO.HorarioDAO import HorarioDAO
+from Patrones.Observer.GestorNotificaciones import GestorNotificaciones
+from Servicios.GestorAulas import GestorAulas
 
 class Sistema():
     def __init__(self):
@@ -21,7 +20,6 @@ class Sistema():
         self.administrador_dao = AdministradorDAO()
         self.curso_dao = CursoDAO()
         self.materia_dao = MateriaDAO()
-        self.asignacionCurso_dao = AsignacionCursoDAO()
         self.cursoMateria_dao = CursoMateriaDAO()
         self.calificacion_dao = CalificacionDAO()
         self.evaluacion_dao = EvaluacionDAO()
@@ -81,12 +79,13 @@ class Sistema():
             print("5. Asignar docente a curso")
             print("6. Asignar estudiante a curso")
             print("7. Asignar materia a curso")
-            print("8. Listar estudiantes")
-            print("9. Listar docentes")
-            print("10. Listar cursos")
-            print("11. Ver horario")
-            print("12. Ver historial")
-            print("13. Cerrar sesión")
+            print("8. Asignar materia a docente")
+            print("9. Listar estudiantes")
+            print("10. Listar docentes")
+            print("11. Listar cursos")
+            print("12. Ver horario")
+            print("13. Ver historial")
+            print("14. Cerrar sesión")
 
             opcion = input("Escoja una opción: ").strip()
 
@@ -112,21 +111,24 @@ class Sistema():
                 self.usuario_actual.asignarMateriaACurso(self.curso_dao,self.materia_dao,self.cursoMateria_dao)
 
             elif opcion == "8":
-                self.usuario_actual.listarEstudiantes(self.estudiante_dao)
+                self.usuario_actual.asignarMateriaADocente(self.docente_dao, self.materia_dao)
 
             elif opcion == "9":
-                self.usuario_actual.listarDocentes(self.docente_dao)
+                self.usuario_actual.listarEstudiantes(self.estudiante_dao)
 
             elif opcion == "10":
-                self.usuario_actual.listarCursos(self.curso_dao)
+                self.usuario_actual.listarDocentes(self.docente_dao)
 
             elif opcion == "11":
-                self.usuario_actual.verHorario(self.horario_dao)
+                self.usuario_actual.listarCursos(self.curso_dao)
 
             elif opcion == "12":
-                self.usuario_actual.mostrarHistorial()
+                self.usuario_actual.verHorario(self.horario_dao)
 
             elif opcion == "13":
+                self.usuario_actual.mostrarHistorial()
+
+            elif opcion == "14":
                 print("Cerrando sesión\n")
                 self.usuario_actual = None
                 break

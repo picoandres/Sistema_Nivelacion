@@ -1,7 +1,7 @@
-from BaseDeDatos import ConexionSQLServer
-from Administrador import Administrador
-from Estudiante import Estudiante
-from Docente import Docente, Titular, Suplente, TiempoCompleto, TiempoParcial
+from BaseDeDatos import ConexionSQLServer # QUIZÁ SEA NECESARIO CAMBIARLA, AUNQUE ES POCO PROBABLE #
+from Modelos.Administrador import Administrador
+from Modelos.Estudiante import Estudiante
+from Modelos.Docente import Docente, Titular, Suplente, TiempoCompleto, TiempoParcial
 
 
 class UsuarioDAO:
@@ -72,7 +72,6 @@ class UsuarioDAO:
                     especialidad,
                     tipoDocente,
                     tiempoContrato,
-                    idMateria
                 FROM Docente
                 WHERE cedula = ?
                 """
@@ -96,7 +95,6 @@ class UsuarioDAO:
                     datos.especialidad,
                     tipo_docente,
                     tiempo_contrato,
-                    datos.idMateria
                 )
 
             elif rol == "Administrador":

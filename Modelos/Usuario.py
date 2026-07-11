@@ -9,6 +9,15 @@ class Usuario(Observador):
         self.rol = rol
         self.notificaciones = []
 
+    def obtenerContrasena(self):
+        return self.__contrasena
+
+    def setContrasena(self, nueva_contrasena):
+        self.__contrasena = nueva_contrasena
+
+    def verificarContrasena(self, contrasena):
+        return self.__contrasena == contrasena
+
     def verPerfil(self):
         print(f"\n=============== Perfil de {self.rol} ===============")
         print(f"Cédula          : {self.cedula}")
@@ -20,15 +29,15 @@ class Usuario(Observador):
 
         actual = input("Ingrese su contraseña actual: ").strip()
 
-        if actual != self.__contrasena:
-            print("\nLa contraseña actual no es correcta\n")
+        if not self.verificarContrasena(actual):
+            print("\nLa contraseña actual es incorrecta\n")
             return False
 
         nueva = input("Ingrese la nueva contraseña (mínimo 8 caracteres): ").strip()
         confirmar = input("Confirme la nueva contraseña: ").strip()
 
         if not nueva or not confirmar:
-            print("\nDebe completar todos los campos\n")
+            print("\nTodos los campos son obligatorios\n")
             return False
 
         if nueva != confirmar:
@@ -44,22 +53,21 @@ class Usuario(Observador):
             return False
 
         if usuario_dao.actualizarContrasena(self.cedula, nueva):
-            self.__contrasena = nueva
+            self.setContrasena(nueva)
             print("\nContraseña actualizada correctamente\n")
             return True
         else:
             print("\nNo se pudo actualizar la contraseña\n")
             return False
 
-    # MÉTODOS DEL OBSERVER
+    # MÉTODO DEL OBSERVER
     def actualizar(self, mensaje):
         self.notificaciones.append(mensaje)
-        if not self.notificaciones:
-            print("\nNo hay notificaciones\n")
 
-        print("=" * 60)
+        print("\n" + "=" * 50)
         print("NOTIFICACIÓN RECIBIDA")
+        print("-" * 50)
         print(f"Usuario: {self.nombre}")
         print(f"Rol    : {self.rol}")
         print(f"Mensaje: {mensaje}")
-        print("=" * 60 + "\n")
+        print("=" * 50 + "\n")

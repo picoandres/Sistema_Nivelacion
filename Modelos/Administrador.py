@@ -1,6 +1,6 @@
 from Usuario import Usuario
 from HorarioFactory import obtenerFabricaHorario
-from CursoNivelacion import CursoNivelacion
+from Paralelo import Paralelo
 
 class Administrador(Usuario):
     def __init__(self, cedula, nombre, correo, contrasena, rol, idAdmin, sede, telefono):
@@ -12,6 +12,7 @@ class Administrador(Usuario):
 
     def verPerfil(self):
         super().verPerfil()
+        print(f"ID de Admin     : {self.idAdmin}")
         print(f"Sede            : {self.sede}")
         print(f"Teléfono        : {self.telefono}")
     
@@ -82,68 +83,44 @@ class Administrador(Usuario):
 
 
     def crearCurso(self, curso_dao, horario_dao, gestor_aulas):
-        import re
+        idCurso = input("ID del curso: ").strip().upper()
 
-        while True:
-            idCurso = input("ID del curso: ").strip().upper()
-
-            if not re.fullmatch(r"[A-Z][0-9]{2}", idCurso):
-                print("\nDebe ingresar una letra mayúscula seguida de dos números")
-                continue
-
-            numero = int(idCurso[1:])
-
-            if not (1 <= numero <= 99):
-                print("\nEl número debe estar entre 01 y 99")
-                continue
-
-            if curso_dao.buscar(idCurso):
-                print("\nYa existe un curso con ese ID")
-                continue
-            break
+        if curso_dao.buscar(idCurso):
+            print("\nYa existe un curso con ese ID")
+            return
         
-        while True:
-            nombreCurso = input("Nombre del curso: ").strip()
+        nombreCurso = input("Nombre del curso: ").strip()
 
-            if nombreCurso:
-                break
-
+        if not nombreCurso:
             print("El nombre no puede estar vacío")
+            return
 
+        modalidad = input("Modalidad (presencial / virtual / híbrida): ").strip().lower()
 
-        while True:
-            modalidad = input("Modalidad (presencial / virtual / híbrida): ").strip().lower()
-
-            if modalidad in ["presencial", "virtual", "hibrida", "híbrida"]:
-                modalidad = modalidad.replace("híbrida", "hibrida")
-                break
-
+        if modalidad not in ["presencial", "virtual", "hibrida", "híbrida"]:
             print("Modalidad inválida")
-
-        while True:
-            jornada = input("Jornada (matutina / vespertina / nocturna ): ").strip().lower()
-
-            if jornada in ["matutina", "vespertina", "nocturna"]:
-                break
-
+            return
+        else:
+            modalidad = modalidad.replace("híbrida", "hibrida")
+    
+        jornada = input("Jornada (matutina / vespertina / nocturna ): ").strip().lower()
+        
+        if jornada not in ["matutina", "vespertina", "nocturna"]:
             print("Jornada inválida")
+            return
 
-        while True:
-            print("Ejemplo: lunes-viernes ,lunes, miércoles y viernes")
-            dia = input("Día: ").strip().lower()
+        print("Ejemplo: lunes-viernes / lunes, miércoles y viernes")    
+        dia = input("Día: ").strip().lower()
 
-            if dia in ["lunes-viernes", "lunes, miércoles y viernes", "lunes, miercoles y viernes"]:
-                break
-
+        if dia not in ["lunes-viernes", "lunes, miércoles y viernes", "lunes, miercoles y viernes"]:
             print("Día inválido")
+            return
 
-        while True:
-            aula = input("Aula: ").strip()
-
-            if aula:
-                break
-
+        aula = input("Aula: ").strip()
+        
+        if not aula:
             print("Debe ingresar un aula")
+            return
 
         if not idCurso or not nombreCurso or not modalidad or not jornada or not dia or not aula:
             print("\nTodos los campos son obligatorios")
@@ -157,13 +134,14 @@ class Administrador(Usuario):
                 print("\nEl aula ya está ocupada en ese día y horario\n")
                 return
 
-            curso = CursoNivelacion(idCurso,nombreCurso, modalidad, jornada, horario)
+            paralelo = Paralelo(idCurso, nombreCurso, modalidad, jornada, horario)
 
-            if curso_dao.guardar(curso):
+            if curso_dao.guardar(paralelo):
                 print(f"\nCurso {nombreCurso} ({idCurso}) creado exitosamente\n")
                 self.registrarAccion(f"Se creó el curso: {nombreCurso} ({idCurso})")
             else:
                 print("\nNo se pudo crear el curso\n")
+                return
 
             if not horario_dao.guardar(idCurso, horario):
                 print("\nEl curso se creó, pero no se pudo guardar el horario\n")
@@ -176,51 +154,43 @@ class Administrador(Usuario):
     def registrarMateria(self, materia_dao):
         print("\n=============== REGISTRO DE MATERIA ================")
 
+        idMateria = input("ID de la materia: ").strip().upper()
+
+        if len(idMateria) > 5:
+            print("\nEl ID de la materia no puede tener más de 5 caracteres")
+            return
+
         import re
+        if not re.fullmatch(r"[A-Za-z0-9\-]+", idMateria):
+            print("\nEl ID solo puede contener letras, números y guiones")
+            return
 
-        while True:
-            idMateria = input("ID de la materia: ").strip().upper()
+        if materia_dao.buscar(idMateria):
+            print("\nYa existe una materia con ese ID")
+            return
+            
+        nombre = input("Nombre: ").strip()
 
-            if len(idMateria) > 5:
-                print("\nEl ID de la materia no puede tener más de 5 caracteres")
-                continue
-
-            if not re.fullmatch(r"[A-Za-z0-9\-]+", idMateria):
-                print("\nEl ID solo puede contener letras, números y guiones")
-                continue
-
-            if materia_dao.buscar(idMateria):
-                print("\nYa existe una materia con ese ID")
-                continue
-            break
-
-        while True:
-            nombre = input("Nombre: ").strip()
-
-            if nombre:
-                break
-
+        if not nombre:
             print("El nombre no puede estar vacío")
+            return
         
-        while True:
-            descripcion = input("Descripción: ").strip()
+        descripcion = input("Descripción: ").strip()
 
-            if descripcion:
-                break
-
+        if not descripcion:
             print("La descripción no puede estar vacía")
+            return
 
-        while True:
-            try:
-                horas = int(input("Horas: ").strip())
+        try:
+            horas = int(input("Horas: ").strip())
 
-                if horas > 0:
-                    break
-
+            if not horas > 0:
                 print("Las horas deben ser mayores a 0")
+                return
 
-            except ValueError:
-                print("Debe ingresar un número entero")
+        except ValueError:
+            print("Debe ingresar un número entero")
+            return
 
         estado = True
 
@@ -253,37 +223,33 @@ class Administrador(Usuario):
         docentes = docente_dao.listar()
         self.mostrarDocentes(docentes)
 
-        while True:
-            idCurso = input("\nID del Curso: ").strip().upper()
+        idCurso = input("\nID del Curso: ").strip().upper()
 
-            if not idCurso:
-                print("Debe ingresar un ID de curso.")
-                continue
+        if not idCurso:
+            print("Debe ingresar un ID de curso")
+            return
+                
+        curso = curso_dao.buscar(idCurso)
 
-            curso = curso_dao.buscar(idCurso)
+        if not curso:
+            print("No existe un curso con ese ID")
+            return
 
-            if curso:
-                break
+        cedula_docente = input("Cédula del docente: ").strip()
 
-            print("No existe un curso con ese ID.")
+        if not cedula_docente:
+            print("Debe ingresar la cédula del docente")
+            return
+                
+        docente = docente_dao.buscar(cedula_docente)
 
-        while True:
-            cedula_docente = input("Cédula del docente: ").strip()
+        if not docente:
+            print("No existe un docente con esa cédula")
+            return
 
-            if not cedula_docente:
-                print("Debe ingresar la cédula del docente.")
-                continue
-
-            docente = docente_dao.buscar(cedula_docente)
-
-            if docente:
-                break
-
-            print("No existe un docente con esa cédula.")
-
-        if not cursoMateria_dao.existe(idCurso, docente.idMateria):
-            print("\nLa materia del docente no está asignada al curso\n")
-            return        
+        if cursoMateria_dao.existe(idCurso, docente.idMateria):
+            print("\nLa materia del docente ya está asignada al curso\n")
+            return
 
         if curso_dao.asignarDocente(idCurso, cedula_docente):
             print(f"\nDocente {docente.nombre} asignado correctamente al curso {curso.nombreCurso}\n")
@@ -302,32 +268,25 @@ class Administrador(Usuario):
         
         self.mostrarEstudiantes(estudiantes)
 
-        while True:
-            cedula = input("\nCédula del estudiante: ").strip()
+        cedula = input("\nCédula del estudiante: ").strip()
 
-            if not cedula:
-                print("Debe ingresar la cédula del estudiante.")
-                continue
+        if not cedula:
+            print("Debe ingresar la cédula del estudiante")
+                
+        estudiante = estudiante_dao.buscar(cedula)
 
-            estudiante = estudiante_dao.buscar(cedula)
-
-            if estudiante:
-                break
-
+        if not estudiante:
             print("No existe un estudiante con esa cédula")
 
-        while True:
-            idCurso = input("ID del curso: ").strip().upper()
+        idCurso = input("ID del curso: ").strip().upper()
 
-            if not idCurso:
-                print("Debe ingresar el ID del curso")
-                continue
+        if not idCurso:
+            print("Debe ingresar el ID del curso")
+            
 
-            curso = curso_dao.buscar(idCurso)
+        curso = curso_dao.buscar(idCurso)
 
-            if curso:
-                break
-
+        if not curso:
             print("No existe un curso con ese ID")
 
         if asignacionCurso_dao.existe(cedula, idCurso):
@@ -339,6 +298,7 @@ class Administrador(Usuario):
             self.registrarAccion(f"Estudiante {estudiante.nombre} ({cedula}) asignado al curso {curso.nombreCurso} ({idCurso})")
         else:
             print("\nNo fue posible realizar la asignación\n")
+
 
     def asignarMateriaACurso(self, curso_dao, materia_dao, cursoMateria_dao):
         self.mostrarCursos(curso_dao)
@@ -356,32 +316,26 @@ class Administrador(Usuario):
             print(f"Horas       : {materia.horas}")
             print("-" * 50)
 
-        while True:
-            idCurso = input("\nIngrese el ID del curso: ").strip().upper()
+        idCurso = input("\nIngrese el ID del curso: ").strip().upper()
 
-            if not idCurso:
-                print("Debe ingresar el ID del curso")
-                continue
+        if not idCurso:
+            print("Debe ingresar el ID del curso")
+            return
 
-            curso = curso_dao.buscar(idCurso)
+        curso = curso_dao.buscar(idCurso)
 
-            if curso:
-                break
-
+        if not curso:
             print("No existe un curso con ese ID")
+            return
 
-        while True:
-            idMateria = input("Ingrese el ID de la materia: ").strip().upper()
+        idMateria = input("Ingrese el ID de la materia: ").strip().upper()
 
-            if not idMateria:
-                print("Debe ingresar el ID de la materia")
-                continue
+        if not idMateria:
+            print("Debe ingresar el ID de la materia")
 
-            materia = materia_dao.buscar(idMateria)
+        materia = materia_dao.buscar(idMateria)
 
-            if materia:
-                break
-
+        if not materia:
             print("No existe una materia con ese ID")
 
         if cursoMateria_dao.existe(idCurso, idMateria):
@@ -393,6 +347,59 @@ class Administrador(Usuario):
             print(f"\nMateria {materia.nombre} asignada al curso {curso.nombreCurso} correctamente\n")
         else:
             print("\nNo se pudo asignar la materia al curso\n")
+
+
+    def asignarMateriaADocente(self, docente_dao, materia_dao):
+        print("\n=============== ASIGNAR MATERIA A DOCENTE ===============")
+
+        docentes = docente_dao.listarConMateria()
+        if not docentes:
+            print("\nNo hay docentes registrados\n")
+            return
+
+        print("\n===== DOCENTES =====")
+        for docente in docentes:
+            materia_actual = docente.nombreMateria if docente.nombreMateria else "Sin materia asignada"
+
+            print(f"Cédula          : {docente.cedula}")
+            print(f"Nombre          : {docente.nombre}")
+            print(f"Correo          : {docente.correo}")
+            print(f"Profesión       : {docente.profesion}")
+            print(f"Especialidad    : {docente.especialidad}")
+            print(f"Tipo docente    : {docente.tipoDocente}")
+            print(f"Tiempo contrato : {docente.tiempoContrato}")
+            print(f"Materia actual  : {materia_actual}")
+            print("-" * 50)
+
+        materias = materia_dao.listar()
+        if not materias:
+            print("\nNo hay materias registradas\n")
+            return
+
+        print("\n===== MATERIAS DISPONIBLES =====")
+        for materia in materias:
+            print(f"ID     : {materia.idMateria}")
+            print(f"Nombre : {materia.nombre}")
+            print("-" * 40)
+
+        cedula_docente = input("\nIngrese la cédula del docente: ").strip()
+
+        if not cedula_docente:
+            print("\nLa cédula del docente es obligatoria\n")
+            return
+        
+        id_materia = input("Ingrese el ID de la materia a asignar: ").strip()
+
+        if not id_materia:
+            print("\nLa ID de la materia que se va a asignar al docente es obligatoria\n")
+            return
+
+        if docente_dao.asignarMateria(cedula_docente, id_materia):
+            print("\nMateria asignada correctamente al docente\n")
+            self.registrarAccion(f"Se asignó la materia {id_materia} al docente {cedula_docente}")
+        else:
+            print("\nNo se pudo asignar la materia al docente\n")
+
 
     def verHorario(self, horario_dao):
         print("\n=============== HORARIO GENERAL ===============")

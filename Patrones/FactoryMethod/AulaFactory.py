@@ -1,5 +1,5 @@
-from AulaVirtual import AulaVirtual
-from AulaFisica import AulaFisica
+from Modelos.AulaVirtual import AulaVirtual
+from Modelos.AulaFisica import AulaFisica
 
 class AulaFactory:
     capacidad_maxima = 40

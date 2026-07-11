@@ -1,5 +1,5 @@
-from BaseDeDatos import ConexionSQLServer
-from Administrador import Administrador
+from BaseDeDatos import ConexionSQLServer # QUIZÁ SEA NECESARIO MODIFICARLA #
+from Modelos.Administrador import Administrador
 
 class AdministradorDAO:
     def __init__(self):

@@ -1,5 +1,5 @@
-from BaseDeDatos import ConexionSQLServer
-from Materia import Materia
+from BaseDeDatos import ConexionSQLServer # CLASE VIEJA, PROBABLEMENTE DEBA MODIFICARSE O ELIMINARSE
+from Modelos.Materia import Materia
 
 class CursoMateriaDAO:
     def __init__(self):
